@@ -30,10 +30,11 @@ Build a separate, local-first evidence compiler with these trust tiers:
 6. separately authorized runtime evidence; and
 7. optional, provenance-recorded model synthesis.
 
-Version `0.1.0` implements only tiers 1-3 and an explicit Agentic Repo Auditor JSON adapter within
-tier 4. The canonical core is deterministic and model-free. It emits versioned JSON plus derived
-Markdown, preserves contradictions and unknowns, and labels proposed architecture elements rather
-than claiming intended design.
+The first `0.1.0` slice implements only tiers 1-3. The accepted product scope includes an explicit
+Agentic Repo Auditor JSON adapter within tier 4, but that adapter is the next bounded slice and is
+not implemented by the initial public baseline. The canonical core is deterministic and
+model-free. It emits versioned JSON plus derived Markdown, preserves contradictions and unknowns,
+and labels proposed architecture elements rather than claiming intended design.
 
 The core does not execute target code, install target dependencies, access the network, remediate
 findings, certify security/compliance, or collect live telemetry. Local Sparkrun synthesis is a

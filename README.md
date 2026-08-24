@@ -1,9 +1,10 @@
 # Agentic Application Assessor
 
 Agentic Application Assessor is a local-first Python CLI for evidence-backed reviews of an exact
-application repository. It combines bounded static inspection, human-reviewed context, and
-supported analysis artifacts into deterministic JSON and Markdown while keeping observations,
-declarations, derivations, contradictions, and unknowns visibly distinct.
+application repository. The first slice combines bounded static inspection and human-reviewed
+context into deterministic JSON and Markdown while keeping observations, declarations,
+derivations, contradictions, and unknowns visibly distinct. Versioned analysis-artifact adapters
+are planned but not yet implemented.
 
 The project is an early, unreleased `0.1.0` implementation. It does not execute target code,
 install target dependencies, use the network, call a model, certify security or compliance, or

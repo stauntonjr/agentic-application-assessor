@@ -150,24 +150,27 @@ def assess(target: Path, context_path: Path) -> Report:
             "application.purpose",
             "human-declared",
             application["purpose"],
+            f"{context_path.name}#/application/purpose",
             ("context.application.purpose",),
         ),
         Claim(
             "application.audience",
             "human-declared",
             "Stakeholders: " + ", ".join(application["stakeholders"]),
+            f"{context_path.name}#/application/stakeholders",
             ("context.application.stakeholders",),
         ),
     ]
-    contradictions: list[str] = []
-    for component in context.get("components", []):
+    contradictions: list[Claim] = []
+    for component_index, component in enumerate(context.get("components", [])):
         evidence_id = f"context.component.{component['id']}"
+        component_source = f"{context_path.name}#/components/{component_index}"
         evidence.append(
             Evidence(
                 evidence_id,
                 "human-declared",
                 "component",
-                f"{context_path.name}#/components/{component['id']}",
+                component_source,
                 f"{component['name']}: {component['responsibility']}",
             )
         )
@@ -181,13 +184,21 @@ def assess(target: Path, context_path: Path) -> Report:
         if missing:
             status = "contradicted"
             contradictions.append(
-                f"component {component['id']} declares absent paths: {', '.join(missing)}"
+                Claim(
+                    f"contradiction.component.{component['id']}.missing-paths",
+                    "derived",
+                    f"Component {component['id']} declares absent paths: {', '.join(missing)}",
+                    f"{component_source}/paths",
+                    (evidence_id,),
+                    "contradicted",
+                )
             )
         claims.append(
             Claim(
                 f"architecture.component.{component['id']}",
                 "human-declared",
                 f"Proposed component {component['name']}: {component['responsibility']}",
+                component_source,
                 (evidence_id,),
                 status,
             )
@@ -197,19 +208,20 @@ def assess(target: Path, context_path: Path) -> Report:
         ("data_assets", "data asset"),
         ("quality_scenarios", "quality scenario"),
     ):
-        for record in context.get(group, []):
-            evidence_id = f"context.{group}.{record['id']}"
+        for record_index, record in enumerate(context.get(group, [])):
+            namespace = group.replace("_", "-")
+            evidence_id = f"context.{namespace}.{record['id']}"
             summary = record.get("description") or record.get("response") or record.get("name")
             evidence.append(
                 Evidence(
                     evidence_id,
                     "human-declared",
                     singular,
-                    f"{context_path.name}#/{group}/{record['id']}",
+                    f"{context_path.name}#/{group}/{record_index}",
                     str(summary),
                 )
             )
-    unknowns = []
+    unknowns: list[Claim] = []
     for group, label in (
         ("components", "application components"),
         ("workflows", "important runtime workflows"),
@@ -217,15 +229,55 @@ def assess(target: Path, context_path: Path) -> Report:
         ("quality_scenarios", "decision-driving quality scenarios"),
     ):
         if not context.get(group):
-            unknowns.append(f"No accepted context declares {label}.")
+            namespace = group.replace("_", "-")
+            unknowns.append(
+                Claim(
+                    f"unknown.context.{namespace}",
+                    "unavailable",
+                    f"No accepted context declares {label}.",
+                    f"{context_path.name}#/{group}",
+                    (),
+                    "unavailable",
+                )
+            )
     for kind in ("manifest", "entrypoint", "interface", "deployment", "test", "documentation"):
         if coverage.get(kind, 0) == 0:
-            unknowns.append(f"Static inventory found no recognized {kind} evidence.")
+            unknowns.append(
+                Claim(
+                    f"unknown.static.{kind}",
+                    "unavailable",
+                    f"Static inventory found no recognized {kind} evidence.",
+                    f"target:{identity.state_id}#inventory/{kind}",
+                    (),
+                    "unavailable",
+                )
+            )
     unknowns.extend(
         [
-            "Runtime behavior is unavailable because target execution is outside the v0.1 trust boundary.",
-            "Production topology is unavailable because live infrastructure and network access are outside the v0.1 trust boundary.",
-            "Model synthesis is unavailable because the canonical v0.1 core is model-free.",
+            Claim(
+                "unknown.runtime-behavior",
+                "unavailable",
+                "Runtime behavior is unavailable because target execution is outside the v0.1 trust boundary.",
+                "tool-policy:adr-0008#decision",
+                (),
+                "unavailable",
+            ),
+            Claim(
+                "unknown.production-topology",
+                "unavailable",
+                "Production topology is unavailable because live infrastructure and network access are outside the v0.1 trust boundary.",
+                "tool-policy:adr-0008#decision",
+                (),
+                "unavailable",
+            ),
+            Claim(
+                "unknown.model-synthesis",
+                "unavailable",
+                "Model synthesis is unavailable because the canonical v0.1 core is model-free.",
+                "tool-policy:adr-0008#decision",
+                (),
+                "unavailable",
+            ),
         ]
     )
     return Report(

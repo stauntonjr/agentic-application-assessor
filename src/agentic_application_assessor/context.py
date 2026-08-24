@@ -6,6 +6,7 @@ import hashlib
 import json
 import re
 import stat
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -61,6 +62,8 @@ def _records(value: Any, label: str, allowed: set[str], required: set[str]) -> l
         _object(item, f"{label}[{index}]", allowed, required) for index, item in enumerate(value)
     ]
     ids = [_text(item["id"], f"{label}.id") for item in records]
+    if any(item["id"] != normalized for item, normalized in zip(records, ids, strict=True)):
+        raise AssessmentError(f"{label} identifiers must not contain surrounding whitespace")
     invalid = [item for item in ids if RECORD_ID.fullmatch(item) is None]
     if invalid:
         raise AssessmentError(f"{label} identifiers must use lowercase kebab-case")
@@ -81,7 +84,13 @@ def validate_context(payload: Any) -> dict[str, Any]:
     )
     if review["status"] != "accepted":
         raise AssessmentError("review.status must be accepted")
-    _text(review["confirmed_on"], "review.confirmed_on")
+    confirmed_on = _text(review["confirmed_on"], "review.confirmed_on")
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", confirmed_on) is None:
+        raise AssessmentError("review.confirmed_on must be an RFC 3339 full-date")
+    try:
+        date.fromisoformat(confirmed_on)
+    except ValueError as exc:
+        raise AssessmentError("review.confirmed_on must be an RFC 3339 full-date") from exc
     _text(review["source"], "review.source")
     application = _object(
         root["application"],

@@ -12,11 +12,11 @@
 
 Two independent JSON executions produced the same SHA-256:
 
-`cea813873490cf1a1b718ee8f9321d80d760f410004551765f5033787df8b966`
+`7efd5fd7da86aa9d14158aa7e515c69cc09e939a3c883f74a63deca86d466adf`
 
 The deterministic Markdown SHA-256 was:
 
-`0bb4ca1fc8b4c6e80795bacb1b053091a4dffde9d438c93f68ef96022a917372`
+`779c9023c31181961b750f4e5f4ccd0a6d89dfc755b457ebab32ab35802bc41f`
 
 Before and after all three executions, the target remained clean and retained:
 
@@ -27,7 +27,7 @@ Before and after all three executions, the target remained clean and retained:
   `28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80`.
 
 The assessor's target identity was
-`sha256:2480ee656f4c6f182735e055d05f7842123dcec48262142896e1b0c0e2161669`.
+`sha256:0c5440603c5f00332b50a56ef306d55f5a0bd549ff2c94378c4d41db114777f2`.
 
 ## Report result
 
@@ -36,7 +36,8 @@ configuration files, 25 documentation files, two entrypoints, two manifests, 13 
 test files. The accepted purpose and stakeholder declarations were preserved, and the declared
 Auditor CLI component path was present. No contradiction was detected at this boundary.
 
-The report explicitly left seven gaps unresolved:
+The report explicitly left seven gaps unresolved. Each is now a structured item with a stable ID,
+`unavailable` origin, status, and exact context, target-state, or policy source:
 
 - data assets and movement;
 - important runtime workflows;

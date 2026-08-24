@@ -34,12 +34,18 @@ def render_markdown(report: Report) -> str:
     lines.extend(["", "## Evidence coverage", "", "| Kind | Count |", "|---|---:|"])
     lines.extend(f"| {kind} | {count} |" for kind, count in payload["coverage"].items())
     lines.extend(["", "## Contradictions", ""])
-    lines.extend(
-        f"- {item}"
-        for item in payload["contradictions"] or ["None detected at the inspected boundary."]
-    )
+    if payload["contradictions"]:
+        lines.extend(
+            f"- **{item['id']}** [{item['origin']}] `{item['source']}`: {item['statement']}"
+            for item in payload["contradictions"]
+        )
+    else:
+        lines.append("- None detected at the inspected boundary.")
     lines.extend(["", "## Unknowns and limits", ""])
-    lines.extend(f"- {item}" for item in payload["unknowns"])
+    lines.extend(
+        f"- **{item['id']}** [{item['origin']}] `{item['source']}`: {item['statement']}"
+        for item in payload["unknowns"]
+    )
     lines.extend(["", "## Evidence index", ""])
     for item in payload["evidence"]:
         digest = f"; sha256 `{item['sha256']}`" if item["sha256"] else ""

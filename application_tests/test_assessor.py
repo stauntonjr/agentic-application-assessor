@@ -71,13 +71,15 @@ def test_assessment_is_deterministic_and_explicit_about_unknowns(tmp_path: Path)
     assert render_markdown(first) == render_markdown(second)
     assert first.target.dirty is False
     assert {item.origin for item in first.evidence} >= {"observed", "human-declared"}
-    assert any("Runtime behavior is unavailable" in item for item in first.unknowns)
+    assert any("Runtime behavior is unavailable" in item.statement for item in first.unknowns)
+    assert all(item.claim_id and item.origin and item.source for item in first.unknowns)
     assert run("git", "status", "--porcelain=v1", cwd=root).stdout == before
 
 
 def test_declared_missing_component_path_is_a_contradiction(tmp_path: Path) -> None:
     report = assess(repository(tmp_path), context(tmp_path, "missing"))
-    assert report.contradictions == ("component core declares absent paths: missing",)
+    assert report.contradictions[0].claim_id == "contradiction.component.core.missing-paths"
+    assert report.contradictions[0].source == "context.json#/components/0/paths"
     assert (
         next(
             item for item in report.claims if item.claim_id == "architecture.component.core"
@@ -98,6 +100,20 @@ def test_context_is_strict_and_rejects_symlink(tmp_path: Path) -> None:
     linked.symlink_to(actual)
     with pytest.raises(AssessmentError, match="traverses a symlink"):
         load_context(linked)
+
+
+def test_context_rejects_invalid_date_and_unnormalized_identifier(tmp_path: Path) -> None:
+    source = context(tmp_path)
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    payload["review"]["confirmed_on"] = "not-a-date"
+    source.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(AssessmentError, match="RFC 3339 full-date"):
+        load_context(source)
+    payload["review"]["confirmed_on"] = "2026-08-24"
+    payload["components"][0]["id"] = " core "
+    source.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(AssessmentError, match="surrounding whitespace"):
+        load_context(source)
 
 
 def test_recognized_target_symlink_fails_closed(tmp_path: Path) -> None:
@@ -165,3 +181,69 @@ def test_submodule_state_fails_closed(tmp_path: Path) -> None:
     run("git", "commit", "-m", "submodule", cwd=root)
     with pytest.raises(AssessmentError, match="submodules are unsupported"):
         assess(root, context(tmp_path))
+
+
+def test_embedded_repository_state_fails_closed(tmp_path: Path) -> None:
+    root = repository(tmp_path / "outer-boundary")
+    nested = root / "vendor/nested"
+    nested.mkdir(parents=True)
+    run("git", "init", "-b", "main", cwd=nested)
+    run("git", "config", "user.name", "Test", cwd=nested)
+    run("git", "config", "user.email", "test@example.invalid", cwd=nested)
+    (nested / "README.md").write_text("nested\n", encoding="utf-8")
+    run("git", "add", ".", cwd=nested)
+    run("git", "commit", "-m", "nested", cwd=nested)
+    with pytest.raises(AssessmentError, match="embedded Git repositories are unsupported"):
+        assess(root, context(tmp_path))
+
+
+def test_local_git_config_includes_fail_closed(tmp_path: Path) -> None:
+    root = repository(tmp_path)
+    included = tmp_path / "outside.gitconfig"
+    included.write_text("[core]\n\tfsmonitor = /tmp/untrusted-helper\n", encoding="utf-8")
+    run("git", "config", "--local", "include.path", str(included), cwd=root)
+    with pytest.raises(AssessmentError, match="config includes are unsupported"):
+        assess(root, context(tmp_path))
+
+
+def test_state_identity_binds_dirty_and_untracked_file_content(tmp_path: Path) -> None:
+    root = repository(tmp_path)
+    source = context(tmp_path)
+    clean = assess(root, source)
+    note = root / "notes.bin"
+    note.write_bytes(b"first")
+    first_untracked = assess(root, source)
+    note.write_bytes(b"second")
+    second_untracked = assess(root, source)
+    assert (
+        len(
+            {
+                clean.target.state_id,
+                first_untracked.target.state_id,
+                second_untracked.target.state_id,
+            }
+        )
+        == 3
+    )
+    (root / "README.md").write_text("first dirty value\n", encoding="utf-8")
+    first_dirty = assess(root, source)
+    (root / "README.md").write_text("second dirty value\n", encoding="utf-8")
+    second_dirty = assess(root, source)
+    assert first_dirty.target.state_id != second_dirty.target.state_id
+    assert render_json(first_dirty) != render_json(second_dirty)
+
+
+def test_caller_git_environment_cannot_redirect_target(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    actual = repository(tmp_path / "actual-boundary")
+    other = repository(tmp_path / "other-boundary")
+    (other / "other.txt").write_text("different revision\n", encoding="utf-8")
+    run("git", "add", "other.txt", cwd=other)
+    run("git", "commit", "-m", "different", cwd=other)
+    expected = run("git", "rev-parse", "HEAD", cwd=actual).stdout.strip()
+    other_revision = run("git", "rev-parse", "HEAD", cwd=other).stdout.strip()
+    monkeypatch.setenv("GIT_DIR", str(other / ".git"))
+    report = assess(actual, context(tmp_path))
+    assert report.target.revision == expected
+    assert report.target.revision != other_revision

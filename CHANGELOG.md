@@ -12,5 +12,8 @@ All notable product changes are recorded here. Product and harness versions are 
 - Context and assessment-report schemas `1.0`, strict bounded context validation, safe Git target
   identity, bounded static inventory, explicit origin labels, contradictions, and unknowns.
 - Deterministic JSON and Markdown CLI output plus a clean-wheel package smoke.
+- Content-bound dirty and untracked target identity, caller Git-environment isolation, fail-closed
+  nested-repository and Git-include boundaries, and structured provenance for every unknown and
+  contradiction.
 
 No tag, release, package publication, hosted service, or deployment exists.

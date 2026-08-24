@@ -7,17 +7,19 @@ import os
 import re
 import stat
 import subprocess
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from .errors import AssessmentError
 from .model import Target
 
 
 FILTER_KEY = re.compile(r"^filter\.(.+)\.(?:clean|smudge|process|required)$", re.IGNORECASE)
+MAX_WORKTREE_FILE_BYTES = 32 * 1024 * 1024
+MAX_WORKTREE_TOTAL_BYTES = 256 * 1024 * 1024
 
 
 def _environment() -> dict[str, str]:
-    environment = os.environ.copy()
+    environment = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
     environment.update(
         {
             "GIT_OPTIONAL_LOCKS": "0",
@@ -28,6 +30,54 @@ def _environment() -> dict[str, str]:
         }
     )
     return environment
+
+
+def _fingerprint_worktree(root: Path, paths: tuple[str, ...]) -> str:
+    digest = hashlib.sha256()
+    total = 0
+    for relative in paths:
+        pure = PurePosixPath(relative)
+        if pure.is_absolute() or not pure.parts or ".." in pure.parts:
+            raise AssessmentError(f"unsafe repository path: {relative!r}")
+        cursor = root
+        metadata: os.stat_result | None = None
+        for index, part in enumerate(pure.parts):
+            cursor /= part
+            try:
+                metadata = cursor.lstat()
+            except FileNotFoundError:
+                metadata = None
+                break
+            except OSError as exc:
+                raise AssessmentError(
+                    f"cannot fingerprint repository path {relative}: {exc}"
+                ) from exc
+            if stat.S_ISLNK(metadata.st_mode):
+                raise AssessmentError(f"repository path is a symlink: {relative}")
+            if index < len(pure.parts) - 1 and not stat.S_ISDIR(metadata.st_mode):
+                raise AssessmentError(f"repository path has non-directory ancestor: {relative}")
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        if metadata is None:
+            digest.update(b"absent\0")
+            continue
+        if not stat.S_ISREG(metadata.st_mode):
+            raise AssessmentError(f"repository path is not a regular file: {relative}")
+        if metadata.st_size > MAX_WORKTREE_FILE_BYTES:
+            raise AssessmentError(f"repository file exceeds 32 MiB identity bound: {relative}")
+        total += metadata.st_size
+        if total > MAX_WORKTREE_TOTAL_BYTES:
+            raise AssessmentError("repository exceeds 256 MiB worktree identity bound")
+        digest.update(f"mode:{stat.S_IMODE(metadata.st_mode):o}:size:{metadata.st_size}".encode())
+        digest.update(b"\0")
+        try:
+            with cursor.open("rb") as stream:
+                for chunk in iter(lambda: stream.read(131072), b""):
+                    digest.update(chunk)
+        except OSError as exc:
+            raise AssessmentError(f"cannot fingerprint repository file {relative}: {exc}") from exc
+        digest.update(b"\0")
+    return digest.hexdigest()
 
 
 def _run(
@@ -83,9 +133,27 @@ def _run(
 
 
 def _filter_names(root: Path) -> tuple[str, ...]:
+    includes = _run(
+        root,
+        (
+            "config",
+            "--local",
+            "--no-includes",
+            "--null",
+            "--name-only",
+            "--get-regexp",
+            r"^include(if)?\.",
+        ),
+        allowed=(0, 1),
+    )
+    if includes:
+        raise AssessmentError(
+            "repository-local Git config includes are unsupported by the v0.1 safety boundary"
+        )
     command = (
         "config",
         "--local",
+        "--no-includes",
         "--null",
         "--name-only",
         "--get-regexp",
@@ -144,16 +212,18 @@ def target_identity(target: Path) -> tuple[Path, Target, tuple[str, ...]]:
         raise AssessmentError("submodules are unsupported by the v0.1 exact-state boundary")
     flags = git_output(root, "ls-files", "-v", "-z")
     listed = git_output(root, "ls-files", "-z", "--cached", "--others", "--exclude-standard")
-    if any(item.endswith("/") for item in listed.split("\0") if item):
+    paths = tuple(sorted(item for item in listed.split("\0") if item))
+    if any(item.endswith("/") for item in paths):
         raise AssessmentError(
             "embedded Git repositories are unsupported by the v0.1 exact-state boundary"
         )
+    worktree = _fingerprint_worktree(root, paths)
     state = hashlib.sha256()
-    for value in (revision, branch, status, index, flags):
+    for value in (revision, branch, status, index, flags, worktree):
         state.update(value.encode("utf-8"))
         state.update(b"\0")
     return (
         root,
         Target(root.name, revision, branch, bool(status), f"sha256:{state.hexdigest()}"),
-        tuple(sorted(item for item in listed.split("\0") if item)),
+        paths,
     )

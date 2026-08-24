@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 from typing import Any
 
 
@@ -15,6 +16,7 @@ ORIGINS = (
     "model-synthesized",
     "unavailable",
 )
+STABLE_ID = re.compile(r"^[a-z][a-z0-9-]*(?:\.[a-z0-9-]+)*$")
 
 
 @dataclass(frozen=True, order=True)
@@ -29,6 +31,8 @@ class Evidence:
     sha256: str | None = None
 
     def __post_init__(self) -> None:
+        if STABLE_ID.fullmatch(self.evidence_id) is None:
+            raise ValueError(f"invalid stable evidence identifier: {self.evidence_id}")
         if self.origin not in ORIGINS:
             raise ValueError(f"unsupported evidence origin: {self.origin}")
 
@@ -50,14 +54,21 @@ class Claim:
     claim_id: str
     origin: str
     statement: str
+    source: str
     evidence_ids: tuple[str, ...]
     status: str = "supported"
 
     def __post_init__(self) -> None:
+        if STABLE_ID.fullmatch(self.claim_id) is None:
+            raise ValueError(f"invalid stable claim identifier: {self.claim_id}")
         if self.origin not in ORIGINS:
             raise ValueError(f"unsupported claim origin: {self.origin}")
         if self.status not in {"supported", "proposed", "contradicted", "unavailable"}:
             raise ValueError(f"unsupported claim status: {self.status}")
+        if not self.source:
+            raise ValueError(f"claim {self.claim_id} requires source provenance")
+        if any(STABLE_ID.fullmatch(item) is None for item in self.evidence_ids):
+            raise ValueError(f"claim {self.claim_id} has an invalid evidence reference")
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -65,6 +76,7 @@ class Claim:
             "origin": self.origin,
             "status": self.status,
             "statement": self.statement,
+            "source": self.source,
             "evidence_ids": list(sorted(self.evidence_ids)),
         }
 
@@ -99,8 +111,8 @@ class Report:
     context_sha256: str
     evidence: tuple[Evidence, ...]
     claims: tuple[Claim, ...]
-    contradictions: tuple[str, ...]
-    unknowns: tuple[str, ...]
+    contradictions: tuple[Claim, ...]
+    unknowns: tuple[Claim, ...]
     coverage: dict[str, int]
 
     def as_dict(self) -> dict[str, Any]:
@@ -119,6 +131,6 @@ class Report:
             "coverage": {key: self.coverage[key] for key in sorted(self.coverage)},
             "evidence": [item.as_dict() for item in sorted(self.evidence)],
             "claims": [item.as_dict() for item in sorted(self.claims)],
-            "contradictions": list(sorted(self.contradictions)),
-            "unknowns": list(sorted(self.unknowns)),
+            "contradictions": [item.as_dict() for item in sorted(self.contradictions)],
+            "unknowns": [item.as_dict() for item in sorted(self.unknowns)],
         }
