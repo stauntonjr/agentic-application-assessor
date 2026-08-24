@@ -66,3 +66,35 @@ def test_cli_json_and_error_contract(tmp_path: Path) -> None:
     )
     assert bad.returncode == 2
     assert bad.stderr.startswith("agentic-application-assessor:")
+
+
+def test_cli_deeply_nested_context_fails_without_traceback(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    root.mkdir()
+    subprocess.run(["git", "init", "-b", "main"], cwd=root, check=True)
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=root, check=True)
+    subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=root, check=True)
+    (root / "README.md").write_text("# App\n", encoding="utf-8")
+    subprocess.run(["git", "add", "."], cwd=root, check=True)
+    subprocess.run(["git", "commit", "-m", "fixture"], cwd=root, check=True)
+    context = tmp_path / "nested.json"
+    context.write_text("[" * 10_000 + "]" * 10_000, encoding="utf-8")
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "agentic_application_assessor",
+            "assess",
+            str(root),
+            "--context",
+            str(context),
+        ],
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    assert result.returncode == 2
+    assert result.stdout == ""
+    assert result.stderr.startswith("agentic-application-assessor: cannot read context JSON:")
+    assert "Traceback" not in result.stderr

@@ -15,5 +15,7 @@ All notable product changes are recorded here. Product and harness versions are 
 - Content-bound dirty and untracked target identity, caller Git-environment isolation, fail-closed
   nested-repository and Git-include boundaries, and structured provenance for every unknown and
   contradiction.
+- Bounded deeply nested context input now returns the documented assessment error instead of a
+  decoder traceback.
 
 No tag, release, package publication, hosted service, or deployment exists.

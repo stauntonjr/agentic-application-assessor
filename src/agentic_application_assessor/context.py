@@ -160,6 +160,6 @@ def load_context(path: Path) -> tuple[dict[str, Any], str]:
     try:
         raw = path.read_bytes()
         payload = json.loads(raw)
-    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+    except (OSError, UnicodeError, json.JSONDecodeError, RecursionError) as exc:
         raise AssessmentError(f"cannot read context JSON: {exc}") from exc
     return validate_context(payload), hashlib.sha256(raw).hexdigest()
