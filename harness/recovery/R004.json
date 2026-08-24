@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "id": "R004",
+  "failure_class": "agent-crash",
+  "source": {
+    "kind": "synthetic",
+    "reference": "Issue #14 minimized process-loss fixture",
+    "sanitized": true,
+    "contains_raw_transcript": false
+  },
+  "expected": {
+    "terminal_state": "implement",
+    "preserved_partial_work": true,
+    "handoff_count": 1,
+    "destructive_git_commands": []
+  }
+}

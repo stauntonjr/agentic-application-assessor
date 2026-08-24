@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "id": "R003",
+  "failure_class": "stale-branch",
+  "source": {
+    "kind": "public-dogfood",
+    "reference": "docs/reports/issue-2-s3ntinel-routing.md",
+    "sanitized": true,
+    "contains_raw_transcript": false
+  },
+  "expected": {
+    "terminal_state": "inspect-before-integration",
+    "branch_stale": true,
+    "scope_violations": [],
+    "destructive_git_commands": []
+  }
+}

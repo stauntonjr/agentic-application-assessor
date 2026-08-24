@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Engineering loop run",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "revision",
+    "attempt_id",
+    "retry_policy",
+    "objective_seed",
+    "objective",
+    "acceptance_criteria",
+    "declared_write_set",
+    "implementers",
+    "baseline",
+    "started_at",
+    "start_commit",
+    "state",
+    "checks",
+    "verdicts",
+    "release_impact"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.2"},
+    "run_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "revision": {"type": "integer", "minimum": 1},
+    "attempt_id": {"type": "integer", "minimum": 1},
+    "objective_seed": {"type": "string", "minLength": 1},
+    "objective": {"type": "string", "minLength": 1},
+    "acceptance_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/criterion"}
+    },
+    "declared_write_set": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/writeScope"}
+    },
+    "implementers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "baseline": {
+      "type": "object",
+      "required": ["captured_at", "entries"],
+      "properties": {
+        "captured_at": {"type": "string"},
+        "entries": {"type": "array", "items": {"$ref": "#/$defs/snapshotEntry"}}
+      }
+    },
+    "state": {
+      "enum": [
+        "intake",
+        "understand",
+        "plan",
+        "authorize",
+        "implement",
+        "verify",
+        "adversarial-review",
+        "integrate",
+        "report",
+        "learn",
+        "reported",
+        "blocked",
+        "abandoned"
+      ]
+    },
+    "checks": {"type": "array", "items": {"$ref": "#/$defs/check"}},
+    "verdicts": {"type": "array", "items": {"$ref": "#/$defs/verdict"}},
+    "release_impact": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/releaseImpact"}
+      ]
+    },
+    "agent_handoffs": {"type": "array"},
+    "attempt_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["revision", "attempt_id", "ended_at", "reason", "outcome"],
+        "properties": {
+          "revision": {"type": "integer", "minimum": 1},
+          "attempt_id": {"type": "integer", "minimum": 1},
+          "ended_at": {"type": "string"},
+          "reason": {"type": "string", "minLength": 1},
+          "outcome": {"const": "failed"}
+        }
+      }
+    },
+    "retry_policy": {
+      "type": "object",
+      "required": ["maximum_consecutive_failures", "on_exhaustion"],
+      "properties": {
+        "maximum_consecutive_failures": {"type": "integer", "minimum": 1},
+        "on_exhaustion": {"const": "stop-and-escalate"}
+      }
+    },
+    "decisions": {"type": "array"},
+    "risks": {"type": "array"}
+  },
+  "$defs": {
+    "criterion": {
+      "type": "object",
+      "required": ["id", "text", "waiver"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,63}$"},
+        "text": {"type": "string", "minLength": 1},
+        "waiver": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "required": ["by", "reason", "revision", "recorded_at"]
+            }
+          ]
+        }
+      }
+    },
+    "writeScope": {
+      "type": "object",
+      "required": ["mode", "path"],
+      "properties": {
+        "mode": {"enum": ["exact", "prefix"]},
+        "path": {"type": "string", "minLength": 1}
+      }
+    },
+    "snapshotEntry": {
+      "type": "object",
+      "required": ["path", "status", "kind", "digest", "index", "index_flags"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["file", "symlink", "directory", "gitlink", "nested-repository", "other", "absent"]},
+        "digest": {"type": ["string", "null"]},
+        "index": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["mode", "object_id", "stage", "path"]
+          }
+        },
+        "index_flags": {
+          "type": "array",
+          "items": {"enum": ["assume-unchanged", "skip-worktree"]},
+          "uniqueItems": true
+        }
+      }
+    },
+    "check": {
+      "type": "object",
+      "required": [
+        "check_id",
+        "revision",
+        "attempt_id",
+        "criterion_ids",
+        "name",
+        "command",
+        "status",
+        "evidence",
+        "recorded_at"
+      ],
+      "properties": {
+        "status": {"enum": ["passed", "failed", "skipped", "not-run"]},
+        "criterion_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "required": [
+        "verdict_id",
+        "revision",
+        "attempt_id",
+        "reviewer",
+        "decision",
+        "criterion_ids",
+        "evidence",
+        "candidate",
+        "recorded_at"
+      ],
+      "properties": {
+        "decision": {"enum": ["approve", "revise", "reject"]},
+        "candidate": {
+          "type": "object",
+          "required": ["commit", "tree_digest", "release_impact_digest"],
+          "properties": {
+            "commit": {"type": "string"},
+            "tree_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+            "release_impact_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+          }
+        }
+      }
+    },
+    "releaseImpact": {
+      "type": "object",
+      "required": [
+        "revision",
+        "attempt_id",
+        "level",
+        "reason",
+        "public_contract_changes",
+        "recorded_at"
+      ],
+      "properties": {
+        "revision": {"type": "integer", "minimum": 1},
+        "attempt_id": {"type": "integer", "minimum": 1},
+        "level": {"enum": ["none", "patch", "minor", "major"]},
+        "reason": {"type": "string", "minLength": 1},
+        "public_contract_changes": {"type": "array", "items": {"type": "string"}},
+        "recorded_at": {"type": "string"}
+      }
+    }
+  }
+}

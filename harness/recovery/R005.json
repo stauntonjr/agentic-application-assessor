@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "id": "R005",
+  "failure_class": "retry-exhaustion",
+  "source": {
+    "kind": "public-dogfood",
+    "reference": "harness/fixtures/s3ntinel-routing-evaluation.json",
+    "sanitized": true,
+    "contains_raw_transcript": false
+  },
+  "expected": {
+    "terminal_state": "blocked",
+    "attempt_id": 3,
+    "failure_count": 3,
+    "ceiling_error": true,
+    "destructive_git_commands": []
+  }
+}

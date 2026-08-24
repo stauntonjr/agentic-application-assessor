@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "from_version": "0.4.1",
+  "to_version": "0.5.0",
+  "operations": [
+    {
+      "action": "manual",
+      "path": ".github/planning.json",
+      "reason": "Select shared or dedicated topology, record the canonical Project owner and number, and preserve the repository's existing live Project identity before accepting the new planning contract.",
+      "ownership": "project-owned"
+    }
+  ]
+}

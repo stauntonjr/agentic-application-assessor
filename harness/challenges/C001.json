@@ -1,0 +1,43 @@
+{
+  "id": "C001",
+  "title": "Unavailable Pi tool calls must stop at the retry ceiling",
+  "escaped_defect": {
+    "introduced_by": "S3NTINEL Issue #2 dogfood session e7b7a32c",
+    "description": "An invocation without the reviewed extension attempted an unavailable tool 231 times and required operator interruption."
+  },
+  "affected_surfaces": ["pi-adapter", "retry-policy", "operator-safety"],
+  "provenance": {
+    "source_issue": "https://github.com/stauntonjr/agentic-project-template/issues/2",
+    "source_artifact": "harness/fixtures/s3ntinel-routing-evaluation.json",
+    "sanitized": true,
+    "contains_raw_transcript": false
+  },
+  "promotion": {
+    "status": "candidate",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "decision": null
+  },
+  "oracle": {
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "tests.test_loop.LoopTests.test_three_consecutive_failures_block_without_starting_a_fourth_attempt"
+    ],
+    "success_exit_code": 0
+  },
+  "known_bad": {
+    "argv": [
+      "python3",
+      "tools/recovery_scenarios.py",
+      "--known-bad",
+      "pi-unbounded-unavailable-tools"
+    ],
+    "success_exit_code": 0
+  },
+  "expected_failure": {
+    "exit_code": 1,
+    "signature": "unbounded unavailable-tool retries"
+  }
+}

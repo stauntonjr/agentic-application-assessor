@@ -1,0 +1,30 @@
+name: Decision
+description: Track a material architecture, product, risk, or autonomy decision
+title: "[Decision] "
+labels: ["type:decision", "human-decision"]
+body:
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Decision boundary
+      description: What must be decided now, and what remains outside this decision?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and constraints
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options and tradeoffs
+    validations:
+      required: true
+  - type: textarea
+    id: authority
+    attributes:
+      label: Required decider and deadline
+    validations:
+      required: true

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture Decision"
+  short_description: "Record a durable, reviewable architecture decision"
+  default_prompt: "Use $agentic-engineering-harness:record-architecture-decision to capture this architecture choice and its consequences."

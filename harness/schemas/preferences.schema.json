@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "User-local agent preferences",
+  "type": "object",
+  "required": ["schema_version", "scope", "preferences", "promotion_rule"],
+  "properties": {
+    "scope": {"enum": ["user-local"]},
+    "preferences": {"type": "object"},
+    "promotion_rule": {"type": "string"}
+  }
+}

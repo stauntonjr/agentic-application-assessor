@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "enabled_by_default": false,
+  "ingestion": "explicit-cli-only",
+  "default_output": "stdout",
+  "raw_input_retention": "not-retained",
+  "written_summary_retention": "caller-managed",
+  "organization_export": "disabled",
+  "content_capture": false,
+  "measurement_origins": [
+    "locally-measured",
+    "provider-reported",
+    "inferred",
+    "unavailable"
+  ],
+  "metrics": [
+    {"name": "human_corrections", "unit": "{correction}"},
+    {"name": "retries", "unit": "{attempt}"},
+    {"name": "escaped_defects", "unit": "{defect}"},
+    {"name": "acceptance_pass_rate", "unit": "1"},
+    {"name": "cycle_time", "unit": "s"},
+    {"name": "elapsed_time", "unit": "s"},
+    {"name": "accepted_change_cost", "unit": "input-defined"}
+  ],
+  "forbidden_input_keys": [
+    "prompt",
+    "response",
+    "message",
+    "content",
+    "transcript",
+    "reasoning",
+    "hidden_reasoning",
+    "secret",
+    "credential",
+    "api_key",
+    "token"
+  ]
+}

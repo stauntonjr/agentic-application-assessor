@@ -1,0 +1,34 @@
+{
+  "name": "agentic-engineering-harness",
+  "version": "0.1.0",
+  "description": "Reusable workflow skills for repositories using Agentic Project Template.",
+  "author": {
+    "name": "stauntonjr",
+    "url": "https://github.com/stauntonjr"
+  },
+  "homepage": "https://github.com/stauntonjr/agentic-project-template/blob/main/docs/project/skill-plugin.md",
+  "repository": "https://github.com/stauntonjr/agentic-project-template",
+  "license": "MIT",
+  "keywords": [
+    "agentic-engineering",
+    "codex",
+    "project-governance",
+    "skills"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agentic Engineering Harness",
+    "shortDescription": "Evidence-gated workflows for agent-developed repositories.",
+    "longDescription": "Adds reusable intake, research, engineering-loop, reporting, planning, architecture-decision, and release-readiness skills. Repository policy remains in each project.",
+    "developerName": "stauntonjr",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Use $agentic-engineering-harness:project-intake to identify missing repository context.",
+      "Use $agentic-engineering-harness:execute-engineering-loop to deliver this issue.",
+      "Use $agentic-engineering-harness:loop-report to summarize the current loop."
+    ]
+  }
+}

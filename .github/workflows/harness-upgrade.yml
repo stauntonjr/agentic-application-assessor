@@ -1,0 +1,68 @@
+name: Prepare harness upgrade
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Upstream release tag; leave blank to use the latest release"
+        required: false
+        type: string
+      resolutions:
+        description: "Reviewed manual resolutions, one PATH=keep-local|use-upstream|merged per line"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Resolve, review, and apply the release locally
+        id: upgrade
+        env:
+          REQUESTED_REF: ${{ inputs.ref }}
+          REVIEWED_RESOLUTIONS: ${{ inputs.resolutions }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          REPOSITORY=$(python3 -c 'import json; print(json.load(open("harness.lock"))["upstream"]["repository"])')
+          if [[ "$REPOSITORY" == "OWNER/agentic-project-template" ]]; then
+            echo "Configure the published upstream repository in harness.lock first." >&2
+            exit 1
+          fi
+          REF="$REQUESTED_REF"
+          if [[ -z "$REF" ]]; then
+            python3 tools/harness_upgrade.py latest --repository "$REPOSITORY" > /tmp/latest-harness-release.json
+            REF=$(python3 -c 'import json; print(json.load(open("/tmp/latest-harness-release.json"))["tag"])')
+          fi
+          SOURCE=$(python3 tools/harness_upgrade.py fetch --repository "$REPOSITORY" --ref "$REF" --yes)
+          python3 tools/harness_upgrade.py plan --source-root "$SOURCE" --output /tmp/harness-upgrade-plan.json
+          RESOLUTION_ARGS=()
+          while IFS= read -r resolution; do
+            [[ -z "$resolution" ]] || RESOLUTION_ARGS+=(--resolve "$resolution")
+          done <<< "$REVIEWED_RESOLUTIONS"
+          python3 tools/harness_upgrade.py apply --plan /tmp/harness-upgrade-plan.json --source-root "$SOURCE" "${RESOLUTION_ARGS[@]}" --yes
+          make smoke
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
+      - name: Open upgrade pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REF: ${{ steps.upgrade.outputs.ref }}
+        run: |
+          set -euo pipefail
+          SAFE_REF=${REF//\//-}
+          BRANCH="harness-upgrade/$SAFE_REF"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git add -A
+          git commit -m "chore: upgrade agentic harness to $REF"
+          git push -u origin "$BRANCH"
+          gh pr create --base "${{ github.event.repository.default_branch }}" --head "$BRANCH" --title "Upgrade agentic harness to $REF" --body "Prepared by the manually dispatched harness upgrade workflow. Review the lock, ownership resolutions, migration diff, checks, and rollback receipt before merging."

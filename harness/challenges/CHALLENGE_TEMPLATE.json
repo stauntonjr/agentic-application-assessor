@@ -1,0 +1,33 @@
+{
+  "id": "C000",
+  "title": "Replace with the escaped defect",
+  "escaped_defect": {
+    "introduced_by": "PUBLIC_COMMIT_OR_INCIDENT",
+    "description": "What passed existing controls but was wrong"
+  },
+  "affected_surfaces": ["public-interface"],
+  "provenance": {
+    "source_issue": "https://github.com/OWNER/REPOSITORY/issues/0",
+    "source_artifact": "Public sanitized evidence path",
+    "sanitized": true,
+    "contains_raw_transcript": false
+  },
+  "promotion": {
+    "status": "candidate",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "decision": null
+  },
+  "oracle": {
+    "argv": ["python3", "-m", "unittest", "tests.test_regression"],
+    "success_exit_code": 0
+  },
+  "known_bad": {
+    "argv": ["python3", "tools/replay_known_bad.py", "C000"],
+    "success_exit_code": 0
+  },
+  "expected_failure": {
+    "exit_code": 1,
+    "signature": "Replace with the semantic failure signature"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Loop report evidence",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "revision",
+    "attempt_id",
+    "boundary",
+    "acceptance_criteria",
+    "claims",
+    "checks",
+    "verdicts",
+    "release_impact",
+    "risks"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.2"},
+    "revision": {"type": "integer", "minimum": 1},
+    "attempt_id": {"type": "integer", "minimum": 1},
+    "boundary": {
+      "type": "object",
+      "required": ["start_commit", "end_commit", "changed_paths", "scope"],
+      "properties": {
+        "scope": {
+          "type": "object",
+          "required": ["baseline", "current", "delta", "violations"],
+          "properties": {
+            "violations": {"type": "array", "items": {"type": "string"}}
+          }
+        }
+      }
+    },
+    "acceptance_criteria": {"type": "array", "minItems": 1},
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["status", "claim", "evidence"],
+        "properties": {
+          "status": {"enum": ["verified", "reported", "inferred"]}
+        }
+      }
+    },
+    "checks": {"type": "array"},
+    "verdicts": {"type": "array"},
+    "release_impact": {"type": ["object", "null"]},
+    "risks": {"type": "array"}
+  }
+}

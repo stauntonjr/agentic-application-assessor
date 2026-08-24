@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "id": "R006",
+  "failure_class": "resumable-handoff",
+  "source": {
+    "kind": "synthetic",
+    "reference": "Issue #14 reviewed-resume contract",
+    "sanitized": true,
+    "contains_raw_transcript": false
+  },
+  "expected": {
+    "terminal_state": "understand",
+    "revision": 2,
+    "attempt_id": 1,
+    "preserved_partial_work": true,
+    "authorized_by": "human:fixture-owner",
+    "destructive_git_commands": []
+  }
+}

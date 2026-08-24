@@ -1,0 +1,29 @@
+name: Defect
+description: Report incorrect behavior with a reproducible oracle
+title: "[Bug] "
+labels: ["type:bug", "evidence:required"]
+body:
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior and governing contract
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and evidence
+      description: Provide deterministic steps, inputs, revision, and failure signature.
+    validations:
+      required: true
+  - type: textarea
+    id: escaped
+    attributes:
+      label: Escaped-defect analysis
+      description: Which existing control failed to prevent or detect this?

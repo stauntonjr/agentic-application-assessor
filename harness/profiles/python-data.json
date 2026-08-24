@@ -1,0 +1,41 @@
+{
+  "id": "python-data",
+  "description": "Python library, data pipeline, analytics, or ML project.",
+  "defaults": {
+    "engineering.languages": ["Python"],
+    "engineering.build_commands": ["uv build"],
+    "engineering.test_commands": ["uv run pytest"],
+    "engineering.command_contract.bootstrap": "uv sync --locked",
+    "engineering.command_contract.format_check": "uvx --from ruff==0.12.10 ruff format --check .",
+    "engineering.command_contract.lint": "uvx --from ruff==0.12.10 ruff check .",
+    "engineering.command_contract.typecheck": "uvx --from pyright==1.1.403 pyright",
+    "engineering.command_contract.unit": "uv run --with pytest==8.4.1 --with pytest-cov==6.2.1 --with hypothesis==6.138.13 python -m pytest --cov=. --cov-branch --cov-report=term-missing -m 'not integration'",
+    "engineering.command_contract.integration": "uv run --with pytest==8.4.1 python -m pytest -m integration",
+    "engineering.command_contract.package_smoke": "not-applicable: configure when a Python product artifact exists",
+    "engineering.quality.dependency_lock": "uv.lock",
+    "engineering.quality.coverage_policy": "branch-coverage-baseline-required-before-release",
+    "engineering.quality.property_testing": "hypothesis",
+    "engineering.quality.required_checks": ["format_check", "lint", "typecheck", "unit"]
+  },
+  "recommended_checks": [
+    "compile",
+    "unit",
+    "data-contract",
+    "clean-install",
+    "public-entrypoint",
+    "reproducibility"
+  ],
+  "tooling": {
+    "dependency_manager": "uv",
+    "formatter_linter": "ruff",
+    "type_checker": "pyright",
+    "test_runner": "pytest",
+    "property_testing": "hypothesis",
+    "coverage": "pytest-cov"
+  },
+  "questions": [
+    "What is the as-of, revision, and provenance model?",
+    "Which datasets are public, licensed, synthetic, or confidential?",
+    "What naive baseline and held-out evaluation are required?"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "De-identified loop telemetry aggregate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "summary_count", "privacy", "metrics"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "kind": {"const": "loop-telemetry-aggregate"},
+    "summary_count": {"type": "integer", "minimum": 1},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["content_captured", "run_identifiers_retained", "source_inputs_retained"],
+      "properties": {
+        "content_captured": {"const": false},
+        "run_identifiers_retained": {"const": false},
+        "source_inputs_retained": {"const": false}
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {"allOf": [{"$ref": "#/$defs/metric"}, {"properties": {"name": {"const": "human_corrections"}, "units": {"items": {"allOf": [{"$ref": "#/$defs/unit"}, {"properties": {"unit": {"const": "{correction}"}}}]}}}}]},
+        {"allOf": [{"$ref": "#/$defs/metric"}, {"properties": {"name": {"const": "retries"}, "units": {"items": {"allOf": [{"$ref": "#/$defs/unit"}, {"properties": {"unit": {"const": "{attempt}"}}}]}}}}]},
+        {"allOf": [{"$ref": "#/$defs/metric"}, {"properties": {"name": {"const": "escaped_defects"}, "units": {"items": {"allOf": [{"$ref": "#/$defs/unit"}, {"properties": {"unit": {"const": "{defect}"}}}]}}}}]},
+        {"allOf": [{"$ref": "#/$defs/metric"}, {"properties": {"name": {"const": "acceptance_pass_rate"}, "units": {"items": {"allOf": [{"$ref": "#/$defs/unit"}, {"properties": {"unit": {"const": "1"}}}]}}}}]},
+        {"allOf": [{"$ref": "#/$defs/metric"}, {"properties": {"name": {"const": "cycle_time"}, "units": {"items": {"allOf": [{"$ref": "#/$defs/unit"}, {"properties": {"unit": {"const": "s"}}}]}}}}]},
+        {"allOf": [{"$ref": "#/$defs/metric"}, {"properties": {"name": {"const": "elapsed_time"}, "units": {"items": {"allOf": [{"$ref": "#/$defs/unit"}, {"properties": {"unit": {"const": "s"}}}]}}}}]},
+        {"allOf": [{"$ref": "#/$defs/metric"}, {"properties": {"name": {"const": "accepted_change_cost"}, "units": {"items": {"allOf": [{"$ref": "#/$defs/unit"}, {"properties": {"unit": {"enum": ["USD", "person-minute", "compute-second"]}}}]}}}}]}
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "available_count", "unavailable_count", "origins", "units"],
+      "properties": {
+        "name": {"type": "string"},
+        "available_count": {"type": "integer", "minimum": 0},
+        "unavailable_count": {"type": "integer", "minimum": 0},
+        "origins": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "locally-measured": {"type": "integer", "minimum": 0},
+            "provider-reported": {"type": "integer", "minimum": 0},
+            "inferred": {"type": "integer", "minimum": 0},
+            "unavailable": {"type": "integer", "minimum": 0}
+          }
+        },
+        "units": {"type": "array", "items": {"$ref": "#/$defs/unit"}}
+      }
+    },
+    "unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "count", "sum", "minimum", "maximum"],
+      "properties": {
+        "unit": {"type": "string"},
+        "count": {"type": "integer", "minimum": 1},
+        "sum": {"type": "number", "minimum": 0},
+        "minimum": {"type": "number", "minimum": 0},
+        "maximum": {"type": "number", "minimum": 0}
+      }
+    }
+  }
+}

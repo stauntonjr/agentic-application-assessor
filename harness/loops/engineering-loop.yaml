@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "id": "engineering-loop",
+  "description": "Default evidence-producing loop for non-trivial repository work.",
+  "start_state": "intake",
+  "terminal_states": ["reported", "blocked", "abandoned"],
+  "retry_policy": {
+    "maximum_consecutive_failures": 3,
+    "on_exhaustion": "stop-and-escalate",
+    "preserve_partial_work": true,
+    "resume_requires": "human-reviewed-structured-handoff",
+    "resume_starts_new_revision": true,
+    "destructive_git_recovery": false,
+    "attempt_identity_required": true,
+    "contract_changes_increment_revision": true
+  },
+  "states": [
+    {
+      "id": "intake",
+      "owner": "orchestrator",
+      "requires": ["request", "repository status"],
+      "produces": ["verbatim objective", "criterion IDs", "dirty baseline", "context readiness decision"],
+      "gate": "intent, authority, and mechanically verifiable acceptance criteria are clear enough; material gaps are asked or escalated",
+      "next": ["understand", "blocked"]
+    },
+    {
+      "id": "understand",
+      "owner": "explorer",
+      "requires": ["objective", "authoritative sources"],
+      "produces": ["evidence map", "constraints", "unknowns", "prior-art research when material"],
+      "gate": "real execution and data boundaries are identified and external assumptions are current enough",
+      "next": ["plan", "blocked"]
+    },
+    {
+      "id": "plan",
+      "owner": "orchestrator",
+      "requires": ["evidence map", "acceptance criteria"],
+      "produces": ["smallest vertical slice", "verification plan", "declared write set", "write ownership"],
+      "gate": "scope, exact or prefix write paths, owners, and stop conditions are explicit",
+      "next": ["authorize", "blocked"]
+    },
+    {
+      "id": "authorize",
+      "owner": "orchestrator",
+      "requires": ["planned side effects", "autonomy contract"],
+      "produces": ["authorized actions", "deferred actions"],
+      "gate": "required human approvals exist",
+      "next": ["implement", "blocked", "abandoned"]
+    },
+    {
+      "id": "implement",
+      "owner": "implementer",
+      "requires": ["bounded issue", "owned branch and worktree"],
+      "produces": ["focused change", "implementation notes", "product release-impact recommendation"],
+      "gate": "task-owned changes are ready for verification",
+      "next": ["verify", "blocked"]
+    },
+    {
+      "id": "verify",
+      "owner": "verifier",
+      "requires": ["change", "verification plan"],
+      "produces": ["criterion-linked check evidence", "findings", "candidate identity"],
+      "gate": "every unwaived criterion has current-attempt evidence or failures are explained",
+      "next": ["adversarial-review", "implement", "blocked"]
+    },
+    {
+      "id": "adversarial-review",
+      "owner": "verifier",
+      "requires": ["diff", "raw evidence"],
+      "produces": ["revision-bound independent decision", "criterion coverage", "residual risks"],
+      "gate": "reviewer did not author the reviewed work and the verdict identifies the current revision, attempt, commit, and working-tree digest",
+      "next": ["integrate", "implement", "blocked"]
+    },
+    {
+      "id": "integrate",
+      "owner": "orchestrator",
+      "requires": ["current independent approval", "declared-scope evidence", "clean integration target"],
+      "produces": ["integrated revision", "planning reconciliation"],
+      "gate": "all unwaived criteria are evidenced, the verdict is current, no undeclared writes exist, and shared Git and GitHub state are consistent",
+      "next": ["report", "blocked"]
+    },
+    {
+      "id": "report",
+      "owner": "orchestrator",
+      "requires": ["loop boundary", "check evidence", "repository state", "current product release-impact assessment"],
+      "produces": ["executive report", "handoff updates"],
+      "gate": "claims are labeled verified, reported, or inferred",
+      "next": ["learn", "reported"]
+    },
+    {
+      "id": "learn",
+      "owner": "orchestrator",
+      "requires": ["report", "failures and corrections"],
+      "produces": ["proposed harness updates", "challenge candidates"],
+      "gate": "policy changes remain proposals pending human review",
+      "next": ["reported"]
+    }
+  ]
+}

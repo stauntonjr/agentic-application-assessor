@@ -1,0 +1,4 @@
+interface:
+  display_name: "Engineering Loop"
+  short_description: "Run bounded engineering work with evidence gates"
+  default_prompt: "Use $agentic-engineering-harness:execute-engineering-loop to deliver the current issue through verification and reporting."

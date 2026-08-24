@@ -1,0 +1,31 @@
+name: Feature slice
+description: Propose one bounded, verifiable vertical capability
+title: "[Feature] "
+labels: ["type:feature", "evidence:required"]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: Who benefits, what changes, and why it matters.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and exclusions
+      description: State the smallest useful slice and what is out of scope.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance evidence
+      description: List observable behavior and exact evidence required.
+    validations:
+      required: true
+  - type: textarea
+    id: risk
+    attributes:
+      label: Risks, dependencies, and decisions
+      description: Include human approvals and external side effects.

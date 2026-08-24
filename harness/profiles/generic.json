@@ -1,0 +1,24 @@
+{
+  "id": "generic",
+  "description": "Minimal language-neutral defaults.",
+  "defaults": {
+    "autonomy.level": "supervised",
+    "engineering.command_contract.primary_check": "make smoke",
+    "engineering.quality.dependency_lock": "required-if-dependencies",
+    "engineering.quality.coverage_policy": "ratchet-or-explicit-exception",
+    "engineering.quality.property_testing": "profile-selected",
+    "engineering.architecture_changes_require_adr": true,
+    "engineering.public_interface_acceptance_required": true
+  },
+  "recommended_checks": ["format_check", "lint", "typecheck", "unit", "integration", "package-or-build-smoke"],
+  "tooling_capabilities": [
+    "runtime-version",
+    "dependency-lock",
+    "formatter-check",
+    "linter",
+    "type-checker",
+    "test-runner",
+    "coverage-policy",
+    "clean-package-smoke"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "web-service",
+  "description": "Web application, API, or service.",
+  "defaults": {
+    "engineering.public_interface_acceptance_required": true
+  },
+  "recommended_checks": [
+    "unit",
+    "contract",
+    "real-http-smoke",
+    "browser-critical-path",
+    "dependency-review",
+    "deployment-dry-run"
+  ],
+  "tooling_capabilities": [
+    "dependency-lock",
+    "formatter",
+    "linter",
+    "type-checker",
+    "unit-and-contract-tests",
+    "real-http-smoke",
+    "browser-critical-path",
+    "container-or-deployment-validation"
+  ],
+  "questions": [
+    "What are the trust boundaries and authentication model?",
+    "Which user journeys are release-blocking?",
+    "What are the latency, availability, and rollback targets?"
+  ]
+}

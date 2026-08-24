@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "application": {
+    "repository": "stauntonjr/procurement-intelligence-lab",
+    "commit": "0f9d1a45af078ebf969f9ced11fc2e93adb542d0",
+    "authoritative_check": "make check",
+    "quality_configuration": "pyproject.toml",
+    "dependency_lock": "uv.lock"
+  },
+  "tool": {
+    "name": "ruff",
+    "version": "0.16.3",
+    "format_command": "uv run ruff format --check .",
+    "lint_command": "uv run ruff check ."
+  },
+  "before": {
+    "format_exit_code": 1,
+    "format_incompatible_paths": [
+      "tools/pi_tool_probe.py"
+    ],
+    "lint_exit_code": 1,
+    "lint_error_count": 26,
+    "lint_incompatible_paths": [
+      "harness/runtime/actions_supply_chain.py",
+      "tools/common.py",
+      "tools/evaluate_harness.py",
+      "tools/harness_check.py",
+      "tools/harness_upgrade.py",
+      "tools/loop.py",
+      "tools/pi_adapter_check.py",
+      "tools/pi_tool_probe.py",
+      "tools/product_version.py",
+      "tools/project_intake.py",
+      "tools/python_package_smoke.py",
+      "tools/run_quality.py"
+    ]
+  },
+  "boundary": {
+    "strategy": "conform-upstream-owned-python-sources",
+    "application_config_changed": false,
+    "application_lock_changed": false,
+    "application_ignore_changed": false,
+    "application_repository_mutated": false
+  }
+}

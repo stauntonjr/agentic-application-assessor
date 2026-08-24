@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/harness/project.schema.json",
+  "title": "Agentic project contract",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "harness_version",
+    "project",
+    "intent",
+    "engineering",
+    "autonomy",
+    "sources_of_truth",
+    "github"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "harness_version": {"type": "string"},
+    "template_mode": {"type": "boolean"},
+    "project": {
+      "type": "object",
+      "required": ["name", "summary", "lifecycle", "profile", "status", "repository"]
+    },
+    "intent": {
+      "type": "object",
+      "required": ["users", "outcomes", "success_metrics", "in_scope", "out_of_scope"]
+    },
+    "engineering": {
+      "type": "object",
+      "required": [
+        "languages",
+        "build_commands",
+        "test_commands",
+        "command_contract",
+        "quality",
+        "versioning",
+        "architecture_changes_require_adr",
+        "public_interface_acceptance_required"
+      ],
+      "properties": {
+        "command_contract": {
+          "type": "object",
+          "required": [
+            "primary_check",
+            "bootstrap",
+            "format_check",
+            "lint",
+            "typecheck",
+            "unit",
+            "integration",
+            "package_smoke"
+          ]
+        },
+        "quality": {
+          "type": "object",
+          "required": ["dependency_lock", "coverage_policy", "required_checks", "property_testing"]
+        },
+        "versioning": {
+          "type": "object",
+          "required": [
+            "strategy",
+            "current",
+            "public_contract",
+            "source",
+            "tag_prefix",
+            "pre_1_0_policy",
+            "release_notes"
+          ],
+          "properties": {
+            "strategy": {"enum": ["TBD", "semver", "calver", "independent", "none"]},
+            "current": {"type": "string"},
+            "public_contract": {"type": "array", "items": {"type": "string"}},
+            "source": {"type": "string"},
+            "tag_prefix": {"type": "string"},
+            "pre_1_0_policy": {"type": "string"},
+            "release_notes": {"type": "string"}
+          }
+        }
+      }
+    },
+    "autonomy": {
+      "type": "object",
+      "required": ["level", "network_writes", "destructive_actions", "release", "policy_changes"]
+    },
+    "sources_of_truth": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["rank", "source", "scope"]
+      }
+    },
+    "github": {
+      "type": "object",
+      "required": ["issues_are_canonical_work_items", "project_enabled", "planning_contract", "security"],
+      "properties": {
+        "security": {
+          "type": "object",
+          "required": [
+            "dependency_updates",
+            "dependency_review",
+            "code_scanning",
+            "secret_scanning",
+            "push_protection",
+            "workflow_permissions",
+            "action_pinning"
+          ]
+        }
+      }
+    }
+  }
+}

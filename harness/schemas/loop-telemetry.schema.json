@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Privacy-preserving per-loop telemetry summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "run_id",
+    "revision",
+    "attempt_id",
+    "state",
+    "observation_time",
+    "privacy",
+    "measurements"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "kind": {"const": "loop-telemetry-summary"},
+    "run_id": {"type": "string"},
+    "revision": {"type": "integer", "minimum": 1},
+    "attempt_id": {"type": "integer", "minimum": 1},
+    "state": {"type": "string"},
+    "observation_time": {"type": "string", "format": "date-time"},
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "content_captured",
+        "raw_input_retained",
+        "default_storage",
+        "written_summary_retention",
+        "organization_exported"
+      ],
+      "properties": {
+        "content_captured": {"const": false},
+        "raw_input_retained": {"const": false},
+        "default_storage": {"const": "stdout"},
+        "written_summary_retention": {"const": "caller-managed"},
+        "organization_exported": {"const": false}
+      }
+    },
+    "measurements": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "prefixItems": [
+        {
+          "allOf": [
+            {"$ref": "#/$defs/measurement"},
+            {"properties": {"name": {"const": "human_corrections"}, "unit": {"const": "{correction}"}}}
+          ]
+        },
+        {
+          "allOf": [
+            {"$ref": "#/$defs/measurement"},
+            {"properties": {"name": {"const": "retries"}, "unit": {"const": "{attempt}"}}}
+          ]
+        },
+        {
+          "allOf": [
+            {"$ref": "#/$defs/measurement"},
+            {"properties": {"name": {"const": "escaped_defects"}, "unit": {"const": "{defect}"}}}
+          ]
+        },
+        {
+          "allOf": [
+            {"$ref": "#/$defs/measurement"},
+            {"properties": {"name": {"const": "acceptance_pass_rate"}, "unit": {"const": "1"}}}
+          ]
+        },
+        {
+          "allOf": [
+            {"$ref": "#/$defs/measurement"},
+            {"properties": {"name": {"const": "cycle_time"}, "unit": {"const": "s"}}}
+          ]
+        },
+        {
+          "allOf": [
+            {"$ref": "#/$defs/measurement"},
+            {"properties": {"name": {"const": "elapsed_time"}, "unit": {"const": "s"}}}
+          ]
+        },
+        {
+          "allOf": [
+            {"$ref": "#/$defs/measurement"},
+            {
+              "properties": {
+                "name": {"const": "accepted_change_cost"},
+                "unit": {"enum": ["USD", "person-minute", "compute-second", "unavailable"]}
+              }
+            }
+          ]
+        }
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value", "unit", "origin", "completeness"],
+      "properties": {
+        "name": {
+          "enum": [
+            "human_corrections",
+            "retries",
+            "escaped_defects",
+            "acceptance_pass_rate",
+            "cycle_time",
+            "elapsed_time",
+            "accepted_change_cost"
+          ]
+        },
+        "value": {"type": ["number", "null"], "minimum": 0},
+        "unit": {
+          "enum": [
+            "{correction}",
+            "{attempt}",
+            "{defect}",
+            "1",
+            "s",
+            "USD",
+            "person-minute",
+            "compute-second",
+            "unavailable"
+          ]
+        },
+        "origin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "method"],
+          "properties": {"kind": {"type": "string"}, "method": {"type": "string"}},
+          "oneOf": [
+            {"properties": {"kind": {"const": "locally-measured"}, "method": {"enum": ["human-count", "receipt-total", "loop-record", "active-intervals"]}}},
+            {"properties": {"kind": {"const": "provider-reported"}, "method": {"const": "provider-usage"}}},
+            {"properties": {"kind": {"const": "inferred"}, "method": {"const": "manual-estimate"}}},
+            {"properties": {"kind": {"const": "unavailable"}, "method": {"const": "not-collected"}}}
+          ]
+        },
+        "completeness": {"enum": ["available", "unavailable"]},
+        "numerator": {"type": "integer", "minimum": 0},
+        "denominator": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

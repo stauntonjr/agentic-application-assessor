@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Opt-in loop telemetry input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "human_corrections": {"$ref": "#/$defs/countMeasurement"},
+    "escaped_defects": {"$ref": "#/$defs/countMeasurement"},
+    "active_intervals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["started_at", "ended_at"],
+        "properties": {
+          "started_at": {"type": "string", "format": "date-time"},
+          "ended_at": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "accepted_change_cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit", "origin"],
+      "properties": {
+        "value": {"type": ["number", "null"], "minimum": 0},
+        "unit": {"enum": ["USD", "person-minute", "compute-second", "unavailable"]},
+        "origin": {"$ref": "#/$defs/costOrigin"}
+      }
+    }
+  },
+  "$defs": {
+    "countMeasurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "origin"],
+      "properties": {
+        "value": {"type": ["integer", "null"], "minimum": 0},
+        "origin": {"$ref": "#/$defs/countOrigin"}
+      }
+    },
+    "countOrigin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "method"],
+      "properties": {"kind": {"type": "string"}, "method": {"type": "string"}},
+      "oneOf": [
+        {"properties": {"kind": {"const": "locally-measured"}, "method": {"const": "human-count"}}},
+        {"properties": {"kind": {"const": "provider-reported"}, "method": {"const": "provider-usage"}}},
+        {"properties": {"kind": {"const": "inferred"}, "method": {"const": "manual-estimate"}}},
+        {"properties": {"kind": {"const": "unavailable"}, "method": {"const": "not-collected"}}}
+      ]
+    },
+    "costOrigin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "method"],
+      "properties": {"kind": {"type": "string"}, "method": {"type": "string"}},
+      "oneOf": [
+        {"properties": {"kind": {"const": "locally-measured"}, "method": {"const": "receipt-total"}}},
+        {"properties": {"kind": {"const": "provider-reported"}, "method": {"const": "provider-usage"}}},
+        {"properties": {"kind": {"const": "inferred"}, "method": {"const": "manual-estimate"}}},
+        {"properties": {"kind": {"const": "unavailable"}, "method": {"const": "not-collected"}}}
+      ]
+    }
+  }
+}

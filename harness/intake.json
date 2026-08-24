@@ -1,0 +1,266 @@
+{
+  "schema_version": "1.0",
+  "mode": "new",
+  "captured_at": "2026-08-24T10:57:08Z",
+  "answers": {
+    "project.name": {
+      "value": "Agentic Application Assessor",
+      "status": "confirmed",
+      "source": "human-approved defaults; Agentic Repo Auditor Issue #11",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "project.summary": {
+      "value": "A read-only, local-first Python CLI that compiles versioned evidence from an exact application repository, user-reviewed context, and supported analysis artifacts into deterministic JSON and Markdown assessments of purpose, architecture, interfaces, data movement, quality risks, contradictions, and unknowns.",
+      "status": "confirmed",
+      "source": "human-approved defaults; Agentic Repo Auditor Issue #11",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "project.repository": {
+      "value": "stauntonjr/agentic-application-assessor",
+      "status": "confirmed",
+      "source": "human approval, 2026-08-24",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "project.profile": {
+      "value": "python-data",
+      "status": "confirmed",
+      "source": "human approval, 2026-08-24",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "intent.users": {
+      "value": [
+        "engineering leads onboarding to unfamiliar applications",
+        "maintainers of agent-developed applications"
+      ],
+      "status": "confirmed",
+      "source": "human approval, 2026-08-24",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "intent.outcomes": {
+      "value": [
+        "An evidence-backed map of application purpose, structure, interfaces, data movement, and important workflows",
+        "Explicit contradictions, coverage gaps, quality risks, and investigation priorities without false completeness",
+        "A safe handoff from repository-readiness evidence to application-level assessment"
+      ],
+      "status": "confirmed",
+      "source": "human-approved intake decision packet",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "intent.success_metrics": {
+      "value": [
+        "Repeated assessment of unchanged inputs produces byte-identical canonical JSON and deterministic Markdown",
+        "Every claim records an exact source, origin class, target identity, and derivation status or is explicitly unavailable",
+        "Assessment changes no target file, Git metadata, network state, or external service",
+        "Dogfood Agentic Repo Auditor first and Macro Technical Pulse second, producing at least one human-accepted follow-up decision",
+        "make smoke passes locally and in CI"
+      ],
+      "status": "confirmed",
+      "source": "human-approved intake decision packet",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "intent.in_scope": {
+      "value": [
+        "Exact local Git target identity and bounded static repository evidence",
+        "User-reviewed application context and quality scenarios",
+        "Agentic Repo Auditor 0.1.0 schema-1.2 JSON import through a fail-closed adapter",
+        "Versioned canonical evidence graph and deterministic Markdown assessment",
+        "Evidence-labeled system-context and container-level architecture proposals",
+        "Contradictions, coverage limits, unknowns, and prioritized follow-up questions"
+      ],
+      "status": "confirmed",
+      "source": "human-approved intake decision packet",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "intent.out_of_scope": {
+      "value": [
+        "Target code execution, dependency installation, builds, tests, or instrumentation in v0.1",
+        "Network access, credentials, authenticated provider evidence, or live production telemetry in v0.1",
+        "Model calls or model-scored findings in the deterministic v0.1 core",
+        "Automatic remediation, compliance certification, security approval, or release-readiness claims",
+        "Organization-wide aggregation"
+      ],
+      "status": "confirmed",
+      "source": "human-approved intake decision packet",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "constraints.security": {
+      "value": [
+        "No secrets in the repository",
+        "No target writes or target-code execution in the v0.1 core",
+        "Reject symlink escapes and hostile repository-controlled Git helpers",
+        "Validate imported schemas, tool identity, artifact digests, and exact target state",
+        "Treat source, context, and reports as potentially confidential"
+      ],
+      "status": "confirmed",
+      "source": "human-approved evidence and trust boundary",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "constraints.data_classification": {
+      "value": "potentially confidential source, architecture, domain context, runtime topology, and generated reports; local-only processing by default",
+      "status": "confirmed",
+      "source": "human-approved intake decision packet",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "constraints.deployment": {
+      "value": "local CLI; CI verification may be added within the read-only boundary; no hosted service or production deployment authorized",
+      "status": "confirmed",
+      "source": "human-approved defaults",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "constraints.budget": {
+      "value": "v0.1 must require no paid external service and no external model spend",
+      "status": "confirmed",
+      "source": "human-approved local-first deterministic boundary",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "constraints.licenses": {
+      "value": [
+        "MIT"
+      ],
+      "status": "confirmed",
+      "source": "human approval, 2026-08-24",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.languages": {
+      "value": [
+        "Python"
+      ],
+      "status": "confirmed",
+      "source": "human-approved python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.build_commands": {
+      "value": [
+        "uv build"
+      ],
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.test_commands": {
+      "value": [
+        "uv run pytest"
+      ],
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.command_contract.primary_check": {
+      "value": "make smoke",
+      "status": "confirmed",
+      "source": "human-approved harness default",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.command_contract.bootstrap": {
+      "value": "uv sync --locked",
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.command_contract.format_check": {
+      "value": "uvx --from ruff==0.12.10 ruff format --check .",
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.command_contract.lint": {
+      "value": "uvx --from ruff==0.12.10 ruff check .",
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.command_contract.typecheck": {
+      "value": "uvx --from pyright==1.1.403 pyright",
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.command_contract.unit": {
+      "value": "uv run --with pytest==8.4.1 --with pytest-cov==6.2.1 --with hypothesis==6.138.13 python -m pytest --cov=agentic_application_assessor --cov-branch --cov-report=term-missing -m 'not integration'",
+      "status": "confirmed",
+      "source": "python-data profile specialized for approved package name",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.command_contract.integration": {
+      "value": "uv run --with pytest==8.4.1 python -m pytest -m integration",
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.command_contract.package_smoke": {
+      "value": "python3 scripts/package_smoke.py",
+      "status": "confirmed",
+      "source": "human-approved clean-package boundary",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.quality.dependency_lock": {
+      "value": "uv.lock",
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.quality.coverage_policy": {
+      "value": "branch-coverage-baseline-required-before-release",
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.quality.required_checks": {
+      "value": [
+        "format_check",
+        "lint",
+        "typecheck",
+        "unit",
+        "integration",
+        "package_smoke"
+      ],
+      "status": "confirmed",
+      "source": "human-approved first product boundary",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.quality.property_testing": {
+      "value": "hypothesis",
+      "status": "confirmed",
+      "source": "python-data profile",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.versioning.strategy": {
+      "value": "semver",
+      "status": "confirmed",
+      "source": "human approval, 2026-08-24",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.versioning.current": {
+      "value": "0.1.0",
+      "status": "confirmed",
+      "source": "human approval, 2026-08-24",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.versioning.public_contract": {
+      "value": [
+        "CLI arguments and exit statuses",
+        "application-context schema",
+        "canonical assessment-report schema",
+        "stable evidence and claim identifiers"
+      ],
+      "status": "confirmed",
+      "source": "human-approved evidence-first boundary",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "engineering.versioning.source": {
+      "value": "pyproject.toml:project.version",
+      "status": "confirmed",
+      "source": "human-approved SemVer default",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    },
+    "autonomy.level": {
+      "value": "supervised",
+      "status": "confirmed",
+      "source": "human approval and harness default",
+      "recorded_at": "2026-08-24T00:00:00Z"
+    }
+  },
+  "contradictions": [],
+  "missing_essential_fields": [],
+  "context_readiness": "sufficient"
+}

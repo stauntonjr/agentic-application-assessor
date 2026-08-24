@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "from_version": "0.1.0",
+  "to_version": "NEXT_VERSION",
+  "operations": [
+    {
+      "action": "manual",
+      "path": "AGENTS.md",
+      "reason": "Describe the policy or compatibility change and require human reconciliation.",
+      "ownership": "merge-required"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentic-application-assessor"
+version = "0.1.0"
+description = "Read-only evidence compiler for application assessment"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "Jack Rory Staunton"}]
+keywords = ["agents", "application", "architecture", "assessment", "evidence"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = []
+
+[project.scripts]
+agentic-application-assessor = "agentic_application_assessor.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentic_application_assessor"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["application_tests"]
+markers = ["integration: bounded cross-component tests"]
+
+[tool.pyright]
+include = ["src", "application_tests", "scripts"]
+pythonVersion = "3.11"
+
+[tool.coverage.run]
+branch = true
+relative_files = true
+source = ["agentic_application_assessor"]

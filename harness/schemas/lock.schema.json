@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness upstream provenance lock",
+  "type": "object",
+  "required": ["schema_version", "harness_version", "upstream", "files"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "harness_version": {"type": "string"},
+    "upstream": {
+      "type": "object",
+      "required": ["repository", "release", "commit"],
+      "properties": {
+        "repository": {"type": "string"},
+        "release": {"type": "string"},
+        "commit": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "files": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["sha256", "ownership"],
+        "properties": {
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "ownership": {"enum": ["upstream-owned", "project-owned", "merge-required"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

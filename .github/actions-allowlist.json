@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "write_permissions": {
+    "codeql.yml": ["security-events"],
+    "dependency-review.yml": [],
+    "harness-release.yml": ["contents"],
+    "harness-upgrade.yml": ["contents", "pull-requests"],
+    "harness.yml": []
+  }
+}

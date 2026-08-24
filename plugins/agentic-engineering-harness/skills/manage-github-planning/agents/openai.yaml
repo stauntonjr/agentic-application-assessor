@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Planning"
+  short_description: "Audit and reconcile GitHub planning state"
+  default_prompt: "Use $agentic-engineering-harness:manage-github-planning to audit repository Issues and Project configuration."

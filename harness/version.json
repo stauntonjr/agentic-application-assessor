@@ -1,0 +1,7 @@
+{
+  "current": "0.5.0",
+  "project_schema": "1.0",
+  "migration_schema": "1.1",
+  "upstream_repository": "stauntonjr/agentic-project-template",
+  "update_policy": "provenance-locked-three-way-review-with-receipt"
+}

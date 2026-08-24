@@ -1,0 +1,6 @@
+{
+  "enableSkillCommands": true,
+  "extensions": ["extensions/context-readiness.ts"],
+  "prompts": ["prompts"],
+  "sessionDir": "../.harness/pi/sessions"
+}

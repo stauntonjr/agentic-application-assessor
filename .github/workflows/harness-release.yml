@@ -1,0 +1,51 @@
+name: Publish harness release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag; must equal v plus harness/version.json current"
+        required: true
+        type: string
+      confirm:
+        description: "Type publish to authorize the GitHub Release"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Validate and build immutable release lock
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -euo pipefail
+          [[ "$CONFIRM" == "publish" ]] || { echo "Confirmation must be publish." >&2; exit 1; }
+          VERSION=$(python3 -c 'import json; print(json.load(open("harness/version.json"))["current"])')
+          [[ "$RELEASE_TAG" == "v$VERSION" ]] || { echo "Tag must be v$VERSION." >&2; exit 1; }
+          make smoke
+          python3 tools/harness_upgrade.py lock \
+            --repository "$GITHUB_REPOSITORY" \
+            --release "$RELEASE_TAG" \
+            --commit "$GITHUB_SHA" \
+            --output /tmp/harness.release.lock \
+            --yes
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          gh release create "$RELEASE_TAG" /tmp/harness.release.lock \
+            --target "$GITHUB_SHA" \
+            --title "Agentic project harness $RELEASE_TAG" \
+            --generate-notes

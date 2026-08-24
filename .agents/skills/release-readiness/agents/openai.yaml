@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Readiness"
+  short_description: "Assess release evidence, risk, and authorization"
+  default_prompt: "Use $release-readiness to assess whether the current revision is ready to release."

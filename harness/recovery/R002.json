@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "id": "R002",
+  "failure_class": "partial-loop",
+  "source": {
+    "kind": "public-dogfood",
+    "reference": "docs/reports/issue-3-macro-technical-pulse-dogfood.md",
+    "sanitized": true,
+    "contains_raw_transcript": false
+  },
+  "expected": {
+    "terminal_state": "implement",
+    "preserved_partial_work": true,
+    "same_run_id": true,
+    "destructive_git_commands": []
+  }
+}

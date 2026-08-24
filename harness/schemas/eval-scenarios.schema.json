@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness behavior scenarios",
+  "type": "object",
+  "required": ["schema_version", "scenarios"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "prompt",
+          "expected_primary_skill",
+          "required_behaviors",
+          "forbidden_behaviors"
+        ]
+      }
+    }
+  }
+}

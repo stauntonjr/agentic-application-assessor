@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "id": "codex",
+  "display_name": "OpenAI Codex",
+  "status": "supported",
+  "runtime": {
+    "tested_versions": ["host-managed"],
+    "documentation": "https://developers.openai.com/codex"
+  },
+  "entrypoints": ["AGENTS.md", ".codex/config.toml"],
+  "mappings": [
+    {
+      "contract": "project instructions",
+      "canonical": "AGENTS.md",
+      "adapter": "AGENTS.md",
+      "mode": "native"
+    },
+    {
+      "contract": "skills",
+      "canonical": ".agents/skills",
+      "adapter": ".agents/skills",
+      "mode": "native"
+    },
+    {
+      "contract": "roles",
+      "canonical": "harness/roles",
+      "adapter": ".codex/agents",
+      "mode": "native"
+    },
+    {
+      "contract": "engineering loop",
+      "canonical": "harness/loops/engineering-loop.yaml",
+      "adapter": ".agents/skills/execute-engineering-loop/SKILL.md",
+      "mode": "native"
+    }
+  ],
+  "capabilities": {
+    "project_instructions": "native",
+    "skills": "native",
+    "role_delegation": "native project agents",
+    "structured_questions": "host interaction surface",
+    "independent_verification": "separate verifier agent supported",
+    "sandbox": "host policy"
+  },
+  "limitations": [
+    "Runtime capabilities and UI surfaces depend on the host-managed Codex version."
+  ],
+  "security_notes": [
+    "Provider files may narrow but never broaden authority in harness/roles.",
+    "External writes remain governed by harness/project.yaml and explicit authorization."
+  ]
+}

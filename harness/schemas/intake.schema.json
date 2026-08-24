@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project intake record",
+  "type": "object",
+  "required": ["schema_version", "mode", "captured_at", "answers", "context_readiness"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "mode": {"enum": ["new", "adopt", "refresh", "gap-only"]},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "answers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["value", "status", "source", "recorded_at"],
+        "properties": {
+          "status": {
+            "enum": ["confirmed", "provisional", "assumed", "TBD", "not-applicable"]
+          }
+        }
+      }
+    },
+    "context_readiness": {"enum": ["provisional", "sufficient"]},
+    "adoption": {
+      "type": "object",
+      "required": ["status", "reconciliation_status", "gap_count", "dispositions", "quality"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {"enum": ["provisional", "active"]},
+        "reconciliation_status": {"enum": ["provisional", "complete"]},
+        "gap_count": {"type": "integer", "minimum": 0},
+        "dispositions": {
+          "type": "object",
+          "required": [
+            "upstream_collisions",
+            "adoption_deferred",
+            "merge_required_existing",
+            "merge_required_missing"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "upstream_collisions": {"type": "integer", "minimum": 0},
+            "adoption_deferred": {"type": "integer", "minimum": 0},
+            "merge_required_existing": {"type": "integer", "minimum": 0},
+            "merge_required_missing": {"type": "integer", "minimum": 0}
+          }
+        },
+        "quality": {
+          "type": "object",
+          "required": [
+            "status",
+            "command",
+            "baseline_exit_code",
+            "adopted_exit_code",
+            "incompatible_paths",
+            "diagnostic"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": ["not-evaluated", "compatible", "incompatible", "indeterminate"]
+            },
+            "command": {"type": ["string", "null"]},
+            "baseline_exit_code": {"type": ["integer", "null"]},
+            "adopted_exit_code": {"type": ["integer", "null"]},
+            "incompatible_paths": {
+              "type": "array",
+              "items": {"type": "string"},
+              "uniqueItems": true
+            },
+            "diagnostic": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "contradictions": {"type": "array"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"mode": {"const": "adopt"}}, "required": ["mode"]},
+      "then": {"required": ["adoption"]}
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {"const": "adopt"},
+          "context_readiness": {"const": "provisional"}
+        },
+        "required": ["mode", "context_readiness"]
+      },
+      "then": {
+        "properties": {
+          "adoption": {
+            "properties": {"status": {"const": "provisional"}},
+            "required": ["status"]
+          }
+        },
+        "required": ["adoption"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "adoption": {
+            "properties": {"status": {"const": "active"}},
+            "required": ["status"]
+          }
+        },
+        "required": ["adoption"]
+      },
+      "then": {
+        "properties": {
+          "context_readiness": {"const": "sufficient"},
+          "adoption": {
+            "properties": {
+              "reconciliation_status": {"const": "complete"},
+              "gap_count": {"const": 0},
+              "quality": {
+                "properties": {"status": {"const": "compatible"}},
+                "required": ["status"]
+              }
+            },
+            "required": ["reconciliation_status", "gap_count", "quality"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "context_readiness": {"const": "sufficient"},
+          "adoption": {
+            "properties": {"reconciliation_status": {"const": "complete"}},
+            "required": ["reconciliation_status"]
+          }
+        },
+        "required": ["context_readiness", "adoption"]
+      },
+      "then": {
+        "properties": {
+          "adoption": {
+            "properties": {"status": {"const": "active"}},
+            "required": ["status"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "adoption": {
+            "properties": {"reconciliation_status": {"const": "complete"}},
+            "required": ["reconciliation_status"]
+          }
+        },
+        "required": ["adoption"]
+      },
+      "then": {
+        "properties": {
+          "adoption": {
+            "properties": {
+              "gap_count": {"const": 0},
+              "dispositions": {
+                "properties": {
+                  "upstream_collisions": {"const": 0},
+                  "adoption_deferred": {"const": 0},
+                  "merge_required_existing": {"const": 0},
+                  "merge_required_missing": {"const": 0}
+                }
+              },
+              "quality": {
+                "properties": {"status": {"const": "compatible"}},
+                "required": ["status"]
+              }
+            },
+            "required": ["gap_count", "dispositions", "quality"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "adoption": {
+            "properties": {"reconciliation_status": {"const": "provisional"}},
+            "required": ["reconciliation_status"]
+          }
+        },
+        "required": ["adoption"]
+      },
+      "then": {
+        "properties": {
+          "adoption": {
+            "properties": {
+              "status": {"const": "provisional"},
+              "gap_count": {"type": "integer", "minimum": 0},
+              "dispositions": {"type": "object"},
+              "quality": {"type": "object"}
+            },
+            "anyOf": [
+              {
+                "properties": {"gap_count": {"minimum": 1}},
+                "required": ["gap_count"]
+              },
+              {
+                "properties": {
+                  "quality": {
+                    "properties": {
+                      "status": {
+                        "enum": ["not-evaluated", "incompatible", "indeterminate"]
+                      }
+                    },
+                    "required": ["status"]
+                  }
+                },
+                "required": ["quality"]
+              }
+            ],
+            "required": ["status", "gap_count", "dispositions", "quality"]
+          }
+        }
+      }
+    }
+  ]
+}

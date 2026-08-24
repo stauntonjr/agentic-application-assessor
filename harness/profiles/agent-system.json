@@ -1,0 +1,31 @@
+{
+  "id": "agent-system",
+  "description": "System containing runtime agents, models, tools, or learned behavior.",
+  "defaults": {
+    "autonomy.level": "supervised",
+    "autonomy.network_writes": "explicit-human-approval",
+    "autonomy.policy_changes": "human-review"
+  },
+  "recommended_checks": [
+    "deterministic-contract",
+    "tool-permission",
+    "prompt-injection",
+    "provenance",
+    "baseline-evaluation",
+    "held-out-challenge",
+    "human-approval"
+  ],
+  "tooling_capabilities": [
+    "deterministic-contract-tests",
+    "model-and-prompt-versioning",
+    "tool-permission-tests",
+    "adversarial-evaluations",
+    "cost-and-latency-telemetry",
+    "replayable-run-evidence"
+  ],
+  "questions": [
+    "Which actions are advisory, reversible, externally visible, or destructive?",
+    "How are model, prompt, tool, input, output, and decision versions recorded?",
+    "Which evaluator is independent from the artifact author?"
+  ]
+}

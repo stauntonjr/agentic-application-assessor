@@ -1,0 +1,170 @@
+{
+  "schema_version": "1.0",
+  "repository": "stauntonjr/agentic-application-assessor",
+  "project": {
+    "topology": "dedicated",
+    "owner": "stauntonjr",
+    "number": null,
+    "title": "Agentic Application Assessor Roadmap",
+    "canonical_source": {
+      "owner": "stauntonjr",
+      "number": 13
+    },
+    "bootstrap": {
+      "method": "copy",
+      "source_owner": "stauntonjr",
+      "source_number": 13,
+      "link_repository": true
+    },
+    "allow_unmanaged_views": true,
+    "views": [
+      {
+        "name": "Roadmap",
+        "layout": "ROADMAP_LAYOUT",
+        "filter": "is:issue"
+      },
+      {
+        "name": "Active work",
+        "layout": "TABLE_LAYOUT",
+        "filter": "status:\"In Progress\""
+      },
+      {
+        "name": "Decisions",
+        "layout": "TABLE_LAYOUT",
+        "filter": "\"Work Type\":Decision"
+      },
+      {
+        "name": "High risk",
+        "layout": "TABLE_LAYOUT",
+        "filter": "Risk:High"
+      }
+    ]
+  },
+  "labels": [
+    {
+      "name": "type:feature",
+      "color": "1D76DB",
+      "description": "User-visible capability"
+    },
+    {
+      "name": "type:bug",
+      "color": "D73A4A",
+      "description": "Incorrect behavior"
+    },
+    {
+      "name": "type:decision",
+      "color": "5319E7",
+      "description": "Architecture or product decision"
+    },
+    {
+      "name": "type:chore",
+      "color": "EDEDED",
+      "description": "Maintenance work"
+    },
+    {
+      "name": "risk:high",
+      "color": "B60205",
+      "description": "Requires explicit risk review"
+    },
+    {
+      "name": "evidence:required",
+      "color": "FBCA04",
+      "description": "Acceptance requires recorded evidence"
+    },
+    {
+      "name": "agent-ready",
+      "color": "0E8A16",
+      "description": "Bounded and ready for agent implementation"
+    },
+    {
+      "name": "human-decision",
+      "color": "D4C5F9",
+      "description": "Blocked on human intent or authorization"
+    }
+  ],
+  "milestones": [
+    {
+      "title": "M0 Harness and discovery",
+      "description": "Intent, governance, architecture, and delivery harness"
+    },
+    {
+      "title": "M1 First useful vertical slice",
+      "description": "Smallest end-to-end capability with acceptance evidence"
+    },
+    {
+      "title": "M2 Operability and release",
+      "description": "Deployment, observability, recovery, and release readiness"
+    }
+  ],
+  "fields": [
+    {
+      "name": "Status",
+      "data_type": "SINGLE_SELECT",
+      "options": [
+        "Todo",
+        "In Progress",
+        "Done"
+      ]
+    },
+    {
+      "name": "Area",
+      "data_type": "SINGLE_SELECT",
+      "options": [
+        "Product",
+        "Architecture",
+        "Domain",
+        "Platform",
+        "Data",
+        "UX",
+        "Operations"
+      ]
+    },
+    {
+      "name": "Work Type",
+      "data_type": "SINGLE_SELECT",
+      "options": [
+        "Feature",
+        "Bug",
+        "Decision",
+        "Research",
+        "Chore"
+      ]
+    },
+    {
+      "name": "Priority",
+      "data_type": "SINGLE_SELECT",
+      "options": [
+        "P0",
+        "P1",
+        "P2",
+        "P3"
+      ]
+    },
+    {
+      "name": "Risk",
+      "data_type": "SINGLE_SELECT",
+      "options": [
+        "Low",
+        "Medium",
+        "High"
+      ]
+    },
+    {
+      "name": "Agentability",
+      "data_type": "SINGLE_SELECT",
+      "options": [
+        "Ready",
+        "Needs Input",
+        "Human Only"
+      ]
+    },
+    {
+      "name": "Evidence Required",
+      "data_type": "SINGLE_SELECT",
+      "options": [
+        "Yes",
+        "No"
+      ]
+    }
+  ]
+}

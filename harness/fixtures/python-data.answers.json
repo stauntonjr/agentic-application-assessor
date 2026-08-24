@@ -1,0 +1,19 @@
+{
+  "project.name": "Example Python Data Project",
+  "project.summary": "Exercise the concrete Python profile in a derived repository.",
+  "project.repository": "example/example-python-data-project",
+  "project.profile": "python-data",
+  "intent.users": ["maintainer"],
+  "intent.outcomes": ["A verified Python project baseline"],
+  "intent.success_metrics": ["make smoke passes"],
+  "intent.in_scope": ["Python profile bootstrap and verification"],
+  "intent.out_of_scope": ["production deployment"],
+  "constraints.data_classification": "public",
+  "constraints.deployment": "none",
+  "constraints.licenses": ["MIT"],
+  "engineering.versioning.strategy": "semver",
+  "engineering.versioning.current": "0.1.0",
+  "engineering.versioning.public_contract": ["Python API"],
+  "engineering.versioning.source": "harness/project.yaml:engineering.versioning.current",
+  "autonomy.level": "supervised"
+}

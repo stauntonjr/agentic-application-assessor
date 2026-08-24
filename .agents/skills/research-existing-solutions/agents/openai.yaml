@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Existing Solutions"
+  short_description: "Find prior art, patterns, standards, and tradeoffs"
+  default_prompt: "Use $research-existing-solutions to find and compare existing solutions before we design this."

@@ -1,0 +1,20 @@
+{
+  "name": "agentic-project-template",
+  "interface": {
+    "displayName": "Agentic Project Template"
+  },
+  "plugins": [
+    {
+      "name": "agentic-engineering-harness",
+      "source": {
+        "source": "local",
+        "path": "./plugins/agentic-engineering-harness"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Loop Report"
+  short_description: "Build an evidence-backed executive loop summary"
+  default_prompt: "Use $agentic-engineering-harness:loop-report to summarize the current engineering loop from repository evidence."

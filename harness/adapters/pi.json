@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "id": "pi",
+  "display_name": "Pi coding agent",
+  "status": "experimental",
+  "runtime": {
+    "tested_versions": ["0.84.1"],
+    "documentation": "https://pi.dev/docs/latest"
+  },
+  "entrypoints": ["AGENTS.md", ".pi/settings.json"],
+  "mappings": [
+    {
+      "contract": "project instructions",
+      "canonical": "AGENTS.md",
+      "adapter": "AGENTS.md",
+      "mode": "native"
+    },
+    {
+      "contract": "skills",
+      "canonical": ".agents/skills",
+      "adapter": ".agents/skills",
+      "mode": "native"
+    },
+    {
+      "contract": "context readiness",
+      "canonical": ".agents/skills/project-intake/SKILL.md",
+      "adapter": ".pi/extensions/context-readiness.ts",
+      "mode": "native-extension"
+    },
+    {
+      "contract": "engineering loop",
+      "canonical": "harness/loops/engineering-loop.yaml",
+      "adapter": ".pi/prompts/harness-loop.md",
+      "mode": "prompt-mediated"
+    },
+    {
+      "contract": "loop reporting",
+      "canonical": ".agents/skills/loop-report/SKILL.md",
+      "adapter": ".pi/prompts/harness-report.md",
+      "mode": "prompt-mediated"
+    }
+  ],
+  "capabilities": {
+    "project_instructions": "native AGENTS.md discovery",
+    "skills": "native Agent Skills discovery",
+    "workflow_prompts": "native prompt templates",
+    "structured_questions": "project extension",
+    "tool_constrained_sampling": "questionnaire requests JSON-schema constrained sampling when the provider supports it",
+    "invalid_tool_call_ceiling": "three consecutive unavailable-tool calls, enforced before each attempted execution",
+    "role_delegation": "not supplied by Pi core adapter",
+    "independent_verification": "separate trusted session or reviewed extension required",
+    "sandbox": "external boundary required"
+  },
+  "limitations": [
+    "The adapter does not install a subagent package or claim that Pi core provides role isolation.",
+    "The questionnaire requires a Pi mode with UI support; non-interactive callers receive an explicit unavailable result.",
+    "A continuation with prior tool history may require one least-authority but still capable tool for OpenAI-compatible endpoints that reject an empty tools array; start a fresh session when zero tool authority is required.",
+    "Only Pi 0.84.1 has been exercised by this template revision."
+  ],
+  "security_notes": [
+    "Project-local Pi resources load only after the repository is trusted.",
+    "Pi extensions execute with the launching user's permissions.",
+    "No third-party Pi packages are installed or auto-updated by this adapter."
+  ]
+}

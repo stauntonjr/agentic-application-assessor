@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-08-23T19:20:00Z",
+  "target": {
+    "repository": "stauntonjr/S3NTINEL",
+    "authoritative_main": "14ba0416e06f6a9b57a8f7b02fdef1bb09a2f1cc",
+    "bounded_change": {
+      "pull_request": 54,
+      "head": "356281f1982b4ec5c3f4fd08a291c3c962b36ee5",
+      "state": "OPEN",
+      "draft": true,
+      "merge_state": "BEHIND"
+    },
+    "authoritative_checkout_mutated": false,
+    "github_mutations": []
+  },
+  "routing_probe": {
+    "runtime": "Pi 0.84.1",
+    "provider": "local-vllm",
+    "model": "Intel/Qwen3-Coder-Next-int4-AutoRound",
+    "session_id": "6aa2f88c-51f4-4c7f-b61b-255eb9005548",
+    "primary_skill": "execute-engineering-loop",
+    "read_calls": 3,
+    "read_sources": [
+      "S3NTINEL/AGENTS.md",
+      "S3NTINEL/pyproject.toml",
+      "agentic-project-template/.agents/skills/execute-engineering-loop/SKILL.md"
+    ],
+    "content_retries": 1,
+    "result": "PASS"
+  },
+  "pi_failure_probe": {
+    "session_id": "e7b7a32c-f896-4411-a7ae-f8de9e281368",
+    "cause": "reviewed context-readiness extension was omitted from the invocation",
+    "successful_read_calls": 8,
+    "unavailable_tool_name": "run",
+    "unavailable_tool_attempts": 231,
+    "unavailable_tool_errors": 231,
+    "executed_unavailable_tools": 0,
+    "termination": "operator-interrupted without a verdict",
+    "lesson": "Pi adapter exercises must explicitly disable global discovery and load the reviewed project extension"
+  },
+  "role_exercises": {
+    "verifier": {
+      "session_id": "704bcfe3-3ed6-4c97-9cea-93a61c0f9809",
+      "tools": [],
+      "result": "APPROVE_CONTENT_ONLY",
+      "merge_ready": false,
+      "format_retries": 1,
+      "boundary": "inspected content only; draft and behind integration state remains unapproved"
+    },
+    "release_steward": {
+      "session_id": "e463e85e-a203-4a8a-8700-d71ac72d122e",
+      "tools": [],
+      "result": "NOT_READY",
+      "publication_authorized": false,
+      "missing_gates": [
+        "current-main integration evidence",
+        "accepted license",
+        "human merge and release authorization"
+      ]
+    }
+  },
+  "github_projects": [
+    {
+      "number": 3,
+      "title": "S3NTINEL — SBIR Proposal Readiness",
+      "purpose": "proposal evidence, transition, governance, and showcase",
+      "issues": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17]
+    },
+    {
+      "number": 4,
+      "title": "S3NTINEL — Implementation Roadmap",
+      "purpose": "canonical architecture, modeling, validation, and integration",
+      "issues": [15, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+    },
+    {
+      "number": 5,
+      "title": "S3NTINEL — GPU Fleet Migration Roadmap",
+      "purpose": "separate topology-aware GPU fleet migration",
+      "issues": [29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
+    }
+  ],
+  "project_boundary": {
+    "issues_are_canonical": true,
+    "projects_are_operational_views": true,
+    "duplicate_issue_membership_observed": false,
+    "project_status_grants_write_authority": false
+  },
+  "local_rules": [
+    {"rule": "use the sentinel-spark35 conda environment", "scope": "repository-local"},
+    {"rule": "prefer S3NTINEL_TABLE_FORMAT=parquet for local runs", "scope": "repository-local"},
+    {"rule": "profile host resources before choosing Spark execution settings", "scope": "repository-local"},
+    {"rule": "treat Py4J sandbox socket denial as an execution-permission failure", "scope": "repository-local"},
+    {"rule": "keep modeling semantics on canonical Spark Table and Frame paths", "scope": "repository-local"},
+    {"rule": "regenerate architecture artifacts rather than editing them", "scope": "repository-local"}
+  ]
+}

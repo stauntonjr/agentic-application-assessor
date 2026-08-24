@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "scope": "user-local",
+  "preferences": {
+    "communication": {
+      "lead_with_outcome": true,
+      "report_verbosity": "concise",
+      "status_update_interval_minutes": 10
+    },
+    "workflow": {
+      "inspect_before_questions": true,
+      "preserve_dirty_worktrees": true,
+      "default_parallelism": "read-heavy-only"
+    },
+    "tools": {
+      "preferred_search": "rg",
+      "preferred_github_client": "gh"
+    }
+  },
+  "promotion_rule": "Move a preference into AGENTS.md or harness/project.yaml only after deliberate human review."
+}

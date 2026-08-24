@@ -1,0 +1,43 @@
+{
+  "id": "C002",
+  "title": "Adoption preflight must precede every target mutation",
+  "escaped_defect": {
+    "introduced_by": "Macro Technical Pulse Issue #3 dogfood revision 2",
+    "description": "A non-directory target ancestor was discovered only after the adopter had already copied unrelated harness paths."
+  },
+  "affected_surfaces": ["adoption", "filesystem-safety", "partial-failure"],
+  "provenance": {
+    "source_issue": "https://github.com/stauntonjr/agentic-project-template/issues/3",
+    "source_artifact": "docs/reports/issue-3-macro-technical-pulse-dogfood.md",
+    "sanitized": true,
+    "contains_raw_transcript": false
+  },
+  "promotion": {
+    "status": "candidate",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "decision": null
+  },
+  "oracle": {
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "tests.test_project_intake.ProjectIntakeTests.test_adoption_refuses_non_directory_ancestor_before_copying_anything"
+    ],
+    "success_exit_code": 0
+  },
+  "known_bad": {
+    "argv": [
+      "python3",
+      "tools/recovery_scenarios.py",
+      "--known-bad",
+      "adoption-partial-mutation"
+    ],
+    "success_exit_code": 0
+  },
+  "expected_failure": {
+    "exit_code": 1,
+    "signature": "partial mutation before preflight"
+  }
+}

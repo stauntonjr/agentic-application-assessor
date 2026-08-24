@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Intake"
+  short_description: "Interview, reconcile, and render project intent"
+  default_prompt: "Use $agentic-engineering-harness:project-intake to interview me and initialize durable project requirements."

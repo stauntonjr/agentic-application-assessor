@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness file ownership policy",
+  "type": "object",
+  "required": ["schema_version", "default_ownership", "rules"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "default_ownership": {"enum": ["upstream-owned", "project-owned", "merge-required"]},
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pattern", "ownership"],
+        "properties": {
+          "pattern": {"type": "string", "minLength": 1},
+          "ownership": {"enum": ["upstream-owned", "project-owned", "merge-required"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

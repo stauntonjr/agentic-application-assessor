@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness migration plan",
+  "type": "object",
+  "required": ["schema_version", "from_version", "to_version", "operations"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "from_version": {"type": "string"},
+    "to_version": {"type": "string"},
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["action", "path", "reason"],
+        "properties": {
+          "action": {"enum": ["add", "replace", "remove", "manual"]},
+          "path": {"type": "string"},
+          "reason": {"type": "string"},
+          "source": {"type": "string"},
+          "expected_sha256": {"type": "string"},
+          "ownership": {"enum": ["upstream-owned", "project-owned", "merge-required"]},
+          "base_sha256": {"type": ["string", "null"]},
+          "upstream_sha256": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}
