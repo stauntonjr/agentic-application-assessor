@@ -6,7 +6,8 @@ This is an orientation index, not a transcript or second roadmap.
 
 1. `AGENTS.md`.
 2. `harness/project.yaml` and `docs/project/charter.md`.
-3. The active GitHub Issue and Project item once publication is complete.
+3. The active GitHub Issue and
+   [Project #16](https://github.com/users/stauntonjr/projects/16) item.
 4. `docs/adr/0008-evidence-first-application-assessment.md`.
 5. The relevant repository-local skill under `.agents/skills/`.
 
@@ -14,10 +15,11 @@ This is an orientation index, not a transcript or second roadmap.
 
 - Product: Agentic Application Assessor `0.1.0`, unreleased.
 - Harness: `0.5.0`, active `python-data` profile, one-repository lifecycle.
-- Repository: local greenfield implementation; public GitHub creation follows independent
-  verification and secret/history scanning.
+- Repository: public at
+  [stauntonjr/agentic-application-assessor](https://github.com/stauntonjr/agentic-application-assessor);
+  dedicated roadmap in [Project #16](https://github.com/users/stauntonjr/projects/16).
 - First slice: implemented deterministic, local, read-only static assessment with context/report
-  schemas `1.0`, canonical JSON, and Markdown; full gates and independent review are pending.
+  schemas `1.0`, canonical JSON, and Markdown; full gates and independent revision-7 review passed.
 - First dogfood: Agentic Repo Auditor; Macro Technical Pulse follows.
 - Release/deployment: no tag, GitHub Release, package publication, hosted service, or deployment is
   authorized.
@@ -35,9 +37,11 @@ This is an orientation index, not a transcript or second roadmap.
 
 ## Next loop
 
-Complete the full gate and independent review, publish the verified repository, and bootstrap its
-dedicated GitHub Project from canonical harness Project #13. Then implement the fail-closed Agentic
-Repo Auditor `0.1.0` schema-`1.2` import/rerun adapter before Macro Technical Pulse dogfood.
+Implement the fail-closed Agentic Repo Auditor `0.1.0` schema-`1.2` import/rerun adapter in
+[Issue #2](https://github.com/stauntonjr/agentic-application-assessor/issues/2), then complete the
+requirements questionnaire in [Issue #3](https://github.com/stauntonjr/agentic-application-assessor/issues/3)
+before Macro Technical Pulse dogfood in
+[Issue #4](https://github.com/stauntonjr/agentic-application-assessor/issues/4).
 
 ## Refresh protocol
 

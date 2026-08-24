@@ -5,8 +5,8 @@ Reports in this directory have two distinct origins.
 ## Agentic Application Assessor evidence
 
 - `local-1-agentic-repo-auditor-dogfood.md` records this product's first local implementation
-  dogfood. `LOCAL-1` predates creation of this repository's GitHub Issues and will be reconciled to
-  its published work item.
+  dogfood. Its original `LOCAL-1` identity predates publication and is now reconciled to
+  [GitHub Issue #1](https://github.com/stauntonjr/agentic-application-assessor/issues/1).
 
 ## Inherited engineering-harness evidence
 

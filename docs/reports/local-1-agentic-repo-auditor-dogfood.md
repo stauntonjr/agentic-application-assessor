@@ -1,4 +1,7 @@
-# LOCAL-1 Agentic Repo Auditor dogfood
+# Issue #1 / LOCAL-1 Agentic Repo Auditor dogfood
+
+- Published work item:
+  [GitHub Issue #1](https://github.com/stauntonjr/agentic-application-assessor/issues/1).
 
 - Assessment date: 2026-08-24.
 - Assessor: `agentic-application-assessor 0.1.0` from the active local implementation loop.
@@ -54,6 +57,9 @@ the next questionnaire or adapter must establish.
 ## Follow-up decision
 
 Do not close the product's broader Auditor integration scope from this dogfood. The next bounded
-adapter must validate and rerun canonical Agentic Repo Auditor `0.1.0` schema-`1.2` JSON against the
-same target state, as specified by the accepted intake. Macro Technical Pulse dogfood remains after
-that adapter and a richer accepted context packet.
+adapter is tracked by
+[Issue #2](https://github.com/stauntonjr/agentic-application-assessor/issues/2) and must validate and
+rerun canonical Agentic Repo Auditor `0.1.0` schema-`1.2` JSON against the same target state, as
+specified by the accepted intake. Macro Technical Pulse dogfood remains tracked by
+[Issue #4](https://github.com/stauntonjr/agentic-application-assessor/issues/4) after that adapter and
+a richer accepted context packet.

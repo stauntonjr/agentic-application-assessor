@@ -17,5 +17,7 @@ All notable product changes are recorded here. Product and harness versions are 
   contradiction.
 - Bounded deeply nested context input now returns the documented assessment error instead of a
   decoder traceback.
+- Public repository planning is bound to dedicated GitHub Project #16 with the accepted roadmap
+  captured as Issues #1-#7.
 
 No tag, release, package publication, hosted service, or deployment exists.

@@ -47,6 +47,12 @@ Project intent is authoritative in `harness/project.yaml`; `AGENTS.md` routes en
 accepted decisions live in `docs/adr/`; and `.github/planning.json` defines expected GitHub
 planning state.
 
+Public work is managed in the
+[Agentic Application Assessor Roadmap](https://github.com/users/stauntonjr/projects/16). The
+delivered baseline is [Issue #1](https://github.com/stauntonjr/agentic-application-assessor/issues/1);
+the next product slice is the fail-closed Auditor adapter in
+[Issue #2](https://github.com/stauntonjr/agentic-application-assessor/issues/2).
+
 ```bash
 make smoke
 python3 tools/product_version.py

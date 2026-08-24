@@ -3,7 +3,7 @@
 - Status: accepted
 - Date: 2026-08-24
 - Deciders: human owner
-- Governing work item: local bootstrap; reconcile to the first GitHub Issue after publication
+- Governing work item: [GitHub Issue #1](https://github.com/stauntonjr/agentic-application-assessor/issues/1)
 
 ## Context
 
