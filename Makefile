@@ -4,10 +4,22 @@ check:
 	python3 tools/harness_check.py
 
 test:
-	python3 -m unittest discover -s tests -v
+	python3 -m unittest -v \
+		tests/test_actions_supply_chain.py \
+		tests/test_challenges.py \
+		tests/test_evaluate_harness.py \
+		tests/test_harness_upgrade.py \
+		tests/test_loop.py \
+		tests/test_loop_telemetry.py \
+		tests/test_pi_adapter_check.py \
+		tests/test_pi_tool_guard.py \
+		tests/test_product_version.py \
+		tests/test_recovery_scenarios.py \
+		tests/test_run_quality.py \
+		tests/test_skill_plugin.py
 
 compile:
-	python3 -m compileall -q tools tests
+	python3 -m compileall -q src application_tests scripts tools tests
 
 actions-supply-chain:
 	python3 tools/check_actions_supply_chain.py

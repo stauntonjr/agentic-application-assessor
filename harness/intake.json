@@ -158,13 +158,13 @@
       "recorded_at": "2026-08-24T00:00:00Z"
     },
     "engineering.command_contract.format_check": {
-      "value": "uvx --from ruff==0.12.10 ruff format --check .",
+      "value": "uvx --from ruff==0.12.10 ruff format --check src application_tests scripts",
       "status": "confirmed",
       "source": "python-data profile",
       "recorded_at": "2026-08-24T00:00:00Z"
     },
     "engineering.command_contract.lint": {
-      "value": "uvx --from ruff==0.12.10 ruff check .",
+      "value": "uvx --from ruff==0.12.10 ruff check src application_tests scripts",
       "status": "confirmed",
       "source": "python-data profile",
       "recorded_at": "2026-08-24T00:00:00Z"

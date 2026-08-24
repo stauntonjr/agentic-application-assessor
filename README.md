@@ -27,7 +27,7 @@ Macro Technical Pulse is the second, deeper domain and data-flow target.
 
 See [ADR-0008](docs/adr/0008-evidence-first-application-assessment.md) for the accepted boundary.
 
-## Planned CLI
+## CLI
 
 ```bash
 agentic-application-assessor assess /path/to/repository \
@@ -36,8 +36,8 @@ agentic-application-assessor assess /path/to/repository \
 ```
 
 The same inputs must produce byte-identical canonical JSON and deterministic Markdown. The CLI
-writes reports only to standard output unless the caller explicitly selects an output path outside
-the target repository.
+writes reports only to standard output. The first slice accepts context schema `1.0`; the Agentic
+Repo Auditor import named in project scope is the next adapter and is not yet implemented.
 
 ## Engineering harness
 
@@ -51,6 +51,11 @@ make smoke
 python3 tools/product_version.py
 python3 tools/github_planning.py audit --offline
 ```
+
+The derived repository runs the reusable harness runtime, integrity, recovery, adapter, telemetry,
+upgrade, and plugin tests. Template-factory intake/bootstrap unit tests remain an upstream concern;
+this active project validates its rendered contract directly with `harness_check`, product tests,
+and offline planning audit.
 
 The reusable skills are also packaged by the upstream template as the
 `agentic-engineering-harness` Codex plugin. The installed plugin supplies workflows; this

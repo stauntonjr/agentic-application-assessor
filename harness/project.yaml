@@ -71,8 +71,8 @@
     "command_contract": {
       "primary_check": "make smoke",
       "bootstrap": "uv sync --locked",
-      "format_check": "uvx --from ruff==0.12.10 ruff format --check .",
-      "lint": "uvx --from ruff==0.12.10 ruff check .",
+      "format_check": "uvx --from ruff==0.12.10 ruff format --check src application_tests scripts",
+      "lint": "uvx --from ruff==0.12.10 ruff check src application_tests scripts",
       "typecheck": "uvx --from pyright==1.1.403 pyright",
       "unit": "uv run --with pytest==8.4.1 --with pytest-cov==6.2.1 --with hypothesis==6.138.13 python -m pytest --cov=agentic_application_assessor --cov-branch --cov-report=term-missing -m 'not integration'",
       "integration": "uv run --with pytest==8.4.1 python -m pytest -m integration",

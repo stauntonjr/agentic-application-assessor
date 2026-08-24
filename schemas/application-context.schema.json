@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/stauntonjr/agentic-application-assessor/main/schemas/application-context.schema.json",
+  "title": "Agentic Application Assessor context",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "review", "application"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "confirmed_on", "source"],
+      "properties": {
+        "status": {"const": "accepted"},
+        "confirmed_on": {"type": "string", "format": "date"},
+        "source": {"type": "string", "minLength": 1, "maxLength": 4096}
+      }
+    },
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "purpose", "stakeholders"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "purpose": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "stakeholders": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 4096}}
+      }
+    },
+    "components": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/component"}},
+    "workflows": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/workflow"}},
+    "data_assets": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/dataAsset"}},
+    "quality_scenarios": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/qualityScenario"}}
+  },
+  "$defs": {
+    "component": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "responsibility", "paths"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "name": {"type": "string", "minLength": 1},
+        "responsibility": {"type": "string", "minLength": 1},
+        "paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "workflow": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "description"],
+      "properties": {"id": {"type": "string"}, "name": {"type": "string"}, "description": {"type": "string"}}
+    },
+    "dataAsset": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "classification", "description"],
+      "properties": {"id": {"type": "string"}, "name": {"type": "string"}, "classification": {"type": "string"}, "description": {"type": "string"}}
+    },
+    "qualityScenario": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "attribute", "stimulus", "response"],
+      "properties": {"id": {"type": "string"}, "attribute": {"type": "string"}, "stimulus": {"type": "string"}, "response": {"type": "string"}}
+    }
+  }
+}

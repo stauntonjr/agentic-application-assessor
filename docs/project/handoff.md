@@ -14,9 +14,10 @@ This is an orientation index, not a transcript or second roadmap.
 
 - Product: Agentic Application Assessor `0.1.0`, unreleased.
 - Harness: `0.5.0`, active `python-data` profile, one-repository lifecycle.
-- Repository: local greenfield bootstrap; public GitHub creation follows local acceptance,
-  independent verification, and secret/history scanning.
-- First slice: deterministic, local, read-only static assessment with canonical JSON and Markdown.
+- Repository: local greenfield implementation; public GitHub creation follows independent
+  verification and secret/history scanning.
+- First slice: implemented deterministic, local, read-only static assessment with context/report
+  schemas `1.0`, canonical JSON, and Markdown; full gates and independent review are pending.
 - First dogfood: Agentic Repo Auditor; Macro Technical Pulse follows.
 - Release/deployment: no tag, GitHub Release, package publication, hosted service, or deployment is
   authorized.
@@ -34,9 +35,9 @@ This is an orientation index, not a transcript or second roadmap.
 
 ## Next loop
 
-Implement and verify the smallest read-only assessment slice, publish the verified repository, and
-bootstrap its dedicated GitHub Project from the canonical harness Project #13. Dogfood evidence
-must record exact target identity and demonstrate that target state did not change.
+Complete the full gate and independent review, publish the verified repository, and bootstrap its
+dedicated GitHub Project from canonical harness Project #13. Then implement the fail-closed Agentic
+Repo Auditor `0.1.0` schema-`1.2` import/rerun adapter before Macro Technical Pulse dogfood.
 
 ## Refresh protocol
 

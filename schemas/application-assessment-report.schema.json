@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/stauntonjr/agentic-application-assessor/main/schemas/application-assessment-report.schema.json",
+  "title": "Agentic Application Assessor report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "tool", "target", "inputs", "coverage", "evidence", "claims", "contradictions", "unknowns"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "tool": {"type": "object", "additionalProperties": false, "required": ["name", "version"], "properties": {"name": {"const": "agentic-application-assessor"}, "version": {"type": "string"}}},
+    "target": {"type": "object", "additionalProperties": false, "required": ["name", "revision", "branch", "dirty", "state_id"], "properties": {"name": {"type": "string"}, "revision": {"type": "string"}, "branch": {"type": "string"}, "dirty": {"type": "boolean"}, "state_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
+    "inputs": {"type": "object", "additionalProperties": false, "required": ["context", "agentic_repo_auditor"], "properties": {"context": {"type": "object"}, "agentic_repo_auditor": {"type": "null"}}},
+    "coverage": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+    "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "contradictions": {"type": "array", "items": {"type": "string"}},
+    "unknowns": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "origin": {"enum": ["observed", "imported-tool", "human-declared", "derived", "model-synthesized", "unavailable"]},
+    "stableId": {"type": "string", "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z0-9-]+)*$"},
+    "evidence": {"type": "object", "additionalProperties": false, "required": ["id", "origin", "kind", "source", "value", "sha256"], "properties": {"id": {"$ref": "#/$defs/stableId"}, "origin": {"$ref": "#/$defs/origin"}, "kind": {"type": "string"}, "source": {"type": "string"}, "value": {"type": "string"}, "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}}},
+    "claim": {"type": "object", "additionalProperties": false, "required": ["id", "origin", "status", "statement", "evidence_ids"], "properties": {"id": {"$ref": "#/$defs/stableId"}, "origin": {"$ref": "#/$defs/origin"}, "status": {"enum": ["supported", "proposed", "contradicted", "unavailable"]}, "statement": {"type": "string"}, "evidence_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/stableId"}}}}
+  }
+}
