@@ -19,7 +19,7 @@
   },
   "license": {
     "source": "LICENSE",
-    "sha256": "096633e7fc86d71172d976ed2b00baaeee861fdd805f312c4698144c4c3355a6"
+    "sha256": "83b3f94355ed109adcadaef313163a3b6da727ab9d50e2a367a4211575f07c57"
   },
   "excluded_project_policy": [
     "AGENTS.md",
