@@ -136,6 +136,7 @@ class Report:
     unknowns: tuple[Claim, ...]
     coverage: dict[str, int]
     auditor_input: AuditorInput | None = None
+    context_schema_version: str = "1.0"
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -146,7 +147,7 @@ class Report:
                 "context": {
                     "path": self.context_path,
                     "sha256": self.context_sha256,
-                    "schema_version": "1.0",
+                    "schema_version": self.context_schema_version,
                 },
                 "agentic_repo_auditor": (
                     self.auditor_input.as_dict() if self.auditor_input is not None else None

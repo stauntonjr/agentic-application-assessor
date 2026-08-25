@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/stauntonjr/agentic-application-assessor/main/schemas/application-questionnaire.schema.json",
+  "title": "Agentic Application Assessor gap-only questionnaire",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "target", "accepted_context", "repository_evidence", "observed_defaults", "questions"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "target": {"$ref": "#/$defs/target"},
+    "accepted_context": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "schema_version"], "properties": {"path": {"$ref": "#/$defs/text"}, "sha256": {"$ref": "#/$defs/sha256"}, "schema_version": {"enum": ["1.0", "1.1"]}}}
+      ]
+    },
+    "repository_evidence": {
+      "type": "array", "minItems": 1, "maxItems": 64,
+      "items": {"type": "object", "additionalProperties": false, "required": ["id", "kind", "source", "value", "sha256"], "properties": {"id": {"$ref": "#/$defs/text"}, "kind": {"$ref": "#/$defs/text"}, "source": {"$ref": "#/$defs/text"}, "value": {"$ref": "#/$defs/text"}, "sha256": {"$ref": "#/$defs/sha256"}}}
+    },
+    "observed_defaults": {
+      "type": "array", "maxItems": 8,
+      "items": {"type": "object", "additionalProperties": false, "required": ["question_id", "value", "origin", "source"], "properties": {"question_id": {"const": "application.name"}, "value": {"$ref": "#/$defs/text"}, "origin": {"const": "observed"}, "source": {"$ref": "#/$defs/text"}}}
+    },
+    "questions": {
+      "type": "array", "maxItems": 8, "uniqueItems": true,
+      "items": {"type": "object", "additionalProperties": false, "required": ["id", "category", "prompt", "response_type", "rationale"], "properties": {"id": {"enum": ["application.name", "application.purpose", "application.stakeholders", "requirements.priorities", "requirements.constraints", "requirements.risk-tolerance", "requirements.deployment-context", "requirements.evidence-expectations"]}, "category": {"enum": ["intent", "priorities", "constraints", "risk-tolerance", "deployment-context", "evidence-expectations"]}, "prompt": {"$ref": "#/$defs/text"}, "response_type": {"enum": ["string", "string-array"]}, "rationale": {"$ref": "#/$defs/text"}, "repository_context": {"$ref": "#/$defs/text"}}},
+      "allOf": [
+        {"contains": {"properties": {"id": {"const": "application.name"}}, "required": ["id"]}, "minContains": 0, "maxContains": 1},
+        {"contains": {"properties": {"id": {"const": "application.purpose"}}, "required": ["id"]}, "minContains": 0, "maxContains": 1},
+        {"contains": {"properties": {"id": {"const": "application.stakeholders"}}, "required": ["id"]}, "minContains": 0, "maxContains": 1},
+        {"contains": {"properties": {"id": {"const": "requirements.priorities"}}, "required": ["id"]}, "minContains": 0, "maxContains": 1},
+        {"contains": {"properties": {"id": {"const": "requirements.constraints"}}, "required": ["id"]}, "minContains": 0, "maxContains": 1},
+        {"contains": {"properties": {"id": {"const": "requirements.risk-tolerance"}}, "required": ["id"]}, "minContains": 0, "maxContains": 1},
+        {"contains": {"properties": {"id": {"const": "requirements.deployment-context"}}, "required": ["id"]}, "minContains": 0, "maxContains": 1},
+        {"contains": {"properties": {"id": {"const": "requirements.evidence-expectations"}}, "required": ["id"]}, "minContains": 0, "maxContains": 1}
+      ]
+    }
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^\\S(?:[\\s\\S]*\\S)?$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "target": {"type": "object", "additionalProperties": false, "required": ["name", "revision", "branch", "dirty", "state_id"], "properties": {"name": {"$ref": "#/$defs/text"}, "revision": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"}, "branch": {"$ref": "#/$defs/text"}, "dirty": {"type": "boolean"}, "state_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}}
+  }
+}

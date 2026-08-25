@@ -24,5 +24,8 @@ All notable product changes are recorded here. Product and harness versions are 
   nested evidence, and artifact digest as `imported-tool` provenance without claim promotion.
 - SHA-1 and SHA-256 Git revision compatibility, normalized cross-tool branch/dirty checks, a final
   target-state recheck, and byte-for-byte preservation of no-artifact Markdown output.
+- Deterministic gap-only `questionnaire` and `reconcile` commands, questionnaire and answer schemas
+  `1.0`, and backward-compatible application-context schema `1.1` with durable requirements,
+  provenance, contradictions, unknowns, reviewable drafts, and explicit owner acceptance.
 
 No tag, release, package publication, hosted service, or deployment exists.
