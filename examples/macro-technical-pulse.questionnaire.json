@@ -1,0 +1,93 @@
+{
+  "accepted_context": null,
+  "observed_defaults": [
+    {
+      "origin": "observed",
+      "question_id": "application.name",
+      "source": "pyproject.toml#/project/name",
+      "value": "macro-technical-pulse"
+    }
+  ],
+  "questions": [
+    {
+      "category": "intent",
+      "id": "application.name",
+      "prompt": "What owner-accepted name identifies this application?",
+      "rationale": "A stable application identity is required for accepted context.",
+      "response_type": "string"
+    },
+    {
+      "category": "intent",
+      "id": "application.purpose",
+      "prompt": "What does this application do, for whom, and toward what outcome?",
+      "rationale": "Repository structure cannot establish product intent.",
+      "response_type": "string"
+    },
+    {
+      "category": "intent",
+      "id": "application.stakeholders",
+      "prompt": "Which users, maintainers, or decision owners are stakeholders?",
+      "rationale": "Stakeholders determine whose requirements and risks matter.",
+      "response_type": "string-array"
+    },
+    {
+      "category": "priorities",
+      "id": "requirements.priorities",
+      "prompt": "Which outcomes or capabilities are highest priority?",
+      "rationale": "Priorities make later findings decision-relative.",
+      "response_type": "string-array"
+    },
+    {
+      "category": "constraints",
+      "id": "requirements.constraints",
+      "prompt": "Which technical, budget, schedule, licensing, or data constraints are binding?",
+      "rationale": "Constraints bound feasible recommendations.",
+      "response_type": "string-array"
+    },
+    {
+      "category": "risk-tolerance",
+      "id": "requirements.risk-tolerance",
+      "prompt": "What risk tolerance and human-approval boundary should guide the assessment?",
+      "rationale": "Risk disposition cannot be inferred from code.",
+      "response_type": "string"
+    },
+    {
+      "category": "deployment-context",
+      "id": "requirements.deployment-context",
+      "prompt": "Where and how is the application deployed, operated, recovered, or retired?",
+      "rationale": "Repository deployment files are signals, not proof of live operation.",
+      "response_type": "string"
+    },
+    {
+      "category": "evidence-expectations",
+      "id": "requirements.evidence-expectations",
+      "prompt": "Which evidence, provenance, reproducibility, or confidence standard is required?",
+      "rationale": "Evidence expectations define the bar for useful findings.",
+      "response_type": "string-array"
+    }
+  ],
+  "repository_evidence": [
+    {
+      "id": "repository.target-identity",
+      "kind": "git-target-identity",
+      "sha256": "f88420a4169764cdf464b0d286cf7ec57e80d5f17e65706c833e41831fe1581f",
+      "source": "target:sha256:f88420a4169764cdf464b0d286cf7ec57e80d5f17e65706c833e41831fe1581f",
+      "value": "macro-technical-pulse"
+    },
+    {
+      "id": "repository.pyproject-name",
+      "kind": "package-metadata",
+      "sha256": "d8d37364dcb864a7350ad05ac78e5d2ca754a085239e7514653324b863f555da",
+      "source": "pyproject.toml#/project/name",
+      "value": "macro-technical-pulse"
+    }
+  ],
+  "schema_version": "1.0",
+  "target": {
+    "branch": "(detached)",
+    "dirty": false,
+    "name": "macro-technical-pulse",
+    "revision": "1f06504d850d1160bef9fa6228c3ebdc4e8f02ae",
+    "state_id": "sha256:f88420a4169764cdf464b0d286cf7ec57e80d5f17e65706c833e41831fe1581f"
+  }
+}

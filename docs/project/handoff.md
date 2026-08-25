@@ -24,13 +24,13 @@ This is an orientation index, not a transcript or second roadmap.
   JSON, supports SHA-1 and SHA-256 Git repositories, rejects stale, cross-collector, or
   during-assessment target mutations, preserves baseline no-artifact output, and preserves Auditor
   findings only as imported evidence; it is integrated on `main`.
-- Requirements-questionnaire candidate: Issue #3 adds digest-bound gap-only questions and answer
-  reconciliation, reviewable schema-`1.1` context drafts, and an explicit owner/date acceptance
-  transition. Attempt 2 restores exact schema-`1.0` compatibility, enforces Draft 2020-12 stable
-  question-ID uniqueness, and repairs the accepted-context example. Attempt 3 aligns exact-duplicate
-  contradiction and unknown validation on the new context-`1.1` surface and narrows parity claims
-  to the Issue #3 artifacts; fresh independent verification and integration remain pending.
-- First dogfood: Agentic Repo Auditor; Macro Technical Pulse follows.
+- Requirements questionnaire: Issue #3 is integrated. It provides digest-bound gap-only questions,
+  answer reconciliation, reviewable schema-`1.1` drafts, and explicit owner/date acceptance.
+- Dogfood: Issue #4 ran the full deterministic workflow against exact Macro Technical Pulse `main`
+  at `1f06504`. It preserved owner-corrected product priorities and exposed that the current report
+  underuses accepted requirements and lacks component, data-flow, workflow, and quality-scenario
+  context. It also repairs public report-schema compatibility with accepted context versions `1.0`
+  and `1.1`. Independent verification and integration remain pending.
 - Release/deployment: no tag, GitHub Release, package publication, hosted service, or deployment is
   authorized.
 
@@ -47,9 +47,10 @@ This is an orientation index, not a transcript or second roadmap.
 
 ## Next loop
 
-Verify and integrate the requirements questionnaire in
-[Issue #3](https://github.com/stauntonjr/agentic-application-assessor/issues/3) before Macro Technical Pulse dogfood in
-[Issue #4](https://github.com/stauntonjr/agentic-application-assessor/issues/4).
+Verify and integrate the Macro Technical Pulse dogfood in
+[Issue #4](https://github.com/stauntonjr/agentic-application-assessor/issues/4). Then create one
+bounded follow-up for requirement-aware reporting and progressive application architecture/data-flow
+context; do not duplicate Macro Technical Pulse's planner-owned roadmap.
 
 ## Refresh protocol
 

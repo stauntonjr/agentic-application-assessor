@@ -1,0 +1,688 @@
+{
+  "claims": [
+    {
+      "evidence_ids": [
+        "context.application.stakeholders"
+      ],
+      "id": "application.audience",
+      "origin": "human-declared",
+      "source": "macro-technical-pulse.context.json#/application/stakeholders",
+      "statement": "Stakeholders: Jack Rory Staunton, application maintainers, economic and market data researchers, feature-engineering and model developers, model validators, independent risk reviewers",
+      "status": "supported"
+    },
+    {
+      "evidence_ids": [
+        "context.application.purpose"
+      ],
+      "id": "application.purpose",
+      "origin": "human-declared",
+      "source": "macro-technical-pulse.context.json#/application/purpose",
+      "statement": "Capture and gather economic and market data streams, store them for feature engineering and machine-learning price-prediction models, deploy trained models on live streams, and provide visualization of the collected data, engineered features, signals, and predictions. Technical-response measurement may later analyze price sensitivity to external signals, but it is not the application's primary purpose.",
+      "status": "supported"
+    }
+  ],
+  "contradictions": [],
+  "coverage": {
+    "documentation": 27,
+    "entrypoint": 2,
+    "imported-auditor-finding-evidence": 15,
+    "imported-auditor-findings": 13,
+    "manifest": 1,
+    "test": 4
+  },
+  "evidence": [
+    {
+      "id": "auditor.artifact",
+      "kind": "analysis-artifact",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#",
+      "value": "agentic-repo-auditor 0.1.0 report schema 1.2"
+    },
+    {
+      "id": "auditor.configuration",
+      "kind": "repository-audit-configuration",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/configuration",
+      "value": "{\"disabled_checks\":[],\"evidence\":{\"primary_check\":null,\"project_contract\":null}}"
+    },
+    {
+      "id": "auditor.finding.agent-readiness.instructions",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/0",
+      "value": "{\"category\":\"agent-readiness\",\"description\":\"Repository instructions expose core evidence, verification, and safety signals.\",\"id\":\"agent-readiness.instructions\",\"remediation\":\"Document source precedence, tests, verification boundaries, and safety constraints.\",\"severity\":\"medium\",\"status\":\"warn\",\"title\":\"Agent instruction coverage\"}"
+    },
+    {
+      "id": "auditor.finding.agent-readiness.instructions.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/0/evidence/0",
+      "value": "{\"kind\":\"signal-set\",\"path\":\"AGENTS.md\",\"value\":\"present=['source', 'test', 'verification']; missing=['safety']; matches=['source:sources', 'test:test', 'verification:verified']\"}"
+    },
+    {
+      "id": "auditor.finding.agent-readiness.skills",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/1",
+      "value": "{\"category\":\"agent-readiness\",\"description\":\"Repository skills use discoverable SKILL.md files with basic portable metadata.\",\"id\":\"agent-readiness.skills\",\"remediation\":\"Use one skill directory per capability with valid name and description frontmatter.\",\"severity\":\"low\",\"status\":\"warn\",\"title\":\"Portable agent skills\"}"
+    },
+    {
+      "id": "auditor.finding.agent-readiness.skills.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/1/evidence/0",
+      "value": "{\"kind\":\"path-count\",\"path\":\".agents/skills\",\"value\":\"0\"}"
+    },
+    {
+      "id": "auditor.finding.ci.immutable-actions",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/2",
+      "value": "{\"category\":\"ci\",\"description\":\"External Actions and container actions use immutable references.\",\"id\":\"ci.immutable-actions\",\"remediation\":\"Pin third-party Actions to full commit SHAs and containers to image digests.\",\"severity\":\"high\",\"status\":\"fail\",\"title\":\"Immutable workflow dependencies\"}"
+    },
+    {
+      "id": "auditor.finding.ci.immutable-actions.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/2/evidence/0",
+      "value": "{\"kind\":\"action-summary\",\"path\":\".github/workflows\",\"value\":\"references=2\"}"
+    },
+    {
+      "id": "auditor.finding.ci.immutable-actions.evidence.0001",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/2/evidence/1",
+      "value": "{\"kind\":\"mutable-action\",\"path\":\".github/workflows/ci.yml\",\"value\":\"actions/checkout@v4\"}"
+    },
+    {
+      "id": "auditor.finding.ci.immutable-actions.evidence.0002",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/2/evidence/2",
+      "value": "{\"kind\":\"mutable-action\",\"path\":\".github/workflows/ci.yml\",\"value\":\"actions/setup-python@v5\"}"
+    },
+    {
+      "id": "auditor.finding.ci.workflows",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/3",
+      "value": "{\"category\":\"ci\",\"description\":\"At least one repository CI workflow is present.\",\"id\":\"ci.workflows\",\"remediation\":\"Add CI that runs the same authoritative check used locally.\",\"severity\":\"info\",\"status\":\"pass\",\"title\":\"Continuous integration workflows\"}"
+    },
+    {
+      "id": "auditor.finding.ci.workflows.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/3/evidence/0",
+      "value": "{\"kind\":\"path-count\",\"path\":\".github/workflows\",\"value\":\"1\"}"
+    },
+    {
+      "id": "auditor.finding.git.clean-worktree",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/4",
+      "value": "{\"category\":\"git\",\"description\":\"The audit records whether the target has uncommitted or untracked state.\",\"id\":\"git.clean-worktree\",\"remediation\":\"Review and intentionally preserve, commit, or ignore outstanding worktree entries.\",\"severity\":\"info\",\"status\":\"pass\",\"title\":\"Worktree state\"}"
+    },
+    {
+      "id": "auditor.finding.git.clean-worktree.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/4/evidence/0",
+      "value": "{\"kind\":\"git-status\",\"path\":\".\",\"value\":\"changed_entries=0\"}"
+    },
+    {
+      "id": "auditor.finding.governance.community-files",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/5",
+      "value": "{\"category\":\"governance\",\"description\":\"Basic purpose, contribution, and licensing files are present.\",\"id\":\"governance.community-files\",\"remediation\":\"Add the missing community health files and keep them aligned with actual behavior.\",\"severity\":\"low\",\"status\":\"warn\",\"title\":\"Community health files\"}"
+    },
+    {
+      "id": "auditor.finding.governance.community-files.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/5/evidence/0",
+      "value": "{\"kind\":\"path-set\",\"path\":\".\",\"value\":\"present=['README.md', 'LICENSE']; missing=['CONTRIBUTING.md']\"}"
+    },
+    {
+      "id": "auditor.finding.governance.instructions",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/6",
+      "value": "{\"category\":\"governance\",\"description\":\"Repository-level agent and contributor instructions are discoverable.\",\"id\":\"governance.instructions\",\"remediation\":\"Add a root AGENTS.md with commands, boundaries, sources of truth, and safety rules.\",\"severity\":\"info\",\"status\":\"pass\",\"title\":\"Repository instructions\"}"
+    },
+    {
+      "id": "auditor.finding.governance.instructions.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/6/evidence/0",
+      "value": "{\"kind\":\"path-presence\",\"path\":\".\",\"value\":\"AGENTS.md\"}"
+    },
+    {
+      "id": "auditor.finding.governance.project-contract",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/7",
+      "value": "{\"category\":\"governance\",\"description\":\"No recognized project intent and authority contract or explicit disposition is present.\",\"id\":\"governance.project-contract\",\"remediation\":\"Add harness/project.yaml or configure a safe repository-relative contract path or explicit not-applicable reason.\",\"severity\":\"medium\",\"status\":\"warn\",\"title\":\"Machine-readable project contract\"}"
+    },
+    {
+      "id": "auditor.finding.governance.project-contract.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/7/evidence/0",
+      "value": "{\"kind\":\"project-contract\",\"path\":\"harness/project.yaml\",\"value\":\"not available (absent)\"}"
+    },
+    {
+      "id": "auditor.finding.security.code-scanning",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/8",
+      "value": "{\"category\":\"security\",\"description\":\"The repository declares a CodeQL workflow as a visible code-scanning signal.\",\"id\":\"security.code-scanning\",\"remediation\":\"Configure code scanning appropriate to the repository languages and threat model.\",\"severity\":\"medium\",\"status\":\"warn\",\"title\":\"Code scanning\"}"
+    },
+    {
+      "id": "auditor.finding.security.code-scanning.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/8/evidence/0",
+      "value": "{\"kind\":\"workflow-set\",\"path\":\".github/workflows\",\"value\":\"none found\"}"
+    },
+    {
+      "id": "auditor.finding.security.dependency-updates",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/9",
+      "value": "{\"category\":\"security\",\"description\":\"A recognized dependency-update configuration is present.\",\"id\":\"security.dependency-updates\",\"remediation\":\"Configure a reviewed dependency-update tool for every supported ecosystem.\",\"severity\":\"medium\",\"status\":\"warn\",\"title\":\"Automated dependency updates\"}"
+    },
+    {
+      "id": "auditor.finding.security.dependency-updates.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/9/evidence/0",
+      "value": "{\"kind\":\"path-presence\",\"path\":\".\",\"value\":\"none found\"}"
+    },
+    {
+      "id": "auditor.finding.security.policy",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/10",
+      "value": "{\"category\":\"security\",\"description\":\"A vulnerability-reporting policy is discoverable.\",\"id\":\"security.policy\",\"remediation\":\"Add SECURITY.md with supported versions and a private reporting channel.\",\"severity\":\"medium\",\"status\":\"warn\",\"title\":\"Security policy\"}"
+    },
+    {
+      "id": "auditor.finding.security.policy.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/10/evidence/0",
+      "value": "{\"kind\":\"path-presence\",\"path\":\".\",\"value\":\"none found\"}"
+    },
+    {
+      "id": "auditor.finding.testing.primary-check",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/11",
+      "value": "{\"category\":\"testing\",\"description\":\"A machine-readable primary verification command is declared.\",\"id\":\"testing.primary-check\",\"remediation\":\"Declare one authoritative command and run it unchanged in local and CI boundaries.\",\"severity\":\"medium\",\"status\":\"warn\",\"title\":\"Authoritative local and CI check\"}"
+    },
+    {
+      "id": "auditor.finding.testing.primary-check.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/11/evidence/0",
+      "value": "{\"kind\":\"primary-check\",\"path\":\"harness/project.yaml\",\"value\":\"not available (absent)\"}"
+    },
+    {
+      "id": "auditor.finding.testing.suite",
+      "kind": "repository-audit-finding",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/12",
+      "value": "{\"category\":\"testing\",\"description\":\"A conventional automated test suite is present.\",\"id\":\"testing.suite\",\"remediation\":\"Add deterministic tests for the project's public and failure-path behavior.\",\"severity\":\"info\",\"status\":\"pass\",\"title\":\"Automated tests\"}"
+    },
+    {
+      "id": "auditor.finding.testing.suite.evidence.0000",
+      "kind": "repository-audit-finding-evidence",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/findings/12/evidence/0",
+      "value": "{\"kind\":\"path-count\",\"path\":\"tests\",\"value\":\"4\"}"
+    },
+    {
+      "id": "auditor.summary",
+      "kind": "repository-audit-summary",
+      "origin": "imported-tool",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "source": "macro-technical-pulse.auditor-report.json#/summary",
+      "value": "{\"by_severity\":{\"high\":1,\"info\":4,\"low\":2,\"medium\":6},\"by_status\":{\"fail\":1,\"not-applicable\":0,\"pass\":4,\"unknown\":0,\"warn\":8},\"total\":13}"
+    },
+    {
+      "id": "context.application.purpose",
+      "kind": "purpose",
+      "origin": "human-declared",
+      "sha256": null,
+      "source": "macro-technical-pulse.context.json#/application/purpose",
+      "value": "Capture and gather economic and market data streams, store them for feature engineering and machine-learning price-prediction models, deploy trained models on live streams, and provide visualization of the collected data, engineered features, signals, and predictions. Technical-response measurement may later analyze price sensitivity to external signals, but it is not the application's primary purpose."
+    },
+    {
+      "id": "context.application.stakeholders",
+      "kind": "stakeholders",
+      "origin": "human-declared",
+      "sha256": null,
+      "source": "macro-technical-pulse.context.json#/application/stakeholders",
+      "value": "Jack Rory Staunton; application maintainers; economic and market data researchers; feature-engineering and model developers; model validators; independent risk reviewers"
+    },
+    {
+      "id": "context.review",
+      "kind": "review",
+      "origin": "human-declared",
+      "sha256": null,
+      "source": "macro-technical-pulse.context.json#/review",
+      "value": "accepted on 2026-08-25 from questionnaire answers from owner interview: Jack Rory Staunton"
+    },
+    {
+      "id": "static.documentation.07cafbb1f0ce74f3",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "8f7bee85d90348b984485af4225fa05900bb7eed1bb1a0a1868aae397c831cde",
+      "source": "docs/migration-map.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.1224e6e12751eccd",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "bc12ae0f7f9d98c3943a7727a69e294d9b4ebb3ae99b86f95d50bfcd68f1d2b6",
+      "source": "docs/decisions/0003-modular-monolith-and-artifacts.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.140eef3ba41bdcf4",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "33460a8388d8da4c508a7677a89f3a8dbe7bf4fe1d4aa6494cf43c84532aca35",
+      "source": "docs/architecture.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.2691a08d3224e00b",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "388acf4c4d2398282ff363bb55879abee92f14e8e7da103a4f7fe48394778d86",
+      "source": "docs/risk/0001-us-gold-venue-paper-readiness-review.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.331194f29b41b3cf",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "29d4bd1cebf827f4b1c4ccc66d3fdf01cb70453355093bccb04728a0fb320cbe",
+      "source": "docs/decisions/0001-research-only-scope.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.34ca10206a556cc5",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "0a5a6b2508cfbae659a8a264609620b14b5a9e2f216d22c59002119626a1778f",
+      "source": "docs/decisions/0004-point-in-time-evaluation.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.4a568930dc44e58e",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "f71c6087d5fe1cde1da93c2d0d08d16e71c4264d3fd54ee5d2145631b2fe84cf",
+      "source": "docs/legacy-review.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.4d455a3fae963eb9",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "630294c0d5bc31feedaf071f817f9350ecf2255dfad55a98784f65abca558445",
+      "source": "docs/research/0003-us-gold-venue-instrument-and-action-time.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.572ae509bffb4c08",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "47f61ef4f2df53ee963be61ef70a641584bf504b29d92eb580e25656ba853f8d",
+      "source": "docs/risk/0002-gold-gate-a-offline-readiness-review.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.5bb6ca8b3d3e312a",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "6f0a1604d13b4d802cd8c532f1fc7c953ad5e26182ad43bfb3ce1760fe23b2da",
+      "source": "docs/decisions/0005-provider-ports-and-secrets.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.6a17656d764b8e19",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "b3c6501b3d41cf5b9fe39ef532cef3125205071704ee9c82bd649e15371a34f0",
+      "source": "docs/roadmap.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.7530a4938bbb6358",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "c9f2ce9d76e4ffcce30d6507267b889ced079408d1c59e904f2a633e36e045af",
+      "source": "docs/vision.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.88af4fc154e5dd1a",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "8acbfe4433db4e60447507ac0f2529ca5f27640ad89565c837834a910cf13ca1",
+      "source": "docs/development/github-plan.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.88ddaaf9fac7e945",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "59ce3d95bd0394ea78d23713bb7b68b879eb12f7af79b5efd19201f729e7e504",
+      "source": "docs/decisions/0009-parallel-capability-projects.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.8f260c38c840d041",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "2d641767767cbd3d107b9a464f757648b65e3e78e56a441ff295ca605d7892da",
+      "source": "docs/research/0002-free-open-data-and-technical-analysis-tools.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.9b12de6ee2f2dcd5",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "00f21c8a264aa4b63e8d424bc29645d8db5ea78d60cdb7a1488cfc9919950b4f",
+      "source": "docs/decisions/0002-separate-agent-roles.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.a54ff182c7e8acf5",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "907e1d328effbd95652a1a360cefe3a2a0e85a7a9e12389e9a7bd4694f3a75f3",
+      "source": "AGENTS.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.a96dded28a6ad5a2",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "f18d943d1ebf25cac4be1495230655ffb8abcc3dbb11975dab504c6103e473ef",
+      "source": "docs/roles.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.ad0c3c11e948e3b4",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "6baa3cee0c9271d55a09cb0cdeceec3ba722cac4c0298e723d89f021896850eb",
+      "source": "docs/decisions/0006-reimplement-from-evidence.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.b335630551682c19",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "4d8d6a8fe01018db67a20dc0bc750d8dff74c20506c6ac6beff07692220629c1",
+      "source": "README.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.bd5046628cb32b48",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "65c42adc7852f9b5802ae9c0ed2fefb23decb549cff6e11ea106b3d92eaa744c",
+      "source": "docs/development/milestone-map.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.c0269be49df6f070",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "acb37c2b28b727fd9232b9fff0e2054622b051794034add3092df5cc34da6961",
+      "source": "docs/open-questions.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.c8a0cf590733b81c",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "0fa15ecabfe0555dc5a77ba4e903205481bfa2f68678da0c04c08a443cb2d574",
+      "source": "docs/decisions/0010-mit-source-license.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.c90069cb1bc1be4f",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "e4a2069117d7d051ac07340e5aa45c8a925659670ab0749a65625e439e1ce35e",
+      "source": "docs/decisions/0007-event-time-pulse-model.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.ca9bc16ff98cd2f1",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "88dede29200f82d012dbfa7e68b24d501718638f4f704ae5790b80d2ddfeb7bb",
+      "source": "docs/research/0004-gold-gate-a-offline-fixture.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.d4829006cb0f9e10",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "ee8a7ec6bd152824eb4424d5940ba3cdaad179e05ef3bc061b85d6d98359b67d",
+      "source": "docs/decisions/0008-us-exchange-traded-gold-paper-target.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.documentation.dff5573bf0c37ecf",
+      "kind": "documentation",
+      "origin": "observed",
+      "sha256": "317587743fb5e1226b83aee19e417e81125a44d7757b952d2ad8b6ceaad176f5",
+      "source": "docs/research/0001-macro-signal-frequency-and-market-irf.md",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.entrypoint.5a6aebcf596216e8",
+      "kind": "entrypoint",
+      "origin": "observed",
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "source": "src/macro_technical_pulse/__main__.py",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.entrypoint.d071d0baada3bc88",
+      "kind": "entrypoint",
+      "origin": "observed",
+      "sha256": "54f44c8579981748c94e61fd019c8777b0c84b53e53330a4e60818f826405710",
+      "source": "src/macro_technical_pulse/cli.py",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.manifest.50c86b7ed8ac2cf9",
+      "kind": "manifest",
+      "origin": "observed",
+      "sha256": "d8d37364dcb864a7350ad05ac78e5d2ca754a085239e7514653324b863f555da",
+      "source": "pyproject.toml",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.test.24e2d1e2ad448ca2",
+      "kind": "test",
+      "origin": "observed",
+      "sha256": "a280a97a55bfdfc4f68da3ff44986c247708d6ffd9c41bfd096a9154db5e671c",
+      "source": "tests/test_workflow.py",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.test.28081c8b057714df",
+      "kind": "test",
+      "origin": "observed",
+      "sha256": "b1b708875a2f03f294c6ee4414823eb34a271ebee26874750569f3424a41bb34",
+      "source": "tests/test_gold_gate_a.py",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.test.3d90225e015d0cca",
+      "kind": "test",
+      "origin": "observed",
+      "sha256": "83fb19369b04ebfe2f89fcb2156c3e2b69f84d7f9e2d68535435c1cd53158eda",
+      "source": "tests/test_gold_execution.py",
+      "value": "recognized regular file"
+    },
+    {
+      "id": "static.test.bb1dbe1e91dfbf28",
+      "kind": "test",
+      "origin": "observed",
+      "sha256": "d94fc8da36365b8530c2d2d259aa2b78372f1d76bc390d9c03c47e1fc5d931b6",
+      "source": "tests/test_contracts.py",
+      "value": "recognized regular file"
+    }
+  ],
+  "inputs": {
+    "agentic_repo_auditor": {
+      "path": "macro-technical-pulse.auditor-report.json",
+      "schema_version": "1.2",
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "target": {
+        "branch": "DETACHED",
+        "dirty": false,
+        "name": "macro-technical-pulse",
+        "revision": "1f06504d850d1160bef9fa6228c3ebdc4e8f02ae",
+        "state_id": "sha256:5725e4ff07db889061f00d3b37a08bb2d883b7929ef4de538bb1543341cf2890"
+      },
+      "tool": {
+        "name": "agentic-repo-auditor",
+        "version": "0.1.0"
+      }
+    },
+    "context": {
+      "path": "macro-technical-pulse.context.json",
+      "schema_version": "1.1",
+      "sha256": "0065cafb9a92036cfe6dc4d06e033df3d6009820c4aaeec38f6f7eeef9f8be76"
+    }
+  },
+  "schema_version": "1.0",
+  "target": {
+    "branch": "(detached)",
+    "dirty": false,
+    "name": "macro-technical-pulse",
+    "revision": "1f06504d850d1160bef9fa6228c3ebdc4e8f02ae",
+    "state_id": "sha256:f88420a4169764cdf464b0d286cf7ec57e80d5f17e65706c833e41831fe1581f"
+  },
+  "tool": {
+    "name": "agentic-application-assessor",
+    "version": "0.1.0"
+  },
+  "unknowns": [
+    {
+      "evidence_ids": [],
+      "id": "unknown.context.components",
+      "origin": "unavailable",
+      "source": "macro-technical-pulse.context.json#/components",
+      "statement": "No accepted context declares application components.",
+      "status": "unavailable"
+    },
+    {
+      "evidence_ids": [],
+      "id": "unknown.context.data-assets",
+      "origin": "unavailable",
+      "source": "macro-technical-pulse.context.json#/data_assets",
+      "statement": "No accepted context declares data assets and movement.",
+      "status": "unavailable"
+    },
+    {
+      "evidence_ids": [],
+      "id": "unknown.context.quality-scenarios",
+      "origin": "unavailable",
+      "source": "macro-technical-pulse.context.json#/quality_scenarios",
+      "statement": "No accepted context declares decision-driving quality scenarios.",
+      "status": "unavailable"
+    },
+    {
+      "evidence_ids": [],
+      "id": "unknown.context.workflows",
+      "origin": "unavailable",
+      "source": "macro-technical-pulse.context.json#/workflows",
+      "statement": "No accepted context declares important runtime workflows.",
+      "status": "unavailable"
+    },
+    {
+      "evidence_ids": [],
+      "id": "unknown.model-synthesis",
+      "origin": "unavailable",
+      "source": "tool-policy:adr-0008#decision",
+      "statement": "Model synthesis is unavailable because the canonical v0.1 core is model-free.",
+      "status": "unavailable"
+    },
+    {
+      "evidence_ids": [],
+      "id": "unknown.production-topology",
+      "origin": "unavailable",
+      "source": "tool-policy:adr-0008#decision",
+      "statement": "Production topology is unavailable because live infrastructure and network access are outside the v0.1 trust boundary.",
+      "status": "unavailable"
+    },
+    {
+      "evidence_ids": [],
+      "id": "unknown.runtime-behavior",
+      "origin": "unavailable",
+      "source": "tool-policy:adr-0008#decision",
+      "statement": "Runtime behavior is unavailable because target execution is outside the v0.1 trust boundary.",
+      "status": "unavailable"
+    },
+    {
+      "evidence_ids": [],
+      "id": "unknown.static.deployment",
+      "origin": "unavailable",
+      "source": "target:sha256:f88420a4169764cdf464b0d286cf7ec57e80d5f17e65706c833e41831fe1581f#inventory/deployment",
+      "statement": "Static inventory found no recognized deployment evidence.",
+      "status": "unavailable"
+    },
+    {
+      "evidence_ids": [],
+      "id": "unknown.static.interface",
+      "origin": "unavailable",
+      "source": "target:sha256:f88420a4169764cdf464b0d286cf7ec57e80d5f17e65706c833e41831fe1581f#inventory/interface",
+      "statement": "Static inventory found no recognized interface evidence.",
+      "status": "unavailable"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "answers": {
+    "application.name": {
+      "status": "answered",
+      "value": "Macro Technical Pulse"
+    },
+    "application.purpose": {
+      "status": "answered",
+      "value": "Capture and gather economic and market data streams, store them for feature engineering and machine-learning price-prediction models, deploy trained models on live streams, and provide visualization of the collected data, engineered features, signals, and predictions. Technical-response measurement may later analyze price sensitivity to external signals, but it is not the application's primary purpose."
+    },
+    "application.stakeholders": {
+      "status": "answered",
+      "value": [
+        "Jack Rory Staunton",
+        "application maintainers",
+        "economic and market data researchers",
+        "feature-engineering and model developers",
+        "model validators",
+        "independent risk reviewers"
+      ]
+    },
+    "requirements.priorities": {
+      "status": "answered",
+      "value": [
+        "establish reliable economic and market source-data collection and API consumption",
+        "define source-data schemas and database storage after ingestion is established",
+        "build visualization for collected data, features, signals, and predictions",
+        "develop feature-engineering pipelines",
+        "develop and validate machine-learning price-prediction models",
+        "deploy trained models on live data streams",
+        "later evaluate price sensitivity to external signals through technical-response analysis",
+        "defer comprehensive revision handling until a working prototype demonstrates the need"
+      ]
+    },
+    "requirements.constraints": {
+      "status": "answered",
+      "value": [
+        "no autonomous brokerage or order execution",
+        "no investment-advice claims",
+        "no committed credentials",
+        "provider data, exchange observations, and third-party artifacts retain their own licensing and usage terms",
+        "publication, availability, and receipt chronology must remain distinguishable where source behavior requires it",
+        "no owner-approved monetary budget or delivery deadline is currently established"
+      ]
+    },
+    "requirements.risk-tolerance": {
+      "status": "answered",
+      "value": "Fail closed when provenance, licensing, or authorization is materially uncertain. Require explicit human approval for publication, notifications, broker connectivity, order execution, destructive actions, or other external writes. Strategy and readiness claims require independent risk review."
+    },
+    "requirements.deployment-context": {
+      "status": "answered",
+      "value": "Begin with local development and CI while establishing source-data collection and API consumption. Address explicit schemas and database storage next. Subsequent phases must support visualization, feature-engineering and model-development workflows, followed by deployment of trained models on live data streams. The database technology, live-stream infrastructure, model-serving topology, update policy, rollback policy, and operational service levels remain undecided. Live model deployment does not authorize broker connectivity or order execution."
+    },
+    "requirements.evidence-expectations": {
+      "status": "answered",
+      "value": [
+        "exact source and provider provenance",
+        "source publication, availability, and receipt chronology where material",
+        "versioned schemas and transformations",
+        "point-in-time evaluation that excludes unavailable future information",
+        "explicit naive baselines and temporal validation for predictive models",
+        "independent model validation and risk review",
+        "clear separation of observed, owner-declared, derived, proposed, and unavailable claims"
+      ]
+    }
+  },
+  "contradictions": [],
+  "questionnaire_sha256": "4333b47be7a4694e0995f698345eea5b0fe19a672bfaef418608934a905f5bc9",
+  "schema_version": "1.0",
+  "submission": {
+    "recorded_on": "2026-08-25",
+    "source": "owner interview: Jack Rory Staunton"
+  },
+  "unknowns": [
+    "Database technology and storage topology are not yet selected.",
+    "Live-stream providers, latency requirements, and service-level objectives are not yet selected.",
+    "Model serving, retraining, promotion, rollback, monitoring, and retirement policies are not yet selected.",
+    "No monetary budget or delivery deadline is currently established."
+  ]
+}
