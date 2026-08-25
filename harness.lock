@@ -212,7 +212,7 @@
       "ownership": "merge-required"
     },
     "CHANGELOG.md": {
-      "sha256": "5d96975b2c352679cc12bd758035cd2e5cff0e4c60fffcf2c91120942398a8a0",
+      "sha256": "4672bc7ed7a712063a18e30d66345d93579dc7181e11ec55b6be9c02c06f101f",
       "ownership": "merge-required"
     },
     "CONTRIBUTING.md": {
@@ -244,7 +244,7 @@
       "ownership": "project-owned"
     },
     "application_tests/test_questionnaire.py": {
-      "sha256": "59a24c89ed311766c7b1778d28e3997555ecea295745c0d8ed4bbe42da1fca7c",
+      "sha256": "ecab2203453f39027e57726fb1280e4a5ecf9dc5cb90f4c2bb3e68700144daf7",
       "ownership": "project-owned"
     },
     "docs/adr/000-template.md": {
@@ -300,7 +300,7 @@
       "ownership": "project-owned"
     },
     "docs/project/handoff.md": {
-      "sha256": "ffdee3f16547708df5cb50614da48d785e1768faed6970c83e3cba338b0b1fc5",
+      "sha256": "dbee558fa3327a9e264215c073123768624b5b5d3f8e48e7d5a68b277c5b5393",
       "ownership": "project-owned"
     },
     "docs/project/outcome-telemetry.md": {
@@ -324,7 +324,7 @@
       "ownership": "project-owned"
     },
     "docs/reports/README.md": {
-      "sha256": "68fa7fbac362cc69dbb0acb871e3810afa848f680d56c38a881cc22f2c0c8cc2",
+      "sha256": "0c52dc7f4654c60dea463d59f7eb2a677a3b8f8e3bbcb650cc3b901d805587f7",
       "ownership": "project-owned"
     },
     "docs/reports/issue-11-procurement-intelligence-lab-dogfood.md": {
@@ -375,6 +375,10 @@
       "sha256": "2965f6f24a78487309862a5c52126d639202cf180a8e5eb731061e029627aafb",
       "ownership": "project-owned"
     },
+    "docs/reports/issue-4-macro-technical-pulse-dogfood.md": {
+      "sha256": "6e1a3527e7f0032eb32be654516edd697ebcc16d9719915300abf57c01bb1359",
+      "ownership": "project-owned"
+    },
     "docs/reports/local-1-agentic-repo-auditor-dogfood.md": {
       "sha256": "4bbee08cf1bf55504cc2ba6287142d160c100d22b4dfdf61c64ac641774846b5",
       "ownership": "project-owned"
@@ -393,6 +397,30 @@
     },
     "examples/application-questionnaire.answers.json": {
       "sha256": "19f402123da947a07e363f22979382fa7a2e5f71ee1e8e47dcd35730cc2974a6",
+      "ownership": "project-owned"
+    },
+    "examples/macro-technical-pulse.assessment.json": {
+      "sha256": "fff4358a7342e5da4b29ee008e4b482b081b39963e3f4b5d3591ee6f45ec5290",
+      "ownership": "project-owned"
+    },
+    "examples/macro-technical-pulse.assessment.md": {
+      "sha256": "8a5e60a612aea8e3d5e974e12096a52d2046215dbf67e8bf216a7b9defd9b917",
+      "ownership": "project-owned"
+    },
+    "examples/macro-technical-pulse.auditor-report.json": {
+      "sha256": "93505fb1c11f7675b155355a2ad9119d68ad5a793b2de7a7e10da31a937b097a",
+      "ownership": "project-owned"
+    },
+    "examples/macro-technical-pulse.context.json": {
+      "sha256": "0065cafb9a92036cfe6dc4d06e033df3d6009820c4aaeec38f6f7eeef9f8be76",
+      "ownership": "project-owned"
+    },
+    "examples/macro-technical-pulse.questionnaire.answers.json": {
+      "sha256": "0d1dca205e1de8297c5d88619ef69790de58378d0d557a2812e9ce4619104185",
+      "ownership": "project-owned"
+    },
+    "examples/macro-technical-pulse.questionnaire.json": {
+      "sha256": "4333b47be7a4694e0995f698345eea5b0fe19a672bfaef418608934a905f5bc9",
       "ownership": "project-owned"
     },
     "harness/__init__.py": {
@@ -712,7 +740,7 @@
       "ownership": "merge-required"
     },
     "schemas/application-assessment-report.schema.json": {
-      "sha256": "489503db748a59785257dd451f01004285ecfc1ca9ed067b6f468fb5e10b81bb",
+      "sha256": "83f84f128b001e0bfc0d04b8f0c01e285f9aff7f8df3b11dc4966df3bdf46100",
       "ownership": "project-owned"
     },
     "schemas/application-context.schema.json": {

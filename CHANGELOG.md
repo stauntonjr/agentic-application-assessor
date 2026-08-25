@@ -27,5 +27,13 @@ All notable product changes are recorded here. Product and harness versions are 
 - Deterministic gap-only `questionnaire` and `reconcile` commands, questionnaire and answer schemas
   `1.0`, and backward-compatible application-context schema `1.1` with durable requirements,
   provenance, contradictions, unknowns, reviewable drafts, and explicit owner acceptance.
+- Complete deterministic Macro Technical Pulse dogfood artifacts: exact-target questionnaire,
+  owner-accepted context, canonical Auditor import, reproducible JSON and Markdown assessments, and
+  an evidence-labeled report of current semantic coverage and bounded product gaps.
+
+### Fixed
+
+- Assessment-report schema validation now accepts truthful input descriptors for both supported
+  application-context versions, `1.0` and `1.1`.
 
 No tag, release, package publication, hosted service, or deployment exists.

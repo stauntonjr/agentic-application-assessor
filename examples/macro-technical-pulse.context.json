@@ -1,0 +1,163 @@
+{
+  "answers_input": {
+    "path": "macro-technical-pulse.questionnaire.answers.json",
+    "recorded_on": "2026-08-25",
+    "schema_version": "1.0",
+    "sha256": "0d1dca205e1de8297c5d88619ef69790de58378d0d557a2812e9ce4619104185",
+    "source": "owner interview: Jack Rory Staunton"
+  },
+  "application": {
+    "name": "Macro Technical Pulse",
+    "purpose": "Capture and gather economic and market data streams, store them for feature engineering and machine-learning price-prediction models, deploy trained models on live streams, and provide visualization of the collected data, engineered features, signals, and predictions. Technical-response measurement may later analyze price sensitivity to external signals, but it is not the application's primary purpose.",
+    "stakeholders": [
+      "Jack Rory Staunton",
+      "application maintainers",
+      "economic and market data researchers",
+      "feature-engineering and model developers",
+      "model validators",
+      "independent risk reviewers"
+    ]
+  },
+  "application_provenance": {
+    "name": {
+      "origin": "human-declared",
+      "recorded_on": "2026-08-25",
+      "source": "pyproject.toml#/project/name",
+      "status": "confirmed"
+    },
+    "purpose": {
+      "origin": "human-declared",
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "status": "confirmed"
+    },
+    "stakeholders": {
+      "origin": "human-declared",
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "status": "confirmed"
+    }
+  },
+  "contradictions": [],
+  "questionnaire_input": {
+    "path": "macro-technical-pulse.questionnaire.json",
+    "repository_evidence": [
+      {
+        "id": "repository.target-identity",
+        "kind": "git-target-identity",
+        "sha256": "f88420a4169764cdf464b0d286cf7ec57e80d5f17e65706c833e41831fe1581f",
+        "source": "target:sha256:f88420a4169764cdf464b0d286cf7ec57e80d5f17e65706c833e41831fe1581f",
+        "value": "macro-technical-pulse"
+      },
+      {
+        "id": "repository.pyproject-name",
+        "kind": "package-metadata",
+        "sha256": "d8d37364dcb864a7350ad05ac78e5d2ca754a085239e7514653324b863f555da",
+        "source": "pyproject.toml#/project/name",
+        "value": "macro-technical-pulse"
+      }
+    ],
+    "schema_version": "1.0",
+    "sha256": "4333b47be7a4694e0995f698345eea5b0fe19a672bfaef418608934a905f5bc9",
+    "target": {
+      "branch": "(detached)",
+      "dirty": false,
+      "name": "macro-technical-pulse",
+      "revision": "1f06504d850d1160bef9fa6228c3ebdc4e8f02ae",
+      "state_id": "sha256:f88420a4169764cdf464b0d286cf7ec57e80d5f17e65706c833e41831fe1581f"
+    }
+  },
+  "requirements": {
+    "constraints": {
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "status": "confirmed",
+      "value": [
+        "no autonomous brokerage or order execution",
+        "no investment-advice claims",
+        "no committed credentials",
+        "provider data, exchange observations, and third-party artifacts retain their own licensing and usage terms",
+        "publication, availability, and receipt chronology must remain distinguishable where source behavior requires it",
+        "no owner-approved monetary budget or delivery deadline is currently established"
+      ]
+    },
+    "deployment_context": {
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "status": "confirmed",
+      "value": "Begin with local development and CI while establishing source-data collection and API consumption. Address explicit schemas and database storage next. Subsequent phases must support visualization, feature-engineering and model-development workflows, followed by deployment of trained models on live data streams. The database technology, live-stream infrastructure, model-serving topology, update policy, rollback policy, and operational service levels remain undecided. Live model deployment does not authorize broker connectivity or order execution."
+    },
+    "evidence_expectations": {
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "status": "confirmed",
+      "value": [
+        "exact source and provider provenance",
+        "source publication, availability, and receipt chronology where material",
+        "versioned schemas and transformations",
+        "point-in-time evaluation that excludes unavailable future information",
+        "explicit naive baselines and temporal validation for predictive models",
+        "independent model validation and risk review",
+        "clear separation of observed, owner-declared, derived, proposed, and unavailable claims"
+      ]
+    },
+    "priorities": {
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "status": "confirmed",
+      "value": [
+        "establish reliable economic and market source-data collection and API consumption",
+        "define source-data schemas and database storage after ingestion is established",
+        "build visualization for collected data, features, signals, and predictions",
+        "develop feature-engineering pipelines",
+        "develop and validate machine-learning price-prediction models",
+        "deploy trained models on live data streams",
+        "later evaluate price sensitivity to external signals through technical-response analysis",
+        "defer comprehensive revision handling until a working prototype demonstrates the need"
+      ]
+    },
+    "risk_tolerance": {
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "status": "confirmed",
+      "value": "Fail closed when provenance, licensing, or authorization is materially uncertain. Require explicit human approval for publication, notifications, broker connectivity, order execution, destructive actions, or other external writes. Strategy and readiness claims require independent risk review."
+    }
+  },
+  "review": {
+    "accepted_by": "Jack Rory Staunton",
+    "confirmed_on": "2026-08-25",
+    "source": "questionnaire answers from owner interview: Jack Rory Staunton",
+    "status": "accepted"
+  },
+  "schema_version": "1.1",
+  "unknowns": [
+    {
+      "id": "unknown.1c4b6c1f9559844c",
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "statement": "Model serving, retraining, promotion, rollback, monitoring, and retirement policies are not yet selected.",
+      "status": "open"
+    },
+    {
+      "id": "unknown.7b3898cee79bdfb4",
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "statement": "No monetary budget or delivery deadline is currently established.",
+      "status": "open"
+    },
+    {
+      "id": "unknown.e56b011e1747c565",
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "statement": "Live-stream providers, latency requirements, and service-level objectives are not yet selected.",
+      "status": "open"
+    },
+    {
+      "id": "unknown.fb01d2da548254dd",
+      "recorded_on": "2026-08-25",
+      "source": "owner interview: Jack Rory Staunton",
+      "statement": "Database technology and storage topology are not yet selected.",
+      "status": "open"
+    }
+  ]
+}

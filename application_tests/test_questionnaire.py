@@ -178,6 +178,34 @@ def test_reconcile_rejects_hand_edited_gap_set(tmp_path: Path) -> None:
         reconcile_questionnaire(root, questionnaire_path, answers_path)
 
 
+def test_schema_1_1_context_assessment_matches_public_report_schema(tmp_path: Path) -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    root = repository(tmp_path)
+    questionnaire = generate_questionnaire(root)
+    questionnaire_path = tmp_path / "questionnaire.json"
+    digest = write_questionnaire(questionnaire_path, questionnaire)
+    answers = answer_payload(digest, {item["id"] for item in questionnaire["questions"]})
+    answers_path = tmp_path / "answers.json"
+    answers_path.write_text(json.dumps(answers), encoding="utf-8")
+    accepted = reconcile_questionnaire(
+        root,
+        questionnaire_path,
+        answers_path,
+        accept_by="Jack Rory Staunton",
+        accepted_on="2026-08-25",
+    )
+    accepted_path = tmp_path / "accepted.json"
+    accepted_path.write_text(render_questionnaire_json(accepted), encoding="utf-8")
+    report = assess(root, accepted_path).as_dict()
+    schema = json.loads(
+        Path("schemas/application-assessment-report.schema.json").read_text(encoding="utf-8")
+    )
+
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.Draft202012Validator(schema).validate(report)
+    assert report["inputs"]["context"]["schema_version"] == "1.1"
+
+
 def test_accepted_context_is_preserved_and_cannot_be_silently_overwritten(tmp_path: Path) -> None:
     root = repository(tmp_path)
     context_path = accepted_context(tmp_path)
