@@ -304,4 +304,5 @@ def assess(target: Path, context_path: Path, auditor_report: Path | None = None)
         tuple(unknowns),
         coverage,
         auditor_input,
+        context_schema_version=context["schema_version"],
     )

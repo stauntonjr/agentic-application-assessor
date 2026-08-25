@@ -212,7 +212,7 @@
       "ownership": "merge-required"
     },
     "CHANGELOG.md": {
-      "sha256": "be59038c047f15f817c0cdff1420521bcf4f144cf4186bcd745ea456c68110e4",
+      "sha256": "5d96975b2c352679cc12bd758035cd2e5cff0e4c60fffcf2c91120942398a8a0",
       "ownership": "merge-required"
     },
     "CONTRIBUTING.md": {
@@ -228,7 +228,7 @@
       "ownership": "merge-required"
     },
     "README.md": {
-      "sha256": "0411884a16497b64f1c6d6b2982f4ed64f3d144fe6361d06a4c5e8409b9cff1e",
+      "sha256": "b199ac656a0493ca8b7a6d9687b71ee37fca642a76d5bf91b174703dca951ed2",
       "ownership": "merge-required"
     },
     "SECURITY.md": {
@@ -240,7 +240,11 @@
       "ownership": "project-owned"
     },
     "application_tests/test_cli.py": {
-      "sha256": "545d1e9d4afc657433d38a955468cf4fcbaf0f36f5dd4f15352d6574f774b8b9",
+      "sha256": "9871b7766b5553f61c8d53354dcf1088f03aae32be066071b2f6d85bc2426e0d",
+      "ownership": "project-owned"
+    },
+    "application_tests/test_questionnaire.py": {
+      "sha256": "59a24c89ed311766c7b1778d28e3997555ecea295745c0d8ed4bbe42da1fca7c",
       "ownership": "project-owned"
     },
     "docs/adr/000-template.md": {
@@ -279,6 +283,10 @@
       "sha256": "814e8d45f15001374cbde563e4640baa9085b75f009445d40745848beb6e4a70",
       "ownership": "project-owned"
     },
+    "docs/adr/0009-requirements-questionnaire-workflow.md": {
+      "sha256": "b9a88b92afebbf24300883f3b31e857f5d72978411785fb479984686d8301b20",
+      "ownership": "project-owned"
+    },
     "docs/project/charter.md": {
       "sha256": "16cd29bdd948d924b581aa181f344aa9f3a57d81cca5927b6fca3a13139c410f",
       "ownership": "project-owned"
@@ -292,7 +300,7 @@
       "ownership": "project-owned"
     },
     "docs/project/handoff.md": {
-      "sha256": "5a05d0ed9cf6e50e8f528a042e68a6e6023dd0f132b2ed134d4fc36d941d63e7",
+      "sha256": "ffdee3f16547708df5cb50614da48d785e1768faed6970c83e3cba338b0b1fc5",
       "ownership": "project-owned"
     },
     "docs/project/outcome-telemetry.md": {
@@ -363,6 +371,10 @@
       "sha256": "9fb6a0366329aaed102a664a9055c69c7b667d14d63f9742157636e7767d2a6a",
       "ownership": "project-owned"
     },
+    "docs/reports/issue-3-requirements-questionnaire.md": {
+      "sha256": "2965f6f24a78487309862a5c52126d639202cf180a8e5eb731061e029627aafb",
+      "ownership": "project-owned"
+    },
     "docs/reports/local-1-agentic-repo-auditor-dogfood.md": {
       "sha256": "4bbee08cf1bf55504cc2ba6287142d160c100d22b4dfdf61c64ac641774846b5",
       "ownership": "project-owned"
@@ -377,6 +389,10 @@
     },
     "examples/agentic-repo-auditor.context.json": {
       "sha256": "a02546b1d2424392e964cba7df6761f68ab56e836f99ab5db96e17dcfcb227a8",
+      "ownership": "project-owned"
+    },
+    "examples/application-questionnaire.answers.json": {
+      "sha256": "19f402123da947a07e363f22979382fa7a2e5f71ee1e8e47dcd35730cc2974a6",
       "ownership": "project-owned"
     },
     "harness/__init__.py": {
@@ -700,7 +716,15 @@
       "ownership": "project-owned"
     },
     "schemas/application-context.schema.json": {
-      "sha256": "cfe764461474e26c7d7f6858bf6de6bac179a865523e1deec31f957216aa4471",
+      "sha256": "072504057d0accd2710ba6bbb97efb2dc953b582c6ec81ab577049402083335e",
+      "ownership": "project-owned"
+    },
+    "schemas/application-questionnaire-answers.schema.json": {
+      "sha256": "55ff7aa829e83888826f3bb375f3843b648d1eac731c2d362bde5cc40c948878",
+      "ownership": "project-owned"
+    },
+    "schemas/application-questionnaire.schema.json": {
+      "sha256": "51373e6a8efa3e3cba6877d50055ee1dbee45b94f34bba5fd6746ab1aa6f3550",
       "ownership": "project-owned"
     },
     "scripts/package_smoke.py": {
@@ -716,7 +740,7 @@
       "ownership": "project-owned"
     },
     "src/agentic_application_assessor/assess.py": {
-      "sha256": "67627da984e2d7d7af382850233b279b0aea384e92f20f1db57b873ba0400b0f",
+      "sha256": "e81913aae7d31b61cfed42a6ce3089a4db054d7621f1eaf4ed45e524605c9e94",
       "ownership": "project-owned"
     },
     "src/agentic_application_assessor/auditor.py": {
@@ -724,11 +748,11 @@
       "ownership": "project-owned"
     },
     "src/agentic_application_assessor/cli.py": {
-      "sha256": "e9341262498821e93266a08413ca999ec9c88eee1258b5a1abc2673387198a30",
+      "sha256": "0c6c7a80d6b11d0d93a1b6982ff544509eb5473f1b21bab60ce00258c4ad54a3",
       "ownership": "project-owned"
     },
     "src/agentic_application_assessor/context.py": {
-      "sha256": "248d7ff7ee3af084ec3977610c99087ab4b4b0fda4d52d886b68c94d8f68778a",
+      "sha256": "a5a13a24d698374014a3c0c0b78e9614e9bc29fd9819a090f63fb415d748baac",
       "ownership": "project-owned"
     },
     "src/agentic_application_assessor/errors.py": {
@@ -740,7 +764,11 @@
       "ownership": "project-owned"
     },
     "src/agentic_application_assessor/model.py": {
-      "sha256": "6fcc335c9e61e579fd7b947503ade3fbee5871393859ad8103d7c1c8fe56d6fb",
+      "sha256": "8241c3b3879d8585d86f0c53939e5f738a9443260b7cb937a9a47133c70371f1",
+      "ownership": "project-owned"
+    },
+    "src/agentic_application_assessor/questionnaire.py": {
+      "sha256": "0cb57d799f48570ae321dc32da256db76acddf6503d22a348b96b676638ecf2c",
       "ownership": "project-owned"
     },
     "src/agentic_application_assessor/render.py": {

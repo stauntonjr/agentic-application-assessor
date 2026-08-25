@@ -6,58 +6,59 @@
   "additionalProperties": false,
   "required": ["schema_version", "review", "application"],
   "properties": {
-    "schema_version": {"const": "1.0"},
-    "review": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["status", "confirmed_on", "source"],
-      "properties": {
-        "status": {"const": "accepted"},
-        "confirmed_on": {"type": "string", "format": "date"},
-        "source": {"type": "string", "minLength": 1, "maxLength": 4096}
-      }
-    },
-    "application": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["name", "purpose", "stakeholders"],
-      "properties": {
-        "name": {"type": "string", "minLength": 1, "maxLength": 4096},
-        "purpose": {"type": "string", "minLength": 1, "maxLength": 4096},
-        "stakeholders": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 4096}}
-      }
-    },
-    "components": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/component"}},
-    "workflows": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/workflow"}},
-    "data_assets": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/dataAsset"}},
-    "quality_scenarios": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/qualityScenario"}}
+    "schema_version": {"enum": ["1.0", "1.1"]},
+    "review": {"oneOf": [{"$ref": "#/$defs/legacyReview"}, {"$ref": "#/$defs/draftReview"}, {"$ref": "#/$defs/acceptedReview"}]},
+    "application": {"type": "object"},
+    "components": {"type": "array", "maxItems": 256},
+    "workflows": {"type": "array", "maxItems": 256},
+    "data_assets": {"type": "array", "maxItems": 256},
+    "quality_scenarios": {"type": "array", "maxItems": 256},
+    "requirements": {"type": "object", "additionalProperties": false, "properties": {"priorities": {"$ref": "#/$defs/listDeclaration"}, "constraints": {"$ref": "#/$defs/listDeclaration"}, "risk_tolerance": {"$ref": "#/$defs/stringDeclaration"}, "deployment_context": {"$ref": "#/$defs/stringDeclaration"}, "evidence_expectations": {"$ref": "#/$defs/listDeclaration"}}},
+    "application_provenance": {"type": "object", "additionalProperties": false, "properties": {"name": {"$ref": "#/$defs/provenance"}, "purpose": {"$ref": "#/$defs/provenance"}, "stakeholders": {"$ref": "#/$defs/provenance"}}},
+    "contradictions": {"$ref": "#/$defs/textList"},
+    "unknowns": {"$ref": "#/$defs/unknownRecords"},
+    "questionnaire_input": {"$ref": "#/$defs/questionnaireInput"},
+    "answers_input": {"$ref": "#/$defs/answersInput"}
   },
+  "allOf": [
+    {"if": {"properties": {"schema_version": {"const": "1.0"}}}, "then": {"properties": {"review": {"$ref": "#/$defs/legacyReview"}, "application": {"$ref": "#/$defs/legacyApplication"}, "components": {"items": {"$ref": "#/$defs/legacyComponent"}}, "workflows": {"items": {"$ref": "#/$defs/legacyWorkflow"}}, "data_assets": {"items": {"$ref": "#/$defs/legacyDataAsset"}}, "quality_scenarios": {"items": {"$ref": "#/$defs/legacyQualityScenario"}}}, "not": {"anyOf": [{"required": ["requirements"]}, {"required": ["application_provenance"]}, {"required": ["contradictions"]}, {"required": ["unknowns"]}, {"required": ["questionnaire_input"]}, {"required": ["answers_input"]}]}}},
+    {"if": {"properties": {"schema_version": {"const": "1.1"}}}, "then": {"required": ["questionnaire_input", "answers_input"], "properties": {"application": {"$ref": "#/$defs/application"}, "components": {"items": {"$ref": "#/$defs/component"}}, "workflows": {"items": {"$ref": "#/$defs/workflow"}}, "data_assets": {"items": {"$ref": "#/$defs/dataAsset"}}, "quality_scenarios": {"items": {"$ref": "#/$defs/qualityScenario"}}}}},
+    {"if": {"properties": {"schema_version": {"const": "1.1"}, "review": {"properties": {"status": {"const": "accepted"}}, "required": ["status"]}}}, "then": {"required": ["application_provenance"], "properties": {"review": {"$ref": "#/$defs/acceptedReview"}, "application": {"$ref": "#/$defs/acceptedApplication"}, "requirements": {"$ref": "#/$defs/acceptedRequirements"}, "application_provenance": {"$ref": "#/$defs/acceptedApplicationProvenance"}}}}
+  ],
   "$defs": {
-    "component": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "name", "responsibility", "paths"],
-      "properties": {
-        "id": {"$ref": "#/$defs/recordId"},
-        "name": {"type": "string", "minLength": 1},
-        "responsibility": {"type": "string", "minLength": 1},
-        "paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
-      }
-    },
-    "workflow": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "name", "description"],
-      "properties": {"id": {"$ref": "#/$defs/recordId"}, "name": {"type": "string", "minLength": 1}, "description": {"type": "string", "minLength": 1}}
-    },
-    "dataAsset": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "name", "classification", "description"],
-      "properties": {"id": {"$ref": "#/$defs/recordId"}, "name": {"type": "string", "minLength": 1}, "classification": {"type": "string", "minLength": 1}, "description": {"type": "string", "minLength": 1}}
-    },
-    "qualityScenario": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "attribute", "stimulus", "response"],
-      "properties": {"id": {"$ref": "#/$defs/recordId"}, "attribute": {"type": "string", "minLength": 1}, "stimulus": {"type": "string", "minLength": 1}, "response": {"type": "string", "minLength": 1}}
-    },
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "textList": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/contradictionRecord"}},
+    "nonemptyTextList": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "legacyReview": {"type": "object", "additionalProperties": false, "required": ["status", "confirmed_on", "source"], "properties": {"status": {"const": "accepted"}, "confirmed_on": {"type": "string", "format": "date"}, "source": {"$ref": "#/$defs/text"}}},
+    "draftReview": {"type": "object", "additionalProperties": false, "required": ["status", "drafted_on", "source"], "properties": {"status": {"const": "draft"}, "drafted_on": {"type": "string", "format": "date"}, "source": {"$ref": "#/$defs/text"}}},
+    "acceptedReview": {"type": "object", "additionalProperties": false, "required": ["status", "confirmed_on", "source", "accepted_by"], "properties": {"status": {"const": "accepted"}, "confirmed_on": {"type": "string", "format": "date"}, "source": {"$ref": "#/$defs/text"}, "accepted_by": {"$ref": "#/$defs/text"}}},
+    "application": {"type": "object", "additionalProperties": false, "properties": {"name": {"$ref": "#/$defs/text"}, "purpose": {"$ref": "#/$defs/text"}, "stakeholders": {"$ref": "#/$defs/nonemptyTextList"}}},
+    "acceptedApplication": {"type": "object", "additionalProperties": false, "required": ["name", "purpose", "stakeholders"], "properties": {"name": {"$ref": "#/$defs/text"}, "purpose": {"$ref": "#/$defs/text"}, "stakeholders": {"$ref": "#/$defs/nonemptyTextList"}}},
+    "legacyApplication": {"type": "object", "additionalProperties": false, "required": ["name", "purpose", "stakeholders"], "properties": {"name": {"type": "string", "minLength": 1, "maxLength": 4096}, "purpose": {"type": "string", "minLength": 1, "maxLength": 4096}, "stakeholders": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 4096}}}},
+    "metadata": {"type": "object", "additionalProperties": false, "required": ["status", "source", "recorded_on"], "properties": {"status": {"enum": ["confirmed", "provisional", "TBD", "not-applicable"]}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "stringDeclaration": {"type": "object", "additionalProperties": false, "required": ["value", "status", "source", "recorded_on"], "properties": {"value": {"$ref": "#/$defs/text"}, "status": {"enum": ["confirmed", "provisional", "TBD", "not-applicable"]}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "listDeclaration": {"type": "object", "additionalProperties": false, "required": ["value", "status", "source", "recorded_on"], "properties": {"value": {"$ref": "#/$defs/nonemptyTextList"}, "status": {"enum": ["confirmed", "provisional", "TBD", "not-applicable"]}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "acceptedStringDeclaration": {"type": "object", "additionalProperties": false, "required": ["value", "status", "source", "recorded_on"], "properties": {"value": {"$ref": "#/$defs/text"}, "status": {"enum": ["confirmed", "TBD", "not-applicable"]}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "acceptedListDeclaration": {"type": "object", "additionalProperties": false, "required": ["value", "status", "source", "recorded_on"], "properties": {"value": {"$ref": "#/$defs/nonemptyTextList"}, "status": {"enum": ["confirmed", "TBD", "not-applicable"]}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "acceptedRequirements": {"type": "object", "additionalProperties": false, "properties": {"priorities": {"$ref": "#/$defs/acceptedListDeclaration"}, "constraints": {"$ref": "#/$defs/acceptedListDeclaration"}, "risk_tolerance": {"$ref": "#/$defs/acceptedStringDeclaration"}, "deployment_context": {"$ref": "#/$defs/acceptedStringDeclaration"}, "evidence_expectations": {"$ref": "#/$defs/acceptedListDeclaration"}}},
+    "provenance": {"type": "object", "additionalProperties": false, "required": ["origin", "status", "source", "recorded_on"], "properties": {"origin": {"enum": ["observed", "human-declared"]}, "status": {"enum": ["confirmed", "provisional"]}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "confirmedProvenance": {"type": "object", "additionalProperties": false, "required": ["origin", "status", "source", "recorded_on"], "properties": {"origin": {"enum": ["observed", "human-declared"]}, "status": {"const": "confirmed"}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "acceptedApplicationProvenance": {"type": "object", "additionalProperties": false, "required": ["name", "purpose", "stakeholders"], "properties": {"name": {"$ref": "#/$defs/confirmedProvenance"}, "purpose": {"$ref": "#/$defs/confirmedProvenance"}, "stakeholders": {"$ref": "#/$defs/confirmedProvenance"}}},
+    "target": {"type": "object", "additionalProperties": false, "required": ["name", "revision", "branch", "dirty", "state_id"], "properties": {"name": {"$ref": "#/$defs/text"}, "revision": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"}, "branch": {"$ref": "#/$defs/text"}, "dirty": {"type": "boolean"}, "state_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
+    "evidenceRecord": {"type": "object", "additionalProperties": false, "required": ["id", "kind", "source", "value", "sha256"], "properties": {"id": {"$ref": "#/$defs/text"}, "kind": {"$ref": "#/$defs/text"}, "source": {"$ref": "#/$defs/text"}, "value": {"$ref": "#/$defs/text"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
+    "questionnaireInput": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "schema_version", "target", "repository_evidence"], "properties": {"path": {"$ref": "#/$defs/text"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "schema_version": {"const": "1.0"}, "target": {"$ref": "#/$defs/target"}, "repository_evidence": {"type": "array", "minItems": 1, "maxItems": 64, "items": {"$ref": "#/$defs/evidenceRecord"}}}},
+    "answersInput": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "schema_version", "source", "recorded_on"], "properties": {"path": {"$ref": "#/$defs/text"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "schema_version": {"const": "1.0"}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "contradictionRecord": {"type": "object", "additionalProperties": false, "required": ["id", "statement", "status", "source", "recorded_on"], "properties": {"id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z0-9-]+)+$"}, "statement": {"$ref": "#/$defs/text"}, "status": {"const": "unresolved"}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "unknownRecord": {"type": "object", "additionalProperties": false, "required": ["id", "statement", "status", "source", "recorded_on"], "properties": {"id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z0-9-]+)+$"}, "statement": {"$ref": "#/$defs/text"}, "status": {"const": "open"}, "source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "unknownRecords": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/unknownRecord"}},
+    "legacyComponent": {"type": "object", "additionalProperties": false, "required": ["id", "name", "responsibility", "paths"], "properties": {"id": {"$ref": "#/$defs/recordId"}, "name": {"type": "string", "minLength": 1}, "responsibility": {"type": "string", "minLength": 1}, "paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}}},
+    "legacyWorkflow": {"type": "object", "additionalProperties": false, "required": ["id", "name", "description"], "properties": {"id": {"$ref": "#/$defs/recordId"}, "name": {"type": "string", "minLength": 1}, "description": {"type": "string", "minLength": 1}}},
+    "legacyDataAsset": {"type": "object", "additionalProperties": false, "required": ["id", "name", "classification", "description"], "properties": {"id": {"$ref": "#/$defs/recordId"}, "name": {"type": "string", "minLength": 1}, "classification": {"type": "string", "minLength": 1}, "description": {"type": "string", "minLength": 1}}},
+    "legacyQualityScenario": {"type": "object", "additionalProperties": false, "required": ["id", "attribute", "stimulus", "response"], "properties": {"id": {"$ref": "#/$defs/recordId"}, "attribute": {"type": "string", "minLength": 1}, "stimulus": {"type": "string", "minLength": 1}, "response": {"type": "string", "minLength": 1}}},
+    "component": {"type": "object", "additionalProperties": false, "required": ["id", "name", "responsibility", "paths"], "properties": {"id": {"$ref": "#/$defs/recordId"}, "name": {"$ref": "#/$defs/text"}, "responsibility": {"$ref": "#/$defs/text"}, "paths": {"$ref": "#/$defs/nonemptyTextList"}}},
+    "workflow": {"type": "object", "additionalProperties": false, "required": ["id", "name", "description"], "properties": {"id": {"$ref": "#/$defs/recordId"}, "name": {"$ref": "#/$defs/text"}, "description": {"$ref": "#/$defs/text"}}},
+    "dataAsset": {"type": "object", "additionalProperties": false, "required": ["id", "name", "classification", "description"], "properties": {"id": {"$ref": "#/$defs/recordId"}, "name": {"$ref": "#/$defs/text"}, "classification": {"$ref": "#/$defs/text"}, "description": {"$ref": "#/$defs/text"}}},
+    "qualityScenario": {"type": "object", "additionalProperties": false, "required": ["id", "attribute", "stimulus", "response"], "properties": {"id": {"$ref": "#/$defs/recordId"}, "attribute": {"$ref": "#/$defs/text"}, "stimulus": {"$ref": "#/$defs/text"}, "response": {"$ref": "#/$defs/text"}}},
     "recordId": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"}
   }
 }

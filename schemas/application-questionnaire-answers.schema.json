@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/stauntonjr/agentic-application-assessor/main/schemas/application-questionnaire-answers.schema.json",
+  "title": "Agentic Application Assessor questionnaire answers",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "questionnaire_sha256", "submission", "answers", "contradictions", "unknowns"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "questionnaire_sha256": {"$ref": "#/$defs/sha256"},
+    "submission": {"type": "object", "additionalProperties": false, "required": ["source", "recorded_on"], "properties": {"source": {"$ref": "#/$defs/text"}, "recorded_on": {"type": "string", "format": "date"}}},
+    "answers": {
+      "type": "object", "additionalProperties": false, "maxProperties": 8,
+      "properties": {
+        "application.name": {"$ref": "#/$defs/requiredStringAnswer"},
+        "application.purpose": {"$ref": "#/$defs/requiredStringAnswer"},
+        "application.stakeholders": {"$ref": "#/$defs/requiredListAnswer"},
+        "requirements.priorities": {"$ref": "#/$defs/listAnswer"},
+        "requirements.constraints": {"$ref": "#/$defs/listAnswer"},
+        "requirements.risk-tolerance": {"$ref": "#/$defs/stringAnswer"},
+        "requirements.deployment-context": {"$ref": "#/$defs/stringAnswer"},
+        "requirements.evidence-expectations": {"$ref": "#/$defs/listAnswer"}
+      }
+    },
+    "contradictions": {"$ref": "#/$defs/textList"},
+    "unknowns": {"$ref": "#/$defs/textList"}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^\\S(?:[\\s\\S]*\\S)?$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "textList": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "nonemptyTextList": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "unknown": {"type": "object", "additionalProperties": false, "required": ["status"], "properties": {"status": {"const": "unknown"}}},
+    "requiredStringAnswer": {"oneOf": [{"$ref": "#/$defs/unknown"}, {"type": "object", "additionalProperties": false, "required": ["status", "value"], "properties": {"status": {"const": "answered"}, "value": {"$ref": "#/$defs/text"}}}]},
+    "requiredListAnswer": {"oneOf": [{"$ref": "#/$defs/unknown"}, {"type": "object", "additionalProperties": false, "required": ["status", "value"], "properties": {"status": {"const": "answered"}, "value": {"$ref": "#/$defs/nonemptyTextList"}}}]},
+    "stringAnswer": {"oneOf": [{"$ref": "#/$defs/unknown"}, {"type": "object", "additionalProperties": false, "required": ["status", "value"], "properties": {"status": {"enum": ["answered", "not-applicable"]}, "value": {"$ref": "#/$defs/text"}}}]},
+    "listAnswer": {"oneOf": [{"$ref": "#/$defs/unknown"}, {"type": "object", "additionalProperties": false, "required": ["status", "value"], "properties": {"status": {"enum": ["answered", "not-applicable"]}, "value": {"$ref": "#/$defs/nonemptyTextList"}}}]}
+  }
+}

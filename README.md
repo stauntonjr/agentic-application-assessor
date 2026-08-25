@@ -49,6 +49,55 @@ Incompatible, stale, malformed, or structurally excessive artifacts fail with ex
 The Assessor reads the artifact; it never invokes the Auditor, executes the target, or treats
 imported findings as verified application behavior.
 
+### Gap-only requirements questionnaire
+
+Generate a canonical questionnaire from the exact repository and, when available, an accepted
+context:
+
+```bash
+agentic-application-assessor questionnaire /path/to/repository \
+  --context accepted-context.json > questionnaire.json
+```
+
+Stable questions cover unresolved intent, priorities, constraints, risk tolerance, deployment
+context, and evidence expectations. Accepted declarations are omitted. Bounded repository
+observations contextualize questions and can offer recommendations, but remain `observed`; only
+accepted context removes a question, and observations do not silently become owner intent.
+Questionnaire and answer artifacts use schema `1.0` and are bound by the SHA-256
+digest of the exact questionnaire bytes. Copy
+[`examples/application-questionnaire.answers.json`](examples/application-questionnaire.answers.json),
+replace its digest and answers, then create a reviewable draft:
+
+```bash
+agentic-application-assessor reconcile /path/to/repository \
+  --questionnaire questionnaire.json \
+  --answers application-questionnaire.answers.json \
+  --context accepted-context.json > draft-context.json
+```
+
+Omit `--context` in both commands when no accepted context exists. Reconciliation never overwrites
+an accepted declaration: an answer for a question that was omitted fails closed. It preserves
+contradictions, explicit unknowns, answer source/date/status, exact target identity, and accepted
+context digest. To emit application-context schema `1.1` with `review.status=accepted`, explicitly
+repeat reconciliation with both acceptance fields. When the questionnaire was generated with an
+accepted context, retain the same `--context` input during this acceptance transition:
+
+```bash
+agentic-application-assessor reconcile /path/to/repository \
+  --questionnaire questionnaire.json \
+  --answers application-questionnaire.answers.json \
+  --context accepted-context.json \
+  --accept-by "OWNER NAME" \
+  --accepted-on 2026-08-25 > accepted-context.json
+```
+
+The owner marker is provenance, not authentication. `assess` rejects drafts and continues to accept
+legacy schema-`1.0` accepted context. Inputs must be duplicate-key-free regular non-symlink JSON no
+larger than 256 KiB. The commands write only to standard output and do not call a model or network,
+execute target code, install dependencies, or modify the target repository.
+Supplying the two acceptance flags is an operator assertion over the complete rendered packet;
+explicit unknowns may remain in accepted context and are not silently converted into answers.
+
 ## Engineering harness
 
 This repository includes the `0.5.0` agentic engineering harness in a one-repository design.
@@ -61,6 +110,8 @@ Public work is managed in the
 delivered baseline is [Issue #1](https://github.com/stauntonjr/agentic-application-assessor/issues/1),
 and the fail-closed Auditor adapter is tracked in
 [Issue #2](https://github.com/stauntonjr/agentic-application-assessor/issues/2).
+The requirements-questionnaire workflow is tracked in
+[Issue #3](https://github.com/stauntonjr/agentic-application-assessor/issues/3).
 
 ```bash
 make smoke

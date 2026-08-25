@@ -1,0 +1,53 @@
+{
+  "answers": {
+    "application.purpose": {
+      "status": "answered",
+      "value": "Explain the application with reproducible, source-linked evidence."
+    },
+    "application.stakeholders": {
+      "status": "answered",
+      "value": [
+        "engineering lead",
+        "maintainer"
+      ]
+    },
+    "requirements.constraints": {
+      "status": "answered",
+      "value": [
+        "local-only processing",
+        "no target execution"
+      ]
+    },
+    "requirements.deployment-context": {
+      "status": "unknown"
+    },
+    "requirements.evidence-expectations": {
+      "status": "answered",
+      "value": [
+        "exact source provenance",
+        "deterministic reruns"
+      ]
+    },
+    "requirements.priorities": {
+      "status": "answered",
+      "value": [
+        "correctness",
+        "explicit unknowns"
+      ]
+    },
+    "requirements.risk-tolerance": {
+      "status": "answered",
+      "value": "Require human approval for external, privileged, or destructive effects."
+    }
+  },
+  "contradictions": [],
+  "questionnaire_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "schema_version": "1.0",
+  "submission": {
+    "recorded_on": "2026-08-25",
+    "source": "replace with the owner-reviewed answer source"
+  },
+  "unknowns": [
+    "Replace questionnaire_sha256 with the digest of the exact generated questionnaire."
+  ]
+}
