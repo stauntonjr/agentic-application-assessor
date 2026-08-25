@@ -102,6 +102,27 @@ class Target:
 
 
 @dataclass(frozen=True)
+class AuditorInput:
+    """Provenance for one validated Agentic Repo Auditor artifact."""
+
+    path: str
+    sha256: str
+    schema_version: str
+    tool_name: str
+    tool_version: str
+    target: Target
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "path": self.path,
+            "sha256": self.sha256,
+            "schema_version": self.schema_version,
+            "tool": {"name": self.tool_name, "version": self.tool_version},
+            "target": self.target.as_dict(),
+        }
+
+
+@dataclass(frozen=True)
 class Report:
     """Complete deterministic assessment report."""
 
@@ -114,6 +135,7 @@ class Report:
     contradictions: tuple[Claim, ...]
     unknowns: tuple[Claim, ...]
     coverage: dict[str, int]
+    auditor_input: AuditorInput | None = None
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -126,7 +148,9 @@ class Report:
                     "sha256": self.context_sha256,
                     "schema_version": "1.0",
                 },
-                "agentic_repo_auditor": None,
+                "agentic_repo_auditor": (
+                    self.auditor_input.as_dict() if self.auditor_input is not None else None
+                ),
             },
             "coverage": {key: self.coverage[key] for key in sorted(self.coverage)},
             "evidence": [item.as_dict() for item in sorted(self.evidence)],
