@@ -20,6 +20,11 @@ This is an orientation index, not a transcript or second roadmap.
   dedicated roadmap in [Project #16](https://github.com/users/stauntonjr/projects/16).
 - First slice: implemented deterministic, local, read-only static assessment with context/report
   schemas `1.0`, canonical JSON, and Markdown; full gates and independent revision-7 review passed.
+- Auditor adapter candidate: Issue #2 imports exactly Agentic Repo Auditor `0.1.0` schema `1.2`
+  JSON, supports SHA-1 and SHA-256 Git repositories, rejects stale, cross-collector, or
+  during-assessment target mutations, preserves baseline no-artifact output, and preserves Auditor
+  findings only as imported evidence. Attempt-2 independent verification and integration remain
+  pending.
 - First dogfood: Agentic Repo Auditor; Macro Technical Pulse follows.
 - Release/deployment: no tag, GitHub Release, package publication, hosted service, or deployment is
   authorized.
@@ -37,10 +42,10 @@ This is an orientation index, not a transcript or second roadmap.
 
 ## Next loop
 
-Implement the fail-closed Agentic Repo Auditor `0.1.0` schema-`1.2` import/rerun adapter in
+Verify and integrate the fail-closed Agentic Repo Auditor adapter in
 [Issue #2](https://github.com/stauntonjr/agentic-application-assessor/issues/2), then complete the
-requirements questionnaire in [Issue #3](https://github.com/stauntonjr/agentic-application-assessor/issues/3)
-before Macro Technical Pulse dogfood in
+requirements questionnaire in
+[Issue #3](https://github.com/stauntonjr/agentic-application-assessor/issues/3) before Macro Technical Pulse dogfood in
 [Issue #4](https://github.com/stauntonjr/agentic-application-assessor/issues/4).
 
 ## Refresh protocol

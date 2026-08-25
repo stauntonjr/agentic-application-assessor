@@ -19,5 +19,10 @@ All notable product changes are recorded here. Product and harness versions are 
   decoder traceback.
 - Public repository planning is bound to dedicated GitHub Project #16 with the accepted roadmap
   captured as Issues #1-#7.
+- Optional fail-closed import of Agentic Repo Auditor `0.1.0` schema-`1.2` JSON, including strict
+  artifact and target-state validation, source JSON pointers, tool identity, finding dispositions,
+  nested evidence, and artifact digest as `imported-tool` provenance without claim promotion.
+- SHA-1 and SHA-256 Git revision compatibility, normalized cross-tool branch/dirty checks, a final
+  target-state recheck, and byte-for-byte preservation of no-artifact Markdown output.
 
 No tag, release, package publication, hosted service, or deployment exists.

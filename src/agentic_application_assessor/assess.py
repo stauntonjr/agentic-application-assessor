@@ -8,6 +8,7 @@ import stat
 from pathlib import Path, PurePosixPath
 
 from . import __version__
+from .auditor import load_auditor_artifact
 from .context import load_context
 from .errors import AssessmentError
 from .git import target_identity
@@ -90,7 +91,7 @@ def _digest(path: Path) -> str:
     return value.hexdigest()
 
 
-def assess(target: Path, context_path: Path) -> Report:
+def assess(target: Path, context_path: Path, auditor_report: Path | None = None) -> Report:
     root, identity, paths = target_identity(target)
     if len(paths) > MAX_FILES:
         raise AssessmentError("repository contains too many visible files to assess safely")
@@ -280,6 +281,18 @@ def assess(target: Path, context_path: Path) -> Report:
             ),
         ]
     )
+    auditor_input = None
+    if auditor_report is not None:
+        imported = load_auditor_artifact(auditor_report, root, identity)
+        evidence.extend(imported.evidence)
+        if len(evidence) > MAX_EVIDENCE:
+            raise AssessmentError("combined evidence exceeds the 2,000-item safety bound")
+        coverage["imported-auditor-findings"] = imported.finding_count
+        coverage["imported-auditor-finding-evidence"] = imported.nested_evidence_count
+        auditor_input = imported.descriptor
+    final_root, final_identity, final_paths = target_identity(target)
+    if final_root != root or final_identity != identity or final_paths != paths:
+        raise AssessmentError("target changed during assessment")
     return Report(
         __version__,
         identity,
@@ -290,4 +303,5 @@ def assess(target: Path, context_path: Path) -> Report:
         tuple(contradictions),
         tuple(unknowns),
         coverage,
+        auditor_input,
     )

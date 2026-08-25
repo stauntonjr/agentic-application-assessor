@@ -98,3 +98,52 @@ def test_cli_deeply_nested_context_fails_without_traceback(tmp_path: Path) -> No
     assert result.stdout == ""
     assert result.stderr.startswith("agentic-application-assessor: cannot read context JSON:")
     assert "Traceback" not in result.stderr
+
+
+def test_cli_invalid_auditor_artifact_fails_closed_without_traceback(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    root.mkdir()
+    subprocess.run(["git", "init", "-b", "main"], cwd=root, check=True)
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=root, check=True)
+    subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=root, check=True)
+    (root / "README.md").write_text("# App\n", encoding="utf-8")
+    subprocess.run(["git", "add", "."], cwd=root, check=True)
+    subprocess.run(["git", "commit", "-m", "fixture"], cwd=root, check=True)
+    context = tmp_path / "context.json"
+    context.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "review": {"status": "accepted", "confirmed_on": "2026-08-24", "source": "owner"},
+                "application": {
+                    "name": "App",
+                    "purpose": "Test the CLI.",
+                    "stakeholders": ["maintainer"],
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    artifact = tmp_path / "auditor.json"
+    artifact.write_text('{"schema_version":"1.2","schema_version":"1.2"}\n', encoding="utf-8")
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "agentic_application_assessor",
+            "assess",
+            str(root),
+            "--context",
+            str(context),
+            "--auditor-report",
+            str(artifact),
+        ],
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    assert result.returncode == 2
+    assert result.stdout == ""
+    assert "duplicate object key: schema_version" in result.stderr
+    assert "Traceback" not in result.stderr

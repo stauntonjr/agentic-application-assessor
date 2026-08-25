@@ -23,6 +23,11 @@ def build_parser() -> argparse.ArgumentParser:
     command = commands.add_parser("assess", help="Assess one exact local Git repository root")
     command.add_argument("target", type=Path)
     command.add_argument("--context", required=True, type=Path)
+    command.add_argument(
+        "--auditor-report",
+        type=Path,
+        help="Import one Agentic Repo Auditor 0.1.0/schema-1.2 JSON report",
+    )
     command.add_argument("--format", choices=("json", "markdown"), default="markdown")
     return parser
 
@@ -30,7 +35,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
-        report = assess(args.target, args.context)
+        report = assess(args.target, args.context, args.auditor_report)
     except AssessmentError as exc:
         print(f"agentic-application-assessor: {exc}", file=sys.stderr)
         return 2

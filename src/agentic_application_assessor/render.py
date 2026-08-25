@@ -23,10 +23,15 @@ def render_markdown(report: Report) -> str:
         f"- Branch: `{target['branch']}`",
         f"- Dirty outer worktree: `{'yes' if target['dirty'] else 'no'}`",
         f"- State identity: `{target['state_id']}`",
-        "",
-        "## Executive findings",
-        "",
     ]
+    auditor = payload["inputs"]["agentic_repo_auditor"]
+    if auditor is not None:
+        lines.append(
+            "- Agentic Repo Auditor artifact: "
+            f"`{auditor['path']}`; tool `{auditor['tool']['version']}`; "
+            f"schema `{auditor['schema_version']}`; sha256 `{auditor['sha256']}`"
+        )
+    lines.extend(["", "## Executive findings", ""])
     for claim in payload["claims"]:
         lines.append(
             f"- **{claim['id']}** [{claim['origin']}; {claim['status']}]: {claim['statement']}"

@@ -9,7 +9,7 @@
     "schema_version": {"const": "1.0"},
     "tool": {"type": "object", "additionalProperties": false, "required": ["name", "version"], "properties": {"name": {"const": "agentic-application-assessor"}, "version": {"type": "string"}}},
     "target": {"type": "object", "additionalProperties": false, "required": ["name", "revision", "branch", "dirty", "state_id"], "properties": {"name": {"type": "string", "minLength": 1}, "revision": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"}, "branch": {"type": "string", "minLength": 1}, "dirty": {"type": "boolean"}, "state_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
-    "inputs": {"type": "object", "additionalProperties": false, "required": ["context", "agentic_repo_auditor"], "properties": {"context": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "schema_version"], "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "schema_version": {"const": "1.0"}}}, "agentic_repo_auditor": {"type": "null"}}},
+    "inputs": {"type": "object", "additionalProperties": false, "required": ["context", "agentic_repo_auditor"], "properties": {"context": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "schema_version"], "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "schema_version": {"const": "1.0"}}}, "agentic_repo_auditor": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/auditorInput"}]}}},
     "coverage": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
     "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
     "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
@@ -17,6 +17,37 @@
     "unknowns": {"type": "array", "items": {"$ref": "#/$defs/claim"}}
   },
   "$defs": {
+    "auditorInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "schema_version", "tool", "target"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema_version": {"const": "1.2"},
+        "tool": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version"],
+          "properties": {
+            "name": {"const": "agentic-repo-auditor"},
+            "version": {"const": "0.1.0"}
+          }
+        },
+        "target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "revision", "branch", "dirty", "state_id"],
+          "properties": {
+            "name": {"type": "string", "minLength": 1},
+            "revision": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"},
+            "branch": {"type": "string", "minLength": 1},
+            "dirty": {"type": "boolean"},
+            "state_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+          }
+        }
+      }
+    },
     "origin": {"enum": ["observed", "imported-tool", "human-declared", "derived", "model-synthesized", "unavailable"]},
     "stableId": {"type": "string", "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z0-9-]+)*$"},
     "evidence": {"type": "object", "additionalProperties": false, "required": ["id", "origin", "kind", "source", "value", "sha256"], "properties": {"id": {"$ref": "#/$defs/stableId"}, "origin": {"$ref": "#/$defs/origin"}, "kind": {"type": "string", "minLength": 1}, "source": {"type": "string", "minLength": 1}, "value": {"type": "string", "minLength": 1}, "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}}},

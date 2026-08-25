@@ -3,8 +3,8 @@
 Agentic Application Assessor is a local-first Python CLI for evidence-backed reviews of an exact
 application repository. The first slice combines bounded static inspection and human-reviewed
 context into deterministic JSON and Markdown while keeping observations, declarations,
-derivations, contradictions, and unknowns visibly distinct. Versioned analysis-artifact adapters
-are planned but not yet implemented.
+derivations, contradictions, and unknowns visibly distinct. It can also import one canonical
+Agentic Repo Auditor `0.1.0` schema-`1.2` JSON report as provenance-preserving evidence.
 
 The project is an early, unreleased `0.1.0` implementation. It does not execute target code,
 install target dependencies, use the network, call a model, certify security or compliance, or
@@ -23,6 +23,8 @@ Macro Technical Pulse is the second, deeper domain and data-flow target.
 - Human statements remain `human-declared` and dated.
 - Deterministic transformations remain `derived`; missing evidence remains `unavailable`.
 - Imported tools retain their own identity, schema, target fields, and artifact digest.
+- Auditor findings retain status, severity, category, source location, and nested evidence as
+  `imported-tool` evidence. They are not promoted into application claims.
 - Model synthesis and executable/runtime collectors are optional later adapters, not part of the
   canonical `0.1.0` core.
 
@@ -33,12 +35,19 @@ See [ADR-0008](docs/adr/0008-evidence-first-application-assessment.md) for the a
 ```bash
 agentic-application-assessor assess /path/to/repository \
   --context application-context.json \
+  --auditor-report repository-audit.json \
   --format json
 ```
 
 The same inputs must produce byte-identical canonical JSON and deterministic Markdown. The CLI
-writes reports only to standard output. The first slice accepts context schema `1.0`; the Agentic
-Repo Auditor import named in project scope is the next adapter and is not yet implemented.
+writes reports only to standard output. Context schema `1.0` remains required. The optional
+Auditor input must be a regular non-symlink file no larger than 2 MiB, contain duplicate-key-free
+JSON from exactly `agentic-repo-auditor 0.1.0` using report schema `1.2`, and identify the exact
+current target state using either a SHA-1 or SHA-256 Git object identity. The Assessor rechecks its
+own complete target identity before returning and rejects a state change during assessment.
+Incompatible, stale, malformed, or structurally excessive artifacts fail with exit status `2`.
+The Assessor reads the artifact; it never invokes the Auditor, executes the target, or treats
+imported findings as verified application behavior.
 
 ## Engineering harness
 
@@ -49,8 +58,8 @@ planning state.
 
 Public work is managed in the
 [Agentic Application Assessor Roadmap](https://github.com/users/stauntonjr/projects/16). The
-delivered baseline is [Issue #1](https://github.com/stauntonjr/agentic-application-assessor/issues/1);
-the next product slice is the fail-closed Auditor adapter in
+delivered baseline is [Issue #1](https://github.com/stauntonjr/agentic-application-assessor/issues/1),
+and the fail-closed Auditor adapter is tracked in
 [Issue #2](https://github.com/stauntonjr/agentic-application-assessor/issues/2).
 
 ```bash

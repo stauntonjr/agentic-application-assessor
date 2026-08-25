@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 import stat
 import subprocess
 from pathlib import Path, PurePosixPath
+from typing import Any
 
 from .errors import AssessmentError
 from .model import Target
@@ -227,3 +229,134 @@ def target_identity(target: Path) -> tuple[Path, Target, tuple[str, ...]]:
         Target(root.name, revision, branch, bool(status), f"sha256:{state.hexdigest()}"),
         paths,
     )
+
+
+def _auditor_status_paths(status_text: str) -> list[tuple[str, str]]:
+    tokens = status_text.split("\0")
+    entries: list[tuple[str, str]] = []
+    index = 0
+    while index < len(tokens):
+        token = tokens[index]
+        index += 1
+        if not token:
+            continue
+        if len(token) < 4 or token[2] != " ":
+            raise AssessmentError(f"unexpected Git porcelain entry: {token!r}")
+        status_code = token[:2]
+        entries.append((token[3:].rstrip("/"), status_code))
+        if "R" in status_code or "C" in status_code:
+            if index >= len(tokens) or not tokens[index]:
+                raise AssessmentError("incomplete Git rename/copy status entry")
+            entries.append((tokens[index].rstrip("/"), f"{status_code}:source"))
+            index += 1
+    return entries
+
+
+def _auditor_hidden_index_paths(root: Path, filters: tuple[str, ...]) -> dict[str, tuple[str, ...]]:
+    flags: dict[str, set[str]] = {}
+    for option, label, lower_only in (
+        ("-v", "assume-unchanged", True),
+        ("-t", "skip-worktree", False),
+    ):
+        output = _run(root, ("ls-files", option, "-z"), filters)
+        for token in output.split("\0"):
+            if not token:
+                continue
+            tag, separator, path = token.partition(" ")
+            if not separator or len(tag) != 1:
+                raise AssessmentError(f"unexpected Git index flag entry: {token!r}")
+            if (lower_only and tag.islower()) or (not lower_only and tag == "S"):
+                flags.setdefault(path, set()).add(label)
+    return {path: tuple(sorted(values)) for path, values in flags.items()}
+
+
+def _auditor_worktree_fingerprint(root: Path, relative: str) -> str:
+    pure = PurePosixPath(relative)
+    if pure.is_absolute() or not pure.parts or ".." in pure.parts:
+        raise AssessmentError(f"unsafe repository path: {relative!r}")
+    cursor = root
+    metadata: os.stat_result | None = None
+    for index, part in enumerate(pure.parts):
+        cursor /= part
+        try:
+            metadata = cursor.lstat()
+        except FileNotFoundError:
+            metadata = None
+            break
+        except OSError as exc:
+            raise AssessmentError(f"cannot fingerprint repository path {relative}: {exc}") from exc
+        if stat.S_ISLNK(metadata.st_mode):
+            raise AssessmentError(f"repository path is a symlink: {relative}")
+        if index < len(pure.parts) - 1 and not stat.S_ISDIR(metadata.st_mode):
+            raise AssessmentError(f"repository path has non-directory ancestor: {relative}")
+    digest = hashlib.sha256()
+    if metadata is None:
+        digest.update(f"absent\0{relative}\0".encode("utf-8"))
+        return digest.hexdigest()
+    if not stat.S_ISREG(metadata.st_mode):
+        raise AssessmentError(f"repository path is not a regular file: {relative}")
+    digest.update(
+        f"file\0{metadata.st_mode & 0o7777:o}\0".encode("ascii") + relative.encode("utf-8") + b"\0"
+    )
+    try:
+        with cursor.open("rb") as stream:
+            for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                digest.update(chunk)
+    except OSError as exc:
+        raise AssessmentError(f"cannot fingerprint repository file {relative}: {exc}") from exc
+    digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def auditor_target_identity(root: Path) -> dict[str, Any]:
+    """Reproduce the schema-1.2 Auditor target identity inside the Assessor safety boundary."""
+
+    filters = _filter_names(root)
+    revision = _run(root, ("rev-parse", "HEAD"), filters).strip()
+    branch = _run(root, ("branch", "--show-current"), filters).rstrip("\r\n") or "DETACHED"
+    status = _run(
+        root,
+        ("status", "--porcelain=v1", "-z", "--untracked-files=all", "--ignore-submodules=none"),
+        filters,
+    ).rstrip("\r\n")
+    status_entries = _auditor_status_paths(status)
+    flags_by_path = _auditor_hidden_index_paths(root, filters)
+    entries: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for relative, status_code in status_entries:
+        index_state = _run(
+            root, ("ls-files", "--stage", "-z", "--", relative), filters, allowed=(0, 1)
+        )
+        entries.append(
+            {
+                "path": relative,
+                "status": status_code,
+                "worktree": _auditor_worktree_fingerprint(root, relative),
+                "index": hashlib.sha256(index_state.encode("utf-8")).hexdigest(),
+                "index_flags": list(flags_by_path.get(relative, ())),
+            }
+        )
+        seen.add(relative)
+    for relative, flags in flags_by_path.items():
+        if relative in seen:
+            continue
+        index_state = _run(root, ("ls-files", "--stage", "-z", "--", relative), filters)
+        entries.append(
+            {
+                "path": relative,
+                "status": "index-hidden",
+                "worktree": _auditor_worktree_fingerprint(root, relative),
+                "index": hashlib.sha256(index_state.encode("utf-8")).hexdigest(),
+                "index_flags": list(flags),
+            }
+        )
+    entries.sort(key=lambda item: (item["path"], item["status"]))
+    payload = {"name": root.name, "revision": revision, "branch": branch, "entries": entries}
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return {
+        "name": root.name,
+        "revision": revision,
+        "branch": branch,
+        "dirty": bool(status_entries),
+        "state_id": f"sha256:{hashlib.sha256(encoded).hexdigest()}",
+    }
